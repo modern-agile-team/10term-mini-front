@@ -3,10 +3,14 @@ import {
   CheckCircleIcon,
   EyeIcon,
   EyeSlashIcon,
-} from "@heroicons/react/24/outline";
-import { useState, useMemo } from "react";
+} from '@heroicons/react/24/outline';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
 
 function Signup() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -23,30 +27,48 @@ function Signup() {
   const [isPasswordTouched, setPasswordTouched] = useState(false);
   const [isConfirmTouched, setConfirmTouched] = useState(false);
 
+  const [serverUsernameError, setServerUsernameError] = useState<string | null>(null);
+  const [serverNicknameError, setServerNicknameError] = useState<string | null>(null);
+
   const usernameRegex = /^[a-z0-9_-]{5,20}$/;
   const nicknameRegex = /^[가-힣a-zA-Z0-9]+$/;
   const passwordRegex =
     /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,20}$/;
 
+  useEffect(() => {
+    setServerUsernameError(null);
+  }, [username]);
+
   const usernameError = useMemo(() => {
+    if (serverUsernameError) return serverUsernameError;
+
     if (!isUsernameTouched) return null; // 아직 입력 안 했으면 오류 없음
     if (username.trim() === "") return "아이디를 입력해주세요.";
     if (!usernameRegex.test(username)) {
       return "아이디는 5~20자 이내의 영어 소문자(a-z), 숫자(0-9), 특수문자(_, -)로 구성되어야 합니다.";
     }
     return null; // 유효
-  }, [username, isUsernameTouched]);
+  }, [username, isUsernameTouched, serverUsernameError]);
+
+  useEffect(() => {
+    setServerNicknameError(null);
+  }, [nickname]);
 
   const nicknameError = useMemo(() => {
+    if (serverNicknameError) return serverNicknameError;
+
     if (!isNicknameTouched) return null;
     if (nickname.trim() === "") return "닉네임을 입력해주세요.";
+    
     const hasHangul = /[가-힣]/.test(nickname);
     const maxLength = hasHangul ? 10 : 30;
+
     if (nickname.length > maxLength || !nicknameRegex.test(nickname)) {
       return "닉네임은 한글 10자, 영문/숫자 30자 이내로 구성되어야 합니다.";
     }
+
     return null;
-  }, [nickname, isNicknameTouched]);
+  }, [nickname, isNicknameTouched, serverNicknameError]);
 
   const passwordError = useMemo(() => {
     if (!isPasswordTouched) return null;
@@ -70,7 +92,51 @@ function Signup() {
   }, [confirmPassword, password, isConfirmTouched]);
 
   const isFormValid =
+    username && nickname && password && confirmPassword &&
     !usernameError && !nicknameError && !passwordError && !confirmPasswordError;
+
+  type SignupRequest = {
+    user_id: string;
+    nickname: string;
+    password: string;
+    confirmPassword: string;
+  };
+
+  const signup = async (signupData : SignupRequest): Promise<void> => {
+    try {
+      const res = await axios.post("/api/auth/signup", signupData, {
+        withCredentials: true
+      });
+
+      if (res.status === 201) {
+        localStorage.setItem("accessToken", res.data.data.accessToken);
+        localStorage.setItem("user", JSON.stringify(res.data.data.user));
+        
+        navigate("/welcome");
+      }
+    } catch (error: any) {
+      const data = error.response?.data;
+
+      if (data?.status === 400) {
+        alert("유효하지 않은 요청입니다.");
+      }
+
+      if (data?.field === "both") {
+        setServerUsernameError("이미 있는 아이디입니다.");
+        setServerNicknameError("이미 있는 닉네임입니다.");
+      }
+      
+      if (data?.field === "user_id") {
+        setServerUsernameError("이미 있는 아이디입니다.");
+      }
+
+      if (data?.field === "nickname") {
+        setServerNicknameError("이미 있는 닉네임입니다.");
+      }
+
+      console.error("회원가입 실패...", error.response?.data || error.message);
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,9 +144,17 @@ function Signup() {
       alert("유효하지 않은 입력이 있습니다.");
       return;
     }
-    // console.log(s
-    //   `아이디: ${username}\n비밀번호: ${password}\n닉네임: ${nickname}`
-    // );
+    
+    const signupData = {
+      user_id: username,
+      nickname: nickname,
+      password: password,
+      confirmPassword: confirmPassword
+    };
+
+    setServerUsernameError(null);
+    setServerNicknameError(null);
+    signup(signupData);
   };
 
   return (
@@ -102,7 +176,7 @@ function Signup() {
               <input
                 id="username"
                 type="text"
-                maxLength={10}
+                maxLength={20}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 onBlur={() => setUsernameTouched(true)}
@@ -317,9 +391,9 @@ function Signup() {
                 )}
               </button>
               <span className="m-2">
-                {!isPasswordTouched ? (
+                {!isConfirmTouched ? (
                   <CheckCircleIcon className="w-[42px] h-10 text-gray-400" />
-                ) : passwordError ? (
+                ) : confirmPasswordError ? (
                   <XCircleIcon className="w-[42px] h-10 text-red-500" />
                 ) : (
                   <CheckCircleIcon className="w-[42px] h-10 text-site-green" />
@@ -333,7 +407,7 @@ function Signup() {
             )}
             <button
               type="submit"
-              disabled={!username && !password}
+              disabled={!isFormValid}
               className={`mt-[20px]
             px-[15px]
             py-[10px]
@@ -341,7 +415,7 @@ function Signup() {
             h-[60px]
             rounded-lg
             ${
-              username || password || nickname || confirmPassword
+              isFormValid
                 ? "bg-site-green"
                 : "bg-site-green-50"
             }

@@ -1,13 +1,54 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react'
-import { Link } from "react-router-dom"
+import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 function Login() {
+  const navigate = useNavigate();
+
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
 
   const togglePw = () => setShowPw((prev) => !prev);
+
+  type User = {
+    username: string;
+    nickname: string;
+  }
+
+  type LoginRequest = {
+    user_id: string;
+    password: string;
+  };
+
+  type LoginResponse = {
+    success: boolean;
+    data: {
+      accessToken: string;
+      user: User;
+    }
+  };
+
+  const login = async (loginData : LoginRequest): Promise<void> => {
+    try {
+      const res = await axios.post<LoginResponse>("/api/auth/login", loginData, {
+        withCredentials: true
+      });
+
+      if (res.status === 200) {
+        localStorage.setItem("accessToken", res.data.data.accessToken);
+        localStorage.setItem("user", JSON.stringify(res.data.data.user));
+
+        navigate("/");
+      }
+    } catch (error: any) {
+      setErrorMsg("아이디 또는 비밀번호가 올바르지 않습니다.");
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +58,13 @@ function Login() {
       return;
     }
 
-    // console.log(`아이디: ${username}\n비밀번호: ${password}`);
+    const loginData = {
+      user_id: username,
+      password: password,
+    };
+
+    setErrorMsg(null);
+    login(loginData);
   }
 
   return (
@@ -36,7 +83,7 @@ function Login() {
             <input
               id="username"
               type="text"
-              maxLength={10}
+              maxLength={20}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder=" "
@@ -105,6 +152,11 @@ function Login() {
               )}
             </button>
           </div>
+          {errorMsg && (
+            <div className="mt-4 w-[460px] text-sm text-red-600">
+              {errorMsg}
+            </div>
+          )}
           <button 
           type="submit"
           className="mt-[20px]
@@ -133,7 +185,7 @@ function Login() {
           계정이 없으신가요? &nbsp;
           
           <Link to="/signup" className="text-site-green text-2xl">
-          가입하기
+            가입하기
           </Link>
         </div>
       </div>
