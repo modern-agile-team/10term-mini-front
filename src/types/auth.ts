@@ -29,4 +29,32 @@ interface LoginFailResponse {
 
 type LoginResponse = LoginSuccessResponse | LoginFailResponse;
 
-export type { User, LoginRequest, LoginResponse };
+interface SignupRequest {
+  username: string;
+  nickname: string;
+  password: string;
+}
+
+interface SignupSuccessResponse {
+  status: 201;
+  success: true;
+  data: {
+    field: null;
+    message: string;
+    accessToken: string;
+    refreshToken: string;
+    user: User;
+  };
+}
+
+interface SignupFailResponse {
+  status: 409;
+  success: false;
+  data: {
+    fields: ("username" | "nickname")[];
+  };
+}
+
+type SignupResponse = SignupSuccessResponse | SignupFailResponse;
+
+export type { User, LoginRequest, LoginResponse, SignupRequest, SignupResponse };

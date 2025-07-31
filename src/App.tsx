@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Welcome from './pages/Welcome';
 import WebtoonMain from './pages/WebtoonMain';
-import WebtoonDetail from './pages/WebtoonDetail';
 
 function App() {
   useTokenRefresher();
@@ -19,7 +18,6 @@ function App() {
 
         <Route element={<BaseLayout />}>
           <Route path="/" element={<WebtoonMain />} />
-          <Route path="/webtoon/:id" element={<WebtoonDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>

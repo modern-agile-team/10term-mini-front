@@ -4,9 +4,10 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from '@heroicons/react/24/outline';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
+import type { SignupRequest } from '../types/auth';
+import { requestSignup } from '../apis/auth';
 
 function Signup() {
   const navigate = useNavigate();
@@ -95,22 +96,13 @@ function Signup() {
     username && nickname && password && confirmPassword &&
     !usernameError && !nicknameError && !passwordError && !confirmPasswordError;
 
-  type SignupRequest = {
-    user_id: string;
-    nickname: string;
-    password: string;
-    confirmPassword: string;
-  };
-
   const signup = async (signupData : SignupRequest): Promise<void> => {
     try {
-      const res = await axios.post("/api/auth/signup", signupData, {
-        withCredentials: true
-      });
+      const data = await requestSignup(signupData);
 
-      if (res.status === 201) {
-        localStorage.setItem("accessToken", res.data.data.accessToken);
-        localStorage.setItem("user", JSON.stringify(res.data.data.user));
+      if (data.success) {
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("user", JSON.stringify(data.data.user));
         
         navigate("/welcome");
       }
@@ -126,7 +118,7 @@ function Signup() {
         setServerNicknameError("이미 있는 닉네임입니다.");
       }
       
-      if (data?.field === "user_id") {
+      if (data?.field === "username") {
         setServerUsernameError("이미 있는 아이디입니다.");
       }
 
@@ -146,10 +138,9 @@ function Signup() {
     }
     
     const signupData = {
-      user_id: username,
+      username: username,
       nickname: nickname,
       password: password,
-      confirmPassword: confirmPassword
     };
 
     setServerUsernameError(null);
