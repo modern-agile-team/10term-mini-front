@@ -4,8 +4,9 @@ import { useEffect } from 'react';
 function useTokenRefresher() {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
+    const user = localStorage.getItem("user");
     
-    if (!accessToken) {
+    if (!accessToken && user) {
       axios
         .post("/api/auth/token", null, { withCredentials: true })
         .then((res) => {

@@ -1,5 +1,5 @@
 import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
+import { requestLogout } from '../apis/auth';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -12,9 +12,7 @@ interface HeaderProps {
 
 function Header({ user }: HeaderProps) {
   const handleLogout = async () => {
-    await axios.post("api/auth/logout", null, {
-      withCredentials: true
-    });
+    await requestLogout();
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
     window.location.reload();

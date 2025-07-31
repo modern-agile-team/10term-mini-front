@@ -102,10 +102,23 @@ const authHandlers = [
     );
   }),
 
-  http.post("/api/auth/logout", async () => {
-    return HttpResponse.json({ success: true }, { status: 200 });
+  http.post("/api/auth/logout", () => {
+    return HttpResponse.json(
+      {
+        status: 200,
+        success: true,
+        data: {
+          message: "로그아웃 되었습니다.",
+        },
+      },
+      {
+        status: 200,
+        headers: {
+          "Set-Cookie": "refreshToken=; Max-Age=0; HttpOnly; Secure; SameSite=Strict",
+        },
+      }
+    );
   }),
-  
 ]
 
 export default authHandlers;

@@ -57,4 +57,25 @@ interface SignupFailResponse {
 
 type SignupResponse = SignupSuccessResponse | SignupFailResponse;
 
-export type { User, LoginRequest, LoginResponse, SignupRequest, SignupResponse };
+interface LogoutSuccessResponse {
+  status: 200;
+  success: true;
+  data: {
+    message: string
+  };
+}
+
+interface LogoutFailResponse {
+  status: 500;
+  success: false;
+  data: {
+    message: string
+  };
+}
+
+type LogoutResponse = LogoutSuccessResponse | LogoutFailResponse;
+
+export type { User, 
+  LoginRequest, LoginResponse, 
+  SignupRequest, SignupResponse, 
+  LogoutResponse };
