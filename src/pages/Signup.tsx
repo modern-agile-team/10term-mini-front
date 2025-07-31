@@ -6,7 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
-import type { SignupRequest } from '../types/auth';
+import type { SignupRequest, SignupResponse } from '../types/auth';
 import { requestSignup } from '../apis/auth';
 
 function Signup() {
@@ -107,26 +107,27 @@ function Signup() {
         navigate("/welcome");
       }
     } catch (error: any) {
-      const data = error.response?.data;
+      if (error.response?.status === 409) {
+        const data = error.response.data as SignupResponse;
 
-      if (data?.status === 400) {
-        alert("유효하지 않은 요청입니다.");
+        const field = data.data.field;
+
+        if (field && field.includes("username")) {
+          setServerUsernameError("이미 있는 아이디입니다.");
+        }
+
+        if (field && field.includes("nickname")) {
+          setServerNicknameError("이미 있는 닉네임입니다.");
+        }
+
+        return;
       }
 
-      if (data?.field === "both") {
-        setServerUsernameError("이미 있는 아이디입니다.");
-        setServerNicknameError("이미 있는 닉네임입니다.");
-      }
-      
-      if (data?.field === "username") {
-        setServerUsernameError("이미 있는 아이디입니다.");
+      if (error.response?.status === 400) {
+        alert("유효하지 않은 요청");
       }
 
-      if (data?.field === "nickname") {
-        setServerNicknameError("이미 있는 닉네임입니다.");
-      }
-
-      console.error("회원가입 실패...", error.response?.data || error.message);
+      console.error("회원가입 실패...", error);
     }
   }
 

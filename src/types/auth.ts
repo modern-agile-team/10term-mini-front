@@ -51,7 +51,7 @@ interface SignupFailResponse {
   status: 409;
   success: false;
   data: {
-    fields: ("username" | "nickname")[];
+    field: ("username" | "nickname")[];
   };
 }
 
