@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { requestRefreshToken } from '../apis/auth';
 import { useEffect } from 'react';
 
 function useTokenRefresher() {
@@ -7,14 +7,26 @@ function useTokenRefresher() {
     const user = localStorage.getItem("user");
     
     if (!accessToken && user) {
-      axios
-        .post("/api/auth/token", null, { withCredentials: true })
+      requestRefreshToken()
         .then((res) => {
-          localStorage.setItem("accessToken", res.data.data.accessToken);
+          if (res.success) {
+            localStorage.setItem("accessToken", res.data.accessToken);
+          } else {
+            console.error("토큰 재발급 실패:", res.data.message);
+          }
         })
         .catch((err) => {
-          console.error("토큰 리프레시 실패", err);
+          console.error("API 오류:", err);
         })
+      
+      // axios
+      //   .post("/api/auth/token", null, { withCredentials: true })
+      //   .then((res) => {
+      //     localStorage.setItem("accessToken", res.data.data.accessToken);
+      //   })
+      //   .catch((err) => {
+      //     console.error("토큰 리프레시 실패", err);
+      //   })
       }
   }, []);
 

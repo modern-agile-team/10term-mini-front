@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { LoginRequest, LoginResponse, LogoutResponse, SignupRequest, SignupResponse } from "../types/auth";
+import type { LoginRequest, LoginResponse, SignupRequest, SignupResponse, LogoutResponse, RefreshTokenResponse } from "../types/auth";
 
 function requestLogin(loginData: LoginRequest): Promise<LoginResponse> {
   return axios.post<LoginResponse>("/api/auth/login", loginData, {
@@ -19,4 +19,10 @@ function requestLogout(): Promise<LogoutResponse> {
   }).then(res => res.data);
 }
 
-export { requestLogin, requestSignup, requestLogout };
+function requestRefreshToken(): Promise<RefreshTokenResponse> {
+  return axios.post<RefreshTokenResponse>("/api/auth/token", {}, {
+    withCredentials: true,
+  }).then(res => res.data);
+}
+
+export { requestLogin, requestSignup, requestLogout, requestRefreshToken };

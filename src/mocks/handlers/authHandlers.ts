@@ -91,6 +91,7 @@ const authHandlers = [
   http.post("/api/auth/token", async () => {
     return HttpResponse.json(
       {
+        status: 200,
         success: true,
         data: {
           accessToken: "newAccessToken.5678",

@@ -75,7 +75,29 @@ interface LogoutFailResponse {
 
 type LogoutResponse = LogoutSuccessResponse | LogoutFailResponse;
 
-export type { User, 
+interface RefreshTokenSuccessResponse {
+  status: 200;
+  success: true;
+  data: {
+    message: string;
+    accessToken: string;
+  }
+}
+
+interface RefreshTokenFailResponse {
+  status: 400 | 401;
+  success: false;
+  data: {
+    message: string;
+  }
+}
+
+type RefreshTokenResponse = RefreshTokenSuccessResponse | RefreshTokenFailResponse;
+
+export type { 
+  User, 
   LoginRequest, LoginResponse, 
   SignupRequest, SignupResponse, 
-  LogoutResponse };
+  LogoutResponse,
+  RefreshTokenResponse, 
+};
