@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   user: {
-    user_id: string,
+    username: string,
     nickname: string,
   } | null
 }

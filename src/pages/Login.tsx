@@ -1,5 +1,6 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
+import { requestLogin } from '../apis/auth';
+import type { LoginRequest } from '../types/auth';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -15,34 +16,13 @@ function Login() {
 
   const togglePw = () => setShowPw((prev) => !prev);
 
-  type User = {
-    username: string;
-    nickname: string;
-  }
-
-  type LoginRequest = {
-    user_id: string;
-    password: string;
-  };
-
-  type LoginResponse = {
-    success: boolean;
-    data: {
-      accessToken: string;
-      user: User;
-    }
-  };
-
-  const login = async (loginData : LoginRequest): Promise<void> => {
+  const login = async (loginData: LoginRequest): Promise<void> => {
     try {
-      const res = await axios.post<LoginResponse>("/api/auth/login", loginData, {
-        withCredentials: true
-      });
-
-      if (res.status === 200) {
-        localStorage.setItem("accessToken", res.data.data.accessToken);
-        localStorage.setItem("user", JSON.stringify(res.data.data.user));
-
+      const data = await requestLogin(loginData);
+      // if 제거할 시 컴파일러에서 빨간 줄 띄워집니다.
+      if (data.success) {
+        localStorage.setItem("accessToken", data.data.accessToken);
+        localStorage.setItem("user", JSON.stringify(data.data.user));
         navigate("/");
       }
     } catch (error: any) {
@@ -58,10 +38,7 @@ function Login() {
       return;
     }
 
-    const loginData = {
-      user_id: username,
-      password: password,
-    };
+    const loginData: LoginRequest = { username, password };
 
     setErrorMsg(null);
     login(loginData);
