@@ -4,7 +4,7 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from '@heroicons/react/24/outline';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useState, useEffect, useMemo } from 'react';
 import type { SignupRequest, SignupResponse } from '../types/auth';
 import { requestSignup } from '../apis/auth';

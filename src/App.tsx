@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import BaseLayout from './layouts/BaseLayout';
 import useTokenRefresher from './hooks/useTokenRefresher';
 import Login from './pages/Login';
