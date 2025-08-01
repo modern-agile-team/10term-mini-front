@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { requestLogin } from '../apis/auth';
-import type { LoginRequest } from '../types/auth';
+import type { User, LoginRequest } from '../types/auth';
+import useLocalStorage from './useLocalStorage';
 
 function useLogin() {
   const navigate = useNavigate();
+  
+  const [, setUser] = useLocalStorage<User | null>("user", null);
+  const [, setAccessToken] = useLocalStorage<string | null>("accessToken", null);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -17,8 +21,8 @@ function useLogin() {
     try {
       const data = await requestLogin(loginData);
       if (data.success) {
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("user", JSON.stringify(data.data.user));
+        setAccessToken(data.data.accessToken)
+        setUser(data.data.user);
         navigate("/");
       }
     } catch {

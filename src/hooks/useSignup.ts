@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import type { SignupRequest, SignupResponse } from "../types/auth";
+import type { User, SignupRequest, SignupResponse } from "../types/auth";
 import { requestSignup } from "../apis/auth";
+import useLocalStorage from "./useLocalStorage";
 
 function useSignup() {
   const navigate = useNavigate();
+
+  const [, setUser] = useLocalStorage<User | null>("user", null);
+  const [, setAccessToken] = useLocalStorage<string | null>("accessToken", null);
 
   const [username, setUsername] = useState("");
   const [nickname, setNickname] = useState("");
@@ -107,8 +111,8 @@ function useSignup() {
       const data = await requestSignup(signupData);
 
       if (data.success) {
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("user", JSON.stringify(data.data.user));
+        setAccessToken(data.data.accessToken)
+        setUser(data.data.user);
 
         navigate("/welcome");
       }
