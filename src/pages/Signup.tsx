@@ -49,7 +49,6 @@ function Signup() {
               <input
                 id="username"
                 type="text"
-                maxLength={20}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 onBlur={() => setUsernameTouched(true)}
@@ -106,7 +105,6 @@ function Signup() {
               <input
                 id="nickname"
                 type="text"
-                maxLength={10}
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
                 onBlur={() => setNicknameTouched(true)}
@@ -164,7 +162,6 @@ function Signup() {
               <input
                 id="password"
                 type={showPw ? "text" : "password"}
-                maxLength={30}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onBlur={() => setPasswordTouched(true)}
@@ -228,7 +225,6 @@ function Signup() {
               <input
                 id="confirmPassword"
                 type={showConfirmPw ? "text" : "password"}
-                maxLength={30}
                 value={confirmPassword}
                 onBlur={() => setConfirmPasswordTouched(true)}
                 onChange={(e) => setConfirmPassword(e.target.value)}
