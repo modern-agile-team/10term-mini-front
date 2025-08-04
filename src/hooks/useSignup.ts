@@ -32,8 +32,7 @@ function useSignup() {
   
   const usernameRegex = /^[a-z0-9_-]{5,20}$/;
   const nicknameRegex = /^[가-힣a-zA-Z0-9]+$/;
-  const passwordRegex =
-    /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,20}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,20}$/;
 
   useEffect(() => { setServerUsernameError(null); }, [username]);
   useEffect(() => { setServerNicknameError(null); }, [nickname]);
@@ -68,17 +67,17 @@ function useSignup() {
     if (!isPasswordTouched) return null;
     if (password.trim() === "") return "비밀번호를 입력해주세요.";
     if (!passwordRegex.test(password)) {
-      return "비밀번호는 8~20자 이내의 영어 대/소문자, 숫자, 특수문자로 구성되어야 합니다.";
+      return "비밀번호는 8~20자이며, 영문자, 숫자, 특수문자를 각각 1자 이상 포함해야 합니다.";
     }
     return null;
   }, [password, isPasswordTouched]);
 
   const confirmPasswordError = useMemo(() => {
     if (!isConfirmPasswordTouched) return null;
+    if (confirmPassword.trim() === "") return "비밀번호 확인을 입력해주세요.";
     if (!passwordRegex.test(confirmPassword)) {
       return "비밀번호를 확인해주세요.";
     }
-    if (confirmPassword.trim() === "") return "비밀번호 확인을 입력해주세요.";
     if (confirmPassword !== password) {
       return "비밀번호가 일치하지 않습니다.";
     }
