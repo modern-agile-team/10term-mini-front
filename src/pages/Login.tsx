@@ -1,6 +1,7 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import useLogin from '../hooks/useLogin';
 import { Link } from 'react-router';
+import naver from '/naver.svg';
 
 function Login() {
   const {
@@ -18,14 +19,15 @@ function Login() {
     <div className="max-w-[1190px] mx-auto px-2">  
     <form onSubmit={handleSubmit}>
       <div className="mx-auto w-[580px] font-pretendard">
-        <div className="flex flex-col items-center mt-[100px] py-[80px] rounded-lg border-2 shadow-lg bg-white text-center">
-          <a className="text-6xl text-site-green font-interblack" href="/">
-            NAVER
-          </a>
-          <div className="flex relative mt-[40px] w-[460px]
-                border-2
+        <div className="flex flex-col items-center mt-[100px] pt-[40px] pb-[80px] rounded-2xl border-[1.2px] shadow-[0_0_30px_rgba(0,0,0,0.1)] bg-white text-center">
+          <Link to="/" aria-label="네이버 홈" className="">
+            <img src={naver} alt="NAVER" className="h-[86px] w-auto"/>
+          </Link>
+          <div className="flex relative mt-[50px] w-[460px]
+                border-[1.2px]
                 rounded-lg
-              bg-gray-100
+                border-input-border
+              bg-input-gray
                 focus-within:border-site-green-50">
             <input
               id="username"
@@ -42,23 +44,25 @@ function Login() {
               h-[60px]
               bg-transparent
               focus:outline-none" 
+              autoComplete="off"
             />
             <label
               htmlFor="username"
-              className="absolute left-[17px] top-[8px] text-xs text-gray-500 transition-all
+              className="absolute left-[15px] top-[8px] text-xs text-gray-500 transition-all
                 peer-placeholder-shown:top-[18px]
                 peer-placeholder-shown:text-base
                 peer-placeholder-shown:text-gray-400
                 peer-focus:top-[8px]
-                peer-focus:left-[17px]
+                peer-focus:left-[14px]
                 peer-focus:text-xs
                 peer-focus:text-gray">
               아이디
             </label>
           </div>
-          <div className="flex relative mt-[10px] border-2
+          <div className="flex relative mt-[13px] border-[1.2px]
               rounded-lg
-              bg-gray-100
+              border-input-border
+              bg-input-gray
               focus-within:border-site-green-50">
             <input
               id="password"
@@ -75,15 +79,16 @@ function Login() {
               h-[60px]
               bg-transparent
               focus:outline-none" 
+              autoComplete="off"
             />
             <label
               htmlFor="password"
-              className="absolute left-[17px] top-[8px] text-xs text-gray-500 transition-all
+              className="absolute left-[15px] top-[8px] text-xs text-gray-500 transition-all
                 peer-placeholder-shown:top-[18px]
                 peer-placeholder-shown:text-base
                 peer-placeholder-shown:text-gray-400
                 peer-focus:top-[8px]
-                peer-focus:left-[17px]
+                peer-focus:left-[14px]
                 peer-focus:text-xs
                 peer-focus:text-gray">
               비밀번호
@@ -92,11 +97,17 @@ function Login() {
             type="button"
             onClick={togglePw}
             className="m-2 mr-[20px]">
-              {showPw ? (
-                <EyeIcon className="w-7 h-7 text-gray-400" />
-              ) : (
-                <EyeSlashIcon className="w-7 h-7 text-gray-400" />
-              )}
+              <span
+                className={`transition duration-200 ${
+                  password.length > 0 ? 'visible' : 'invisible'
+                }`}
+              >
+                {showPw ? (
+                  <EyeIcon className="w-7 h-7 text-gray-400" />
+                ) : (
+                  <EyeSlashIcon className="w-7 h-7 text-gray-400" />
+                )}
+              </span>
             </button>
           </div>
           {errorMsg && (
@@ -111,8 +122,9 @@ function Login() {
           py-[10px]
           w-[460px]
           h-[50px]
-          rounded-lg
-          bg-site-green 
+          rounded-md
+          bg-site-red 
+          font-normal
           text-xl
           text-white">
             로그인
@@ -120,18 +132,18 @@ function Login() {
           <hr className="mt-[20px] border w-[460px]" />
         </div>
         <div 
-          className="my-[25px] 
+          className="my-[15px] 
             py-[40px] 
-            shadow-lg
-            rounded-lg
-            border-2
+            shadow-[0_0_30px_rgba(0,0,0,0.1)]
+            rounded-2xl
+            border-[1.2px]
             bg-white 
             text-center
-            text-xl
-            font-[325]">
+            text-[1.3rem]
+            font-[350]">
           계정이 없으신가요? &nbsp;
           
-          <Link to="/signup" className="text-site-green text-2xl">
+          <Link to="/signup" className="text-site-red text-2xl">
             가입하기
           </Link>
         </div>
