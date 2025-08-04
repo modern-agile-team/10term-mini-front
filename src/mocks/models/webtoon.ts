@@ -1,6 +1,18 @@
-import { http, HttpResponse } from 'msw';
+interface Webtoon {
+  id: number;
+  title: string;
+  writer: string;
+  illustrator: string;
+  day_of_week: string;
+  age_rating: string;
+  description: string;
+  thumbnail_url: string;
+  like_count: number;
+  updated_at: string;
+  view_count: number;
+}
 
-const dummyWebtoons = [
+const mockWebtoons: Webtoon[] = [
   {
     id: 1,
     title: "똑 닮은 딸",
@@ -182,90 +194,7 @@ const dummyWebtoons = [
     like_count: 998,
     updated_at: "2025-07-17T11:00:00Z",
     view_count: 45000
-  }        
+  },
 ]
 
-export const handlers = [
-  http.post("/api/auth/signup", async ({ request }) => {
-    return HttpResponse.json(
-      {
-        success: true,
-        data: {
-          message: "회원가입 성공",
-          accessToken: "fakeAccessToken.1234",
-          user: {
-            username: "new_user",
-            nickname: "새로운유저",
-          },
-        },
-      },
-      {
-        status: 201,
-        headers: {
-          "Set-Cookie": `refreshToken=fakeRefreshToken.5678; HttpOnly; Secure; SameSite=Strict; Max-Age=${7 * 24 * 60 * 60}`,
-        },
-      }
-    );
-  }),
-
-  http.post("/api/auth/login", async ({ request }) => {
-    return HttpResponse.json(
-      {
-        success: true,
-        data: {
-          message: "로그인 성공",
-          accessToken: "fakeAccessToken.1234",
-          user: {
-            username: "test_user",
-            nickname: "현",
-          },
-        },
-      },
-      {
-        status: 200,
-        headers: {
-          "Set-Cookie": `refreshToken=fakeRefreshToken.5678; HttpOnly; Secure; SameSite=Strict; Max-Age=${7 * 24 * 60 * 60}`,
-        },
-      }
-    );
-  }),
-
-  http.post("/api/auth/token", async () => {
-    return HttpResponse.json(
-      {
-        success: true,
-        data: {
-          accessToken: "newAccessToken.5678",
-        },
-      },
-      {
-        status: 200,
-      }
-    );
-  }),
-
-  http.post("/api/auth/logout", async () => {
-    return HttpResponse.json({ success: true }, { status: 200 });
-  }),
-
-  http.get("/api/webtoons", async ({request}) => {
-    const url = new URL(request.url);
-    const sortKey = url.searchParams.get("sort") || "like_count";
-
-    const sorted = [...dummyWebtoons].sort((a, b) => {
-      if (sortKey === "like") return b.like_count - a.like_count;
-      if (sortKey === "view") return b.view_count - a.view_count;
-      if (sortKey === "updated") {
-        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-      }
-      return 0;
-    });
-    
-    return await HttpResponse.json(
-      sorted,
-      { status: 200 },
-    );
-  })
-
-
-]
+export { mockWebtoons };

@@ -1,6 +1,6 @@
 import Header from './Header'
 import Footer from './Footer'
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router'
 import { useState, useEffect } from 'react'
 
 type User = {
@@ -12,13 +12,11 @@ function BaseLayout() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
     const storedUser = localStorage.getItem("user");
 
-    if (token && storedUser) {
+    if (storedUser) {
       try {
-      const userInfo = JSON.parse(storedUser);
-      setUser(userInfo); // 상태 저장
+        setUser(JSON.parse(storedUser))
       } catch (e) {
         console.error("유저 정보 파싱 실패:", e);
       }

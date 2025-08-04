@@ -1,71 +1,18 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-
+import useLogin from '../hooks/useLogin';
+import { Link } from 'react-router';
 
 function Login() {
-  const navigate = useNavigate();
-
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPw, setShowPw] = useState(false);
-
-  const togglePw = () => setShowPw((prev) => !prev);
-
-  type User = {
-    username: string;
-    nickname: string;
-  }
-
-  type LoginRequest = {
-    user_id: string;
-    password: string;
-  };
-
-  type LoginResponse = {
-    success: boolean;
-    data: {
-      accessToken: string;
-      user: User;
-    }
-  };
-
-  const login = async (loginData : LoginRequest): Promise<void> => {
-    try {
-      const res = await axios.post<LoginResponse>("/api/auth/login", loginData, {
-        withCredentials: true
-      });
-
-      if (res.status === 200) {
-        localStorage.setItem("accessToken", res.data.data.accessToken);
-        localStorage.setItem("user", JSON.stringify(res.data.data.user));
-
-        navigate("/");
-      }
-    } catch (error: any) {
-      setErrorMsg("아이디 또는 비밀번호가 올바르지 않습니다.");
-    }
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!username || !password) {
-      alert("아이디와 비밀번호를 확인하세요.")
-      return;
-    }
-
-    const loginData = {
-      user_id: username,
-      password: password,
-    };
-
-    setErrorMsg(null);
-    login(loginData);
-  }
+  const {
+    username,
+    password,
+    showPw,
+    errorMsg,
+    setUsername,
+    setPassword,
+    togglePw,
+    handleSubmit
+  } = useLogin();
 
   return (
     <div className="max-w-[1190px] mx-auto px-2">  

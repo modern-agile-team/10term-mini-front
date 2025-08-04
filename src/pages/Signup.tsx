@@ -4,158 +4,31 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from '@heroicons/react/24/outline';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo } from 'react';
+import useSignup from '../hooks/useSignup';
 
 function Signup() {
-  const navigate = useNavigate();
-
-  const [username, setUsername] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [showPw, setShowPw] = useState(false);
-  const [showConfirmPw, setShowConfirmPw] = useState(false);
-
-  const togglePw = () => setShowPw((prev) => !prev);
-  const toggleConfirmPw = () => setShowConfirmPw((prev) => !prev);
-
-  const [isUsernameTouched, setUsernameTouched] = useState(false);
-  const [isNicknameTouched, setNicknameTouched] = useState(false);
-  const [isPasswordTouched, setPasswordTouched] = useState(false);
-  const [isConfirmTouched, setConfirmTouched] = useState(false);
-
-  const [serverUsernameError, setServerUsernameError] = useState<string | null>(null);
-  const [serverNicknameError, setServerNicknameError] = useState<string | null>(null);
-
-  const usernameRegex = /^[a-z0-9_-]{5,20}$/;
-  const nicknameRegex = /^[가-힣a-zA-Z0-9]+$/;
-  const passwordRegex =
-    /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,20}$/;
-
-  useEffect(() => {
-    setServerUsernameError(null);
-  }, [username]);
-
-  const usernameError = useMemo(() => {
-    if (serverUsernameError) return serverUsernameError;
-
-    if (!isUsernameTouched) return null; // 아직 입력 안 했으면 오류 없음
-    if (username.trim() === "") return "아이디를 입력해주세요.";
-    if (!usernameRegex.test(username)) {
-      return "아이디는 5~20자 이내의 영어 소문자(a-z), 숫자(0-9), 특수문자(_, -)로 구성되어야 합니다.";
-    }
-    return null; // 유효
-  }, [username, isUsernameTouched, serverUsernameError]);
-
-  useEffect(() => {
-    setServerNicknameError(null);
-  }, [nickname]);
-
-  const nicknameError = useMemo(() => {
-    if (serverNicknameError) return serverNicknameError;
-
-    if (!isNicknameTouched) return null;
-    if (nickname.trim() === "") return "닉네임을 입력해주세요.";
-    
-    const hasHangul = /[가-힣]/.test(nickname);
-    const maxLength = hasHangul ? 10 : 30;
-
-    if (nickname.length > maxLength || !nicknameRegex.test(nickname)) {
-      return "닉네임은 한글 10자, 영문/숫자 30자 이내로 구성되어야 합니다.";
-    }
-
-    return null;
-  }, [nickname, isNicknameTouched, serverNicknameError]);
-
-  const passwordError = useMemo(() => {
-    if (!isPasswordTouched) return null;
-    if (password.trim() === "") return "비밀번호를 입력해주세요.";
-    if (!passwordRegex.test(password)) {
-      return "비밀번호는 8~20자 이내의 영어 대/소문자, 숫자, 특수문자로 구성되어야 합니다.";
-    }
-    return null;
-  }, [password, isPasswordTouched]);
-
-  const confirmPasswordError = useMemo(() => {
-    if (!isConfirmTouched) return null;
-    if (!passwordRegex.test(confirmPassword)) {
-      return "비밀번호를 확인해주세요.";
-    }
-    if (confirmPassword.trim() === "") return "비밀번호 확인을 입력해주세요.";
-    if (confirmPassword !== password) {
-      return "비밀번호가 일치하지 않습니다.";
-    }
-    return null;
-  }, [confirmPassword, password, isConfirmTouched]);
-
-  const isFormValid =
-    username && nickname && password && confirmPassword &&
-    !usernameError && !nicknameError && !passwordError && !confirmPasswordError;
-
-  type SignupRequest = {
-    user_id: string;
-    nickname: string;
-    password: string;
-    confirmPassword: string;
-  };
-
-  const signup = async (signupData : SignupRequest): Promise<void> => {
-    try {
-      const res = await axios.post("/api/auth/signup", signupData, {
-        withCredentials: true
-      });
-
-      if (res.status === 201) {
-        localStorage.setItem("accessToken", res.data.data.accessToken);
-        localStorage.setItem("user", JSON.stringify(res.data.data.user));
-        
-        navigate("/welcome");
-      }
-    } catch (error: any) {
-      const data = error.response?.data;
-
-      if (data?.status === 400) {
-        alert("유효하지 않은 요청입니다.");
-      }
-
-      if (data?.field === "both") {
-        setServerUsernameError("이미 있는 아이디입니다.");
-        setServerNicknameError("이미 있는 닉네임입니다.");
-      }
-      
-      if (data?.field === "user_id") {
-        setServerUsernameError("이미 있는 아이디입니다.");
-      }
-
-      if (data?.field === "nickname") {
-        setServerNicknameError("이미 있는 닉네임입니다.");
-      }
-
-      console.error("회원가입 실패...", error.response?.data || error.message);
-    }
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isFormValid) {
-      alert("유효하지 않은 입력이 있습니다.");
-      return;
-    }
-    
-    const signupData = {
-      user_id: username,
-      nickname: nickname,
-      password: password,
-      confirmPassword: confirmPassword
-    };
-
-    setServerUsernameError(null);
-    setServerNicknameError(null);
-    signup(signupData);
-  };
+  const {
+    username, setUsername,
+    nickname, setNickname,
+    password, setPassword,
+    confirmPassword, setConfirmPassword,
+  
+    isUsernameTouched, setUsernameTouched,
+    isNicknameTouched, setNicknameTouched,
+    isPasswordTouched, setPasswordTouched,
+    isConfirmPasswordTouched, setConfirmPasswordTouched,
+  
+    usernameError,
+    nicknameError,
+    passwordError,
+    confirmPasswordError,
+  
+    showPw, showConfirmPw,
+    togglePw, toggleConfirmPw,
+  
+    handleSubmit,
+    isFormValid,
+  } = useSignup();
 
   return (
     <div className="max-w-[1190px] mx-auto px-2">
@@ -357,7 +230,7 @@ function Signup() {
                 type={showConfirmPw ? "text" : "password"}
                 maxLength={30}
                 value={confirmPassword}
-                onBlur={() => setConfirmTouched(true)}
+                onBlur={() => setConfirmPasswordTouched(true)}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder=" "
                 className="
@@ -391,7 +264,7 @@ function Signup() {
                 )}
               </button>
               <span className="m-2">
-                {!isConfirmTouched ? (
+                {!isConfirmPasswordTouched ? (
                   <CheckCircleIcon className="w-[42px] h-10 text-gray-400" />
                 ) : confirmPasswordError ? (
                   <XCircleIcon className="w-[42px] h-10 text-red-500" />
