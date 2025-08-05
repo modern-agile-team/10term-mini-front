@@ -24,7 +24,7 @@ function BaseLayout() {
   }, []);
   
   return (
-    <div className="max-w-[1190px] mx-auto">
+    <div className="w-[1190px] mx-auto">
       <Header user={user} />
       <main>
         <Outlet />
