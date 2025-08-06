@@ -1,20 +1,22 @@
 import DaySection from "../components/DaySection";
-import type { DayOfWeek, MainSortOption, Webtoon } from "../types/webtoon";
-import { mockWebtoons } from "../mocks/models/webtoon";
-import { useState } from "react";
-
-const days: DayOfWeek[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+import { DAY_MAPPING } from "../constants/date.constants";
+import type { DayOfWeek, Webtoon } from "../types/webtoon";
+import { useSortQuery } from "../hooks/useSortQuery";
+import useWebtoons from "../hooks/useWebtoons";
 
 function WebtoonMain() {
-  const [sort, setSort] = useState<MainSortOption>("like");
+  const days = Object.keys(DAY_MAPPING) as DayOfWeek[];
+  
+  const { sort, setSort } = useSortQuery();
+  const webtoons = useWebtoons(sort);
 
   return (
     <div className="mt-[25px]">
       <div className="mb-2 text-sm flex items-center">
         <span className="text-xl font-semibold">요일별 전체 웹툰</span>
         <button 
-        onClick={() => setSort("like")} 
-        className={`ml-4 ${sort === "like" ? "text-site-red" : ""}`}
+        onClick={() => setSort("favorite")} 
+        className={`ml-4 ${sort === "favorite" ? "text-site-red" : ""}`}
         >
           인기순
         </button>
@@ -39,7 +41,7 @@ function WebtoonMain() {
       </div>
       <main className="flex mt-[15px]">
         {days.map((day) => {
-          const filtered = mockWebtoons.filter(
+          const filtered = webtoons.filter(
             (webtoon: Webtoon) => webtoon.day_of_week === day
           );
 
