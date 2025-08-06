@@ -7,23 +7,22 @@ import { contains } from "@modern-kit/utils";
 export const useSortQuery = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   
-  const rawSort = searchParams.get("sort");
+  const rawSortParam = searchParams.get("sort");
   
-  const sort: WebtoonSortOption = contains(WEBTOON_SORT_OPTIONS, rawSort)
-  ? rawSort
+  const sortParam: WebtoonSortOption = contains(WEBTOON_SORT_OPTIONS, rawSortParam)
+  ? rawSortParam
   : "favorite";
 
   useEffect(() => {
-    if (!rawSort) {
-      searchParams.set("sort", "favorite");
-      setSearchParams(searchParams);
+    if (!rawSortParam) {
+      setSortParam("favorite");
     }
-  }, [rawSort]);
+  }, [rawSortParam]);
 
-  const setSort = (value: WebtoonSortOption) => {
-    searchParams.set("sort", value);
+  const setSortParam = (sortOption: WebtoonSortOption) => {
+    searchParams.set("sort", sortOption);
     setSearchParams(searchParams);
   };
 
-  return { sort, setSort };
+  return { sortParam, setSortParam };
 };
