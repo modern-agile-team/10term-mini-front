@@ -1,11 +1,12 @@
 import DaySection from "../components/DaySection";
 import { DAY_MAPPING } from "../constants/date.constants";
-import type { DayOfWeek, Webtoon } from "../types/webtoon";
+import type { Webtoon } from "../types/webtoon";
 import { useSortQuery } from "../hooks/useSortQuery";
 import useWebtoons from "../hooks/useWebtoons";
+import { objectKeys } from "@modern-kit/utils";
 
 function WebtoonMain() {
-  const days = Object.keys(DAY_MAPPING) as DayOfWeek[];
+  const days = objectKeys(DAY_MAPPING);
   
   const { sort, setSort } = useSortQuery();
   const webtoons = useWebtoons(sort);

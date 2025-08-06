@@ -2,16 +2,15 @@ import { WEBTOON_SORT_OPTIONS } from "../constants/webtoon.constants";
 import type { WebtoonSortOption } from "../types/webtoon";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router";
+import { contains } from "@modern-kit/utils";
 
 export const useSortQuery = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   
   const rawSort = searchParams.get("sort");
   
-  const sort: WebtoonSortOption = WEBTOON_SORT_OPTIONS.includes(
-    rawSort as WebtoonSortOption
-  )
-  ? (rawSort as WebtoonSortOption)
+  const sort: WebtoonSortOption = contains(WEBTOON_SORT_OPTIONS, rawSort)
+  ? rawSort
   : "favorite";
 
   useEffect(() => {
