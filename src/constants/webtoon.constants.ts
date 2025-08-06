@@ -1,0 +1,1 @@
+export const WEBTOON_SORT_OPTIONS = ["favorite", "updated", "view", "rate"] as const;
