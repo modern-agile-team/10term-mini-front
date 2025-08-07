@@ -1,8 +1,6 @@
 import { DAY_MAPPING } from "../constants/date.constants";
-import { WEBTOON_SORT_OPTIONS } from "../constants/webtoon.constants";
 
 type DayOfWeek = keyof typeof DAY_MAPPING
-type WebtoonSortOption = typeof WEBTOON_SORT_OPTIONS[number];
 
 interface Webtoon {
   id: number;
@@ -22,4 +20,4 @@ interface WebtoonCardProps {
   thumbnail_url: string;
 }
 
-export type { DayOfWeek, WebtoonSortOption, Webtoon, DaySectionProps, WebtoonCardProps };
+export type { DayOfWeek, Webtoon, DaySectionProps, WebtoonCardProps };

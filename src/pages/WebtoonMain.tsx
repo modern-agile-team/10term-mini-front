@@ -4,6 +4,7 @@ import type { Webtoon } from "../types/webtoon";
 import { useSortQuery } from "../hooks/useSortQuery";
 import useWebtoons from "../hooks/useWebtoons";
 import { objectKeys } from "@modern-kit/utils";
+import { BUTTON_INFOS } from "../constants/webtoon.constants";
 
 function WebtoonMain() {
   const days = objectKeys(DAY_MAPPING);
@@ -14,31 +15,16 @@ function WebtoonMain() {
   return (
     <div className="mt-[25px]">
       <div className="mb-2 text-sm flex items-center">
-        <span className="text-xl font-semibold">요일별 전체 웹툰</span>
-        <button 
-        onClick={() => setSortParam("favorite")} 
-        className={`ml-4 ${sortParam === "favorite" ? "text-site-red" : ""}`}
-        >
-          인기순
-        </button>
-        <button 
-        onClick={() => setSortParam("updated")} 
-        className={`ml-1 ${sortParam === "updated" ? "text-site-red" : ""}`}
-        >
-          &middot; 업데이트순
-        </button>
-        <button 
-        onClick={() => setSortParam("view")} 
-        className={`ml-1 ${sortParam === "view" ? "text-site-red" : ""}`}
-        >
-          &middot; 조회순
-        </button>
-        <button 
-        onClick={() => setSortParam("rate")} 
-        className={`ml-1 ${sortParam === "rate" ? "text-site-red" : ""}`}
-        >
-          &middot; 별점순
-        </button>
+        <span className="mr-4 text-xl font-semibold">요일별 전체 웹툰</span>
+        {BUTTON_INFOS.map((item) => (
+          <button
+            key={item.type}
+            onClick={() => setSortParam(item.type)}
+            className={`ml-1 ${sortParam === item.type ? "text-site-red" : ""}`}
+          >
+            {item.content}
+          </button>
+        ))}
       </div>
       <main className="flex mt-[15px]">
         {days.map((day) => {
