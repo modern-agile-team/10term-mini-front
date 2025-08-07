@@ -51,7 +51,7 @@ privateAxios.interceptors.response.use(
         if (!originalRequest.headers) {
           originalRequest.headers = {};
         }
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken};`
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         return privateAxios(originalRequest);
       } catch (err) {
