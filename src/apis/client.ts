@@ -1,4 +1,4 @@
-import { publicAxios, privateAxios } from "@/apis/axios";
+import instance from "@/apis/axios";
 import type { APIRequest, APIRequestWithData } from "@/types/api";
 import type { AxiosInstance } from "axios";
 
@@ -24,5 +24,4 @@ function makeClient(instance: AxiosInstance) {
   return { getAPI, postAPI };
 }
 
-export const publicAPI = makeClient(publicAxios);   // 토큰 불필요
-export const privateAPI = makeClient(privateAxios); // 토큰 자동 주입
+export const api = makeClient(instance);

@@ -16,19 +16,17 @@ const common: AxiosRequestConfig = {
   paramsSerializer,
 };
 
-export const publicAxios = axios.create(common);
+const instance = axios.create(common);
 
-export const privateAxios = axios.create(common);
-
-privateAxios.interceptors.request.use((config) => {
+instance.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
-  
+
   if (token) config.headers.Authorization = `Bearer ${token}`;
   
   return config;
 });
 
-privateAxios.interceptors.response.use(
+instance.interceptors.response.use(
   (res) => res,
   async (error: AxiosError) => {
     const originalRequest = error.config as RetryConfig;
@@ -45,15 +43,12 @@ privateAxios.interceptors.response.use(
         }
         
         const newAccessToken = res.data.accessToken;
-
         localStorage.setItem("accessToken", newAccessToken);
 
-        if (!originalRequest.headers) {
-          originalRequest.headers = {};
-        }
+        if (!originalRequest.headers) originalRequest.headers = {};
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
-        return privateAxios(originalRequest);
+        return instance(originalRequest);
       } catch (err) {
         console.error("리프레시 실패");
 
@@ -68,3 +63,5 @@ privateAxios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default instance;
