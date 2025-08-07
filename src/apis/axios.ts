@@ -7,7 +7,7 @@ interface RetryConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
-const paramsSerializer = (params: any) =>
+const paramsSerializer = (params: Record<string, any>) =>
   queryString.stringify(params, { skipEmptyString: true, skipNull: true });
 
 const common: AxiosRequestConfig = {
