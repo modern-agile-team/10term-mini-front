@@ -41,7 +41,7 @@ privateAxios.interceptors.response.use(
         
         if (!res.success) {
           console.error(res.data.message);
-          return;
+          return Promise.reject(new Error("토큰 갱신 실패"));
         }
         
         const newAccessToken = res.data.accessToken;
