@@ -1,14 +1,12 @@
-type DayOfWeek = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun"
-type MainSortOption = "like" | "updated" | "view" | "rate"
+import { DAY_MAPPING } from "../constants/date.constants";
+
+type DayOfWeek = keyof typeof DAY_MAPPING
 
 interface Webtoon {
   id: number;
   title: string;
   day_of_week: DayOfWeek;
   thumbnail_url: string;
-  view_count: number;
-  favorite_count: number;
-  updated_at: string;
 }
 
 interface DaySectionProps {
@@ -22,4 +20,4 @@ interface WebtoonCardProps {
   thumbnail_url: string;
 }
 
-export type { DayOfWeek, MainSortOption, Webtoon, DaySectionProps, WebtoonCardProps };
+export type { DayOfWeek, Webtoon, DaySectionProps, WebtoonCardProps };

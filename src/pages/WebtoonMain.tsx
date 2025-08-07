@@ -1,45 +1,34 @@
 import DaySection from "../components/DaySection";
-import type { DayOfWeek, MainSortOption, Webtoon } from "../types/webtoon";
-import { mockWebtoons } from "../mocks/models/webtoon";
-import { useState } from "react";
-
-const days: DayOfWeek[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+import { DAY_MAPPING } from "../constants/date.constants";
+import type { Webtoon } from "../types/webtoon";
+import { useSortQuery } from "../hooks/useSortQuery";
+import useWebtoons from "../hooks/useWebtoons";
+import { objectKeys } from "@modern-kit/utils";
+import { BUTTON_INFOS } from "../constants/webtoon.constants";
 
 function WebtoonMain() {
-  const [sort, setSort] = useState<MainSortOption>("like");
+  const days = objectKeys(DAY_MAPPING);
+  
+  const { sortParam, setSortParam } = useSortQuery();
+  const webtoons = useWebtoons(sortParam);
 
   return (
     <div className="mt-[25px]">
       <div className="mb-2 text-sm flex items-center">
-        <span className="text-xl font-semibold">요일별 전체 웹툰</span>
-        <button 
-        onClick={() => setSort("like")} 
-        className={`ml-4 ${sort === "like" ? "text-site-red" : ""}`}
-        >
-          인기순
-        </button>
-        <button 
-        onClick={() => setSort("updated")} 
-        className={`ml-1 ${sort === "updated" ? "text-site-red" : ""}`}
-        >
-          &middot; 업데이트순
-        </button>
-        <button 
-        onClick={() => setSort("view")} 
-        className={`ml-1 ${sort === "view" ? "text-site-red" : ""}`}
-        >
-          &middot; 조회순
-        </button>
-        <button 
-        onClick={() => setSort("rate")} 
-        className={`ml-1 ${sort === "rate" ? "text-site-red" : ""}`}
-        >
-          &middot; 별점순
-        </button>
+        <span className="mr-4 text-xl font-semibold">요일별 전체 웹툰</span>
+        {BUTTON_INFOS.map((item) => (
+          <button
+            key={item.type}
+            onClick={() => setSortParam(item.type)}
+            className={`ml-1 ${sortParam === item.type ? "text-site-red" : ""}`}
+          >
+            {item.content}
+          </button>
+        ))}
       </div>
       <main className="flex mt-[15px]">
         {days.map((day) => {
-          const filtered = mockWebtoons.filter(
+          const filtered = webtoons.filter(
             (webtoon: Webtoon) => webtoon.day_of_week === day
           );
 
