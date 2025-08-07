@@ -21,7 +21,7 @@ function WebtoonMain() {
         {BUTTON_INFOS.map((item) => (
           <button
             key={item.type}
-            onClick={() => setSearchParams({sort: item.type})}
+            onClick={() => setSearchParams({ sort: item.type })}
             className={`ml-1 ${sort === item.type ? "text-site-red" : ""}`}
           >
             {item.content}
