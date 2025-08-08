@@ -7,17 +7,19 @@ interface Webtoon {
   title: string;
   day_of_week: DayOfWeek;
   thumbnail_url: string;
+  average_rating: number;
 }
 
-interface DaySectionProps {
+interface DaySectionGridProps {
+  day?: DayOfWeek | null;   // 선택/nullable
+  webtoons: Webtoon[];
+}
+
+interface DaySectionListProps {
   day: DayOfWeek;
   webtoons: Webtoon[];
 }
 
-interface WebtoonCardProps {
-  id: number;
-  title: string;
-  thumbnail_url: string;
-}
+interface WebtoonCardProps extends Omit<Webtoon, "day_of_week"> {}
 
-export type { DayOfWeek, Webtoon, DaySectionProps, WebtoonCardProps };
+export type { DayOfWeek, Webtoon, DaySectionGridProps, DaySectionListProps, WebtoonCardProps };
