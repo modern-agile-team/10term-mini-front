@@ -24,4 +24,6 @@ function makeClient(instance: AxiosInstance) {
   return { getAPI, postAPI };
 }
 
-export const api = makeClient(instance);
+const api = makeClient(instance);
+
+export default api;
