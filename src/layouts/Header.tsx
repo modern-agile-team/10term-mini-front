@@ -4,8 +4,7 @@ import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { requestLogout } from '../apis/auth';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router'; 
-import { DAY_MAPPING } from "@/constants/date.constants";
-import type { DayOfWeek } from "@/types/webtoon";
+import { DAY_MAPPING, DAYS } from "@/constants/date.constants";
 
 interface HeaderProps {
   user: {
@@ -113,14 +112,14 @@ function Header({ user }: HeaderProps) {
               요일전체
             </button>
           </li>
-            {Object.keys(DAY_MAPPING).map((key) => (
+            {DAYS.map((key) => (
               <li key={key}>
                 <button
                   type="button"
                   className={`py-3 w-6 ${selectedDay === key ? 'border-b-2 border-site-red text-site-red' : ''}`}
                   onClick={() => setSearchParams({ day: key })}
                   >
-                  {DAY_MAPPING[key as DayOfWeek].replace('요웹툰', '')}
+                  {DAY_MAPPING[key].replace('요웹툰', '')}
                 </button>
               </li>
             ))}
