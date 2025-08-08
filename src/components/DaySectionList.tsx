@@ -1,4 +1,4 @@
-import type { Webtoon, DayOfWeek, DaySectionProps } from "../types/webtoon.ts";
+import type { Webtoon, DayOfWeek, DaySectionListProps } from "../types/webtoon.ts";
 import WebtoonCard from "./WebtoonCard.tsx";
 
 const dayMapping: Record<DayOfWeek, string> = {
@@ -11,7 +11,8 @@ const dayMapping: Record<DayOfWeek, string> = {
   sun: "일요웹툰",
 };
 
-function DaySection({ day, webtoons }: DaySectionProps) {
+function DaySectionList({ day, webtoons }: DaySectionListProps) {
+  console.log(webtoons);
   const getTodayKey = (): DayOfWeek => {
     const keys: DayOfWeek[] = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
     return keys[new Date().getDay()];
@@ -50,4 +51,4 @@ function DaySection({ day, webtoons }: DaySectionProps) {
   );
 }
 
-export default DaySection
+export default DaySectionList;
