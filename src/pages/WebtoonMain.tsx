@@ -41,7 +41,6 @@ function WebtoonMain() {
       {selectedDay ? (
         <DaySectionGrid
           key={selectedDay}
-          day={selectedDay}
           webtoons={webtoons.filter(w => w.day_of_week === selectedDay)}
         />
       ) : (

@@ -5,7 +5,7 @@ interface Webtoon {
   title: string;
   day_of_week: DayOfWeek;
   thumbnail_url: string;
-  average_rating: number;
+  average_rating?: number;
 }
 
 interface DaySectionGridProps {
