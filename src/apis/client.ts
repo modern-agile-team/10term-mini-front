@@ -1,5 +1,5 @@
-import instance from "@/apis/axios";
-import type { APIRequest, APIRequestWithData } from "@/types/api";
+import { instance } from "@/apis/axios";
+import type { APIRequest, APIRequestWithData } from "@/apis/axios";
 import type { AxiosInstance } from "axios";
 
 function makeClient(instance: AxiosInstance) {

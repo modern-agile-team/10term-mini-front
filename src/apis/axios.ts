@@ -3,6 +3,15 @@ import type { AxiosRequestConfig, AxiosError } from "axios";
 import { requestRefreshToken } from "@/apis/auth";
 import queryString from "query-string";
 
+interface APIRequest extends Omit<AxiosRequestConfig, "data" | "method"> {
+  url: string;
+  params?: Record<string, any>;
+}
+
+interface APIRequestWithData<D = any> extends APIRequest {
+  data?: D;
+}
+
 interface RetryConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
@@ -64,4 +73,5 @@ instance.interceptors.response.use(
   }
 );
 
-export default instance;
+export { instance }; 
+export type { APIRequest, APIRequestWithData };
