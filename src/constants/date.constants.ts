@@ -7,3 +7,7 @@ export const DAY_MAPPING = {
   sat: "토요웹툰",
   sun: "일요웹툰",
 } as const;
+
+export type DayOfWeek = keyof typeof DAY_MAPPING;
+
+export const DAYS: readonly DayOfWeek[] = ["sun","mon","tue","wed","thu","fri","sat"];

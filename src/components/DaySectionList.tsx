@@ -1,24 +1,11 @@
-import type { Webtoon, DayOfWeek, DaySectionListProps } from "../types/webtoon.ts";
+import { useMemo } from "react";
+import type { Webtoon, DayOfWeek, DaySectionListProps } from "@/types/webtoon.ts";
 import WebtoonCard from "./WebtoonCard.tsx";
-
-const dayMapping: Record<DayOfWeek, string> = {
-  mon: "월요웹툰",
-  tue: "화요웹툰",
-  wed: "수요웹툰",
-  thu: "목요웹툰",
-  fri: "금요웹툰",
-  sat: "토요웹툰",
-  sun: "일요웹툰",
-};
+import { DAY_MAPPING, DAYS } from "@/constants/date.constants.ts";
 
 function DaySectionList({ day, webtoons }: DaySectionListProps) {
-  console.log(webtoons);
-  const getTodayKey = (): DayOfWeek => {
-    const keys: DayOfWeek[] = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-    return keys[new Date().getDay()];
-  };
-
-  const isActive = day === getTodayKey();
+  const todayKey = useMemo<DayOfWeek>(() => DAYS[new Date().getDay()], [])
+  const isActive = day === todayKey;
 
   return (
     <ul className={` 
@@ -35,7 +22,7 @@ function DaySectionList({ day, webtoons }: DaySectionListProps) {
       ${isActive ? "bg-site-red text-white" : ""}
       `}
       >
-        {dayMapping[day]}
+        {DAY_MAPPING[day]}
       </h2>
       {webtoons.map((webtoon: Webtoon) => (
         <li key={webtoon.id} 

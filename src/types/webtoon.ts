@@ -1,6 +1,4 @@
-import { DAY_MAPPING } from "../constants/date.constants";
-
-type DayOfWeek = keyof typeof DAY_MAPPING
+import type { DayOfWeek } from "@/constants/date.constants"
 
 interface Webtoon {
   id: number;
@@ -11,7 +9,7 @@ interface Webtoon {
 }
 
 interface DaySectionGridProps {
-  day?: DayOfWeek | null;   // 선택/nullable
+  day?: DayOfWeek | null;
   webtoons: Webtoon[];
 }
 
