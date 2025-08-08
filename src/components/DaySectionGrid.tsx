@@ -1,7 +1,7 @@
-import type { Webtoon, DaySectionGridProps } from "../types/webtoon.ts";
+import type { Webtoon } from "../types/webtoon.ts";
 import WebtoonCard from "./WebtoonCard.tsx";
 
-function DaySectionGrid({ webtoons }: DaySectionGridProps) {
+function DaySectionGrid({ webtoons }: { webtoons: Webtoon[] }) {
   return (
     <ul className={` 
       flex flex-wrap gap-2  

@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import type { Webtoon, DayOfWeek, DaySectionListProps } from "@/types/webtoon.ts";
+import type { Webtoon, DayOfWeek } from "@/types/webtoon.ts";
 import WebtoonCard from "./WebtoonCard.tsx";
 import { DAY_MAPPING, DAYS } from "@/constants/date.constants.ts";
 
-function DaySectionList({ day, webtoons }: DaySectionListProps) {
+function DaySectionList({ day, webtoons }: { day: DayOfWeek; webtoons: Webtoon[] }) {
   const todayKey = useMemo<DayOfWeek>(() => DAYS[new Date().getDay()], [])
   const isActive = day === todayKey;
 

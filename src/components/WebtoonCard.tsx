@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import type { WebtoonCardProps } from "../types/webtoon";
+import type { Webtoon } from "../types/webtoon";
 
-function WebtoonCard({ id, title, thumbnail_url, average_rating }: WebtoonCardProps) {
+function WebtoonCard({ id, title, thumbnail_url, average_rating }: Omit<Webtoon, "day_of_week">) {
   return (
     <div className="">
       <Link to={`/webtoon/${id}`} className="block">
