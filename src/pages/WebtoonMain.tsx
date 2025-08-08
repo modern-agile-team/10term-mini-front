@@ -1,16 +1,18 @@
-import DaySection from "../components/DaySection";
-import { DAY_MAPPING } from "../constants/date.constants";
-import type { Webtoon } from "../types/webtoon";
-import { useSortQuery } from "../hooks/useSortQuery";
-import useWebtoons from "../hooks/useWebtoons";
+import DaySection from "@/components/DaySection";
+import { DAY_MAPPING } from "@/constants/date.constants";
+import type { Webtoon } from "@/types/webtoon";
+import useWebtoons from "@/hooks/useWebtoons";
 import { objectKeys } from "@modern-kit/utils";
-import { BUTTON_INFOS } from "../constants/webtoon.constants";
+import { BUTTON_INFOS } from "@/constants/webtoon.constants";
+import { useSearchParams } from "react-router";
 
 function WebtoonMain() {
   const days = objectKeys(DAY_MAPPING);
-  
-  const { sortParam, setSortParam } = useSortQuery();
-  const webtoons = useWebtoons(sortParam);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sort = searchParams.get("sort") ?? "favorite";
+
+  const webtoons = useWebtoons(sort);
 
   return (
     <div className="mt-[25px]">
@@ -19,8 +21,8 @@ function WebtoonMain() {
         {BUTTON_INFOS.map((item) => (
           <button
             key={item.type}
-            onClick={() => setSortParam(item.type)}
-            className={`ml-1 ${sortParam === item.type ? "text-site-red" : ""}`}
+            onClick={() => setSearchParams({ sort: item.type })}
+            className={`ml-1 ${sort === item.type ? "text-site-red" : ""}`}
           >
             {item.content}
           </button>

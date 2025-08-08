@@ -1,7 +1,10 @@
-import type { Webtoon } from "../types/webtoon";
-import axios from "axios";
+import { instance } from "@/apis/axios";
+import type { Webtoon } from "@/types/webtoon";
 
 export const requestAllWebtoons = async (sort: string): Promise<Webtoon[]> => {
-  const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/webtoons?sort=${sort}`);
-  return res.data.data.webtoons;
+  const { data } = await instance.get<{ data: { webtoons: Webtoon[] } }>(
+    "/api/webtoons",
+    { params: { sort } }
+  );
+  return data.data.webtoons;
 };
