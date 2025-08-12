@@ -14,6 +14,14 @@ function WebtoonMain() {
   const selectedDay = searchParams.get("day") as DayOfWeek;
   const sort = searchParams.get("sort") ?? "favorite";
 
+  const handleSortClick = (type: string) => {
+    setSearchParams(
+      selectedDay
+        ? { day: selectedDay, sort: type }
+        : { sort: type }
+    );
+  }
+
   const webtoons = useWebtoons(sort);
 
   return (
@@ -24,12 +32,7 @@ function WebtoonMain() {
           {BUTTON_INFOS.map((item) => (
             <button
               key={item.type}
-              onClick={() => 
-                setSearchParams(
-                selectedDay 
-                ? { day: selectedDay, sort: item.type } 
-                : { sort: item.type}
-              )}
+              onClick={() => handleSortClick(item.type)}
               className={`ml-1 ${sort === item.type ? "text-site-red" : ""}`}
             >
               {item.content}
