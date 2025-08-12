@@ -10,12 +10,12 @@ function DaySectionGrid({ webtoons }: { webtoons: Webtoon[] }) {
     >
       {webtoons.map((webtoon: Webtoon) => (
         <li key={webtoon.id} 
-          className={`items-center py-[10px] w-[168px] border-2`}>
+          className={`items-center py-[10px] w-[168px]`}>
           <WebtoonCard 
           id={webtoon.id}
           title={webtoon.title}
-          thumbnail_url={webtoon.thumbnail_url}
-          average_rating={webtoon.average_rating}
+          thumbnailUrl={webtoon.thumbnailUrl}
+          averageRating={webtoon.averageRating}
           />
         </li>
       ))}

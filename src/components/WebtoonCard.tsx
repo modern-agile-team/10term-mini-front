@@ -1,24 +1,22 @@
 import { Link } from "react-router";
 import type { Webtoon } from "../types/webtoon";
+import { StarIcon } from "@heroicons/react/24/solid";
 
-function WebtoonCard({ id, title, thumbnail_url, average_rating }: Omit<Webtoon, "day_of_week">) {
+function WebtoonCard({ id, title, thumbnailUrl, averageRating }: Omit<Webtoon, "weekdays">) {
   return (
-    <div className="">
+    <div>
       <Link to={`/webtoon/${id}`} className="block">
-        <div className="overflow-hidden">
-          <img src={thumbnail_url} alt={title} className="w-[160px] h-[207px] object-cover transition-transform duration-300 hover:scale-105"/>
+        <div className="border-2 overflow-hidden">
+          <img src={thumbnailUrl} alt={title} className="w-[160px] h-[207px] object-cover transition-transform duration-300 hover:scale-105"/>
         </div>
         <p className="text-sm font-semibold mt-2 hover:underline">{title}</p>
       </Link>
-      {average_rating != null
-      ? (
-      <p className="text-sm text-gray-500 mt-1 gap-1 flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-3">
-          <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
-        </svg>
-        {average_rating}
-      </p>)
-      : ('')}
+      {averageRating != null && (
+        <p className="text-sm text-gray-500 gap-1 flex items-center">
+          <StarIcon className="w-3 h-3" />
+          {averageRating}
+        </p>
+      )}
     </div>
   );
 }

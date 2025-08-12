@@ -1,6 +1,6 @@
 import DaySectionList from "@/components/DaySectionList";
 import DaySectionGrid from "@/components/DaySectionGrid";
-import { DAY_MAPPING } from "@/constants/date.constants";
+import { DAY_MAPPING, type DayOfWeek } from "@/constants/date.constants";
 import useWebtoons from "@/hooks/useWebtoons";
 import { objectKeys } from "@modern-kit/utils";
 import { BUTTON_INFOS } from "@/constants/webtoon.constants";
@@ -11,7 +11,7 @@ function WebtoonMain() {
   const days = objectKeys(DAY_MAPPING);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedDay = searchParams.get("day");
+  const selectedDay = searchParams.get("day") as DayOfWeek;
   const sort = searchParams.get("sort") ?? "favorite";
 
   const webtoons = useWebtoons(sort);
@@ -41,14 +41,14 @@ function WebtoonMain() {
       {selectedDay ? (
         <DaySectionGrid
           key={selectedDay}
-          webtoons={webtoons.filter(w => w.day_of_week === selectedDay)}
+          webtoons={webtoons.filter(w => w.weekdays.includes(selectedDay as DayOfWeek))}
         />
       ) : (
         days.map((day) => (
           <DaySectionList
             key={day}
             day={day}
-            webtoons={webtoons.filter(w => w.day_of_week === day)}
+            webtoons={webtoons.filter(w => w.weekdays.includes(day))}
           />
         ))
       )}
