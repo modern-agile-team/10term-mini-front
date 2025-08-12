@@ -16,6 +16,7 @@ function DaySectionGrid({ webtoons }: { webtoons: Webtoon[] }) {
           title={webtoon.title}
           thumbnailUrl={webtoon.thumbnailUrl}
           averageRating={webtoon.averageRating}
+          withBorder
           />
         </li>
       ))}
