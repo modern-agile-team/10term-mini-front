@@ -112,17 +112,17 @@ function Header({ user }: HeaderProps) {
               요일전체
             </button>
           </li>
-            {DAYS.map((key) => (
-              <li key={key}>
-                <button
-                  type="button"
-                  className={`py-3 w-6 ${selectedDay === key ? 'border-b-2 border-site-red text-site-red' : ''}`}
-                  onClick={() => setSearchParams({ day: key })}
-                  >
-                  {DAY_MAPPING[key].replace('요웹툰', '')}
-                </button>
-              </li>
-            ))}
+          {DAYS.map((day) => (
+            <li key={day}>
+              <button
+                type="button"
+                className={`py-3 w-6 ${selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''}`}
+                onClick={() => setSearchParams({ day })}
+              >
+                {DAY_MAPPING[day].replace('요웹툰', '')}
+              </button>
+            </li>
+          ))}
           </ul>
         </nav>
       </div>
