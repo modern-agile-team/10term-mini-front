@@ -2,8 +2,8 @@ import DaySectionList from "@/components/DaySectionList";
 import DaySectionGrid from "@/components/DaySectionGrid";
 import { DAY_MAPPING, type DayOfWeek } from "@/constants/date.constants";
 import useWebtoons from "@/hooks/useWebtoons";
-import { objectKeys } from "@modern-kit/utils";
-import { BUTTON_INFOS } from "@/constants/webtoon.constants";
+import { contains, objectKeys } from "@modern-kit/utils";
+import { BUTTON_INFOS, WEBTOON_SORT_OPTIONS, type WebtoonSortOption } from "@/constants/webtoon.constants";
 import { useSearchParams } from "react-router";
 import SectionTitle from "@/components/SectionTitle";
 
@@ -12,7 +12,11 @@ function WebtoonMain() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedDay = searchParams.get("day") as DayOfWeek;
-  const sort = searchParams.get("sort") ?? "favorite";
+  const sortParam = searchParams.get("sort");
+
+  const sort: WebtoonSortOption = contains(WEBTOON_SORT_OPTIONS, sortParam)
+    ? sortParam
+    : "favorite";
 
   const handleSortClick = (type: string) => {
     setSearchParams(
@@ -22,7 +26,7 @@ function WebtoonMain() {
     );
   }
 
-  const webtoons = useWebtoons(sort);
+  const webtoons = useWebtoons(sort, selectedDay);
 
   return (
     <div className="mt-[25px]">
