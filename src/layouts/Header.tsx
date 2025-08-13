@@ -4,7 +4,7 @@ import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { requestLogout } from '../apis/auth';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router'; 
-import { DAY_MAPPING, DAYS, UI_DAYS } from "@/constants/date.constants";
+import { DAY_MAPPING, UI_DAYS } from "@/constants/date.constants";
 
 interface HeaderProps {
   user: {

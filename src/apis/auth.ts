@@ -1,27 +1,24 @@
-import api from "@/apis/client";
+import instance from "@/apis/axios";
 import type { LoginRequest, LoginResponse, SignupRequest, SignupResponse, LogoutResponse, RefreshTokenResponse } from "@/types/auth";
 
 export async function requestLogin(
   loginData: LoginRequest
 ): Promise<LoginResponse> {
-  return api.postAPI<LoginResponse, LoginRequest>({
-    url: "/api/auth/login",   // baseURL는 이미 axios.ts에서 주입됨
-    data: loginData           // body
-  });
+  const { data } = await instance.post<LoginResponse>("/api/auth/login", loginData);
+  return data;
 }
 
-export const requestSignup = (body: SignupRequest) =>
-  api.postAPI<SignupResponse, SignupRequest>({
-    url: "/api/auth/signup",
-    data: body,
-  });
+export const requestSignup = async (body: SignupRequest): Promise<SignupResponse> => {
+  const { data } = await instance.post<SignupResponse>("/api/auth/signup", body);
+  return data;
+};
 
-export const requestLogout = () =>
-  api.postAPI<LogoutResponse>({
-    url: "/api/auth/logout",
-  });
+export const requestLogout = async (): Promise<LogoutResponse> => {
+  const { data } = await instance.post<LogoutResponse>("/api/auth/logout");
+  return data;
+};
 
-export const requestRefreshToken = () =>
-  api.postAPI<RefreshTokenResponse>({
-    url: "/api/auth/token",
-  });
+export const requestRefreshToken = async (): Promise<RefreshTokenResponse> => {
+  const { data } = await instance.post<RefreshTokenResponse>("/api/auth/token");
+  return data;
+};

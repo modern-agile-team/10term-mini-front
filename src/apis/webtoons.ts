@@ -1,21 +1,25 @@
-import api from "@/apis/client";
+import instance from "@/apis/axios";
 import type { Webtoon } from "@/types/webtoon";
 
 export const requestAllWebtoons = async (sort: string): Promise<Webtoon[]> => {
-  const res = await api.getAPI<{ data: { content: Webtoon[] } }>({
-    url: "/api/webtoons",
-    params: { sort },
-  });
-  return res.data.content;
+  const res = await instance.get<{ data: { content: Webtoon[] } }>(
+    "/api/webtoons",
+    {
+      params: { sort },
+    }
+  );
+  return res.data.data.content;
 };
 
 export const requestWebtoonsByDay = async (
   day: string,
   sort: string
 ): Promise<Webtoon[]> => {
-  const res = await api.getAPI<{ data: { content: Webtoon[] } }>({
-    url: "api/webtoons",
-    params: { day, sort },
-  });
-  return res.data.content;
+  const res = await instance.get<{ data: { content: Webtoon[] } }>(
+    "api/webtoons",
+    {
+      params: { day, sort },
+    }
+  );
+  return res.data.data.content;
 };
