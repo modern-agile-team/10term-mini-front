@@ -1,28 +1,28 @@
-import Header from './Header'
-import Footer from './Footer'
-import { Outlet } from 'react-router'
-import { useState, useEffect } from 'react'
+import Header from './Header';
+import Footer from './Footer';
+import { Outlet } from 'react-router';
+import { useState, useEffect } from 'react';
 
 type User = {
   username: string;
   nickname: string;
-}
+};
 
 function BaseLayout() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem('user');
 
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser))
+        setUser(JSON.parse(storedUser));
       } catch (e) {
-        console.error("유저 정보 파싱 실패:", e);
+        console.error('유저 정보 파싱 실패:', e);
       }
     }
   }, []);
-  
+
   return (
     <div className="w-[1190px] mx-auto">
       <Header user={user} />
@@ -34,4 +34,4 @@ function BaseLayout() {
   );
 }
 
-export default BaseLayout
+export default BaseLayout;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function useLocalStorage<T>(key: string, defaultValue: T) {
   const [value, setValue] = useState<T>(() => {
@@ -15,7 +15,7 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
       setValue(newValue);
       localStorage.setItem(key, JSON.stringify(newValue));
     } catch {
-      console.error("로컬 스토리지 저장 실패");
+      console.error('로컬 스토리지 저장 실패');
     }
   };
 

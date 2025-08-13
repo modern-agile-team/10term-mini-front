@@ -1,9 +1,9 @@
-import axios from "axios";
-import type { AxiosRequestConfig, AxiosError } from "axios";
-import { requestRefreshToken } from "@/apis/auth";
-import queryString from "query-string";
+import axios from 'axios';
+import type { AxiosRequestConfig, AxiosError } from 'axios';
+import { requestRefreshToken } from '@/apis/auth';
+import queryString from 'query-string';
 
-interface APIRequest extends Omit<AxiosRequestConfig, "data" | "method"> {
+interface APIRequest extends Omit<AxiosRequestConfig, 'data' | 'method'> {
   url: string;
   params?: Record<string, any>;
 }
@@ -28,10 +28,12 @@ const common: AxiosRequestConfig = {
 const instance = axios.create(common);
 
 instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem('accessToken');
 
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  
+  const isAuthPath = config.url?.includes('/auth/login') || config.url?.includes('/auth/signup');
+
+  if (token && !isAuthPath) config.headers.Authorization = `Bearer ${token}`;
+
   return config;
 });
 
@@ -40,38 +42,41 @@ instance.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as RetryConfig;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    const isAuthPath =
+      originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/signup');
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthPath) {
       originalRequest._retry = true;
 
       try {
         const res = await requestRefreshToken();
-        
+
         if (!res.success) {
           console.error(res.data.message);
-          return Promise.reject(new Error("토큰 갱신 실패"));
+          return Promise.reject(new Error('토큰 갱신 실패'));
         }
-        
-        const newAccessToken = res.data.accessToken;
-        localStorage.setItem("accessToken", newAccessToken);
+
+        const newAccessToken = res.data.content;
+        localStorage.setItem('accessToken', newAccessToken);
 
         if (!originalRequest.headers) originalRequest.headers = {};
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         return instance(originalRequest);
       } catch (err) {
-        console.error("리프레시 실패");
+        console.error('리프레시 실패');
 
         localStorage.clear();
 
-        window.location.href = "/login";
+        window.location.href = '/login';
 
         return Promise.reject(err);
       }
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
-export { instance }; 
+export { instance };
 export type { APIRequest, APIRequestWithData };

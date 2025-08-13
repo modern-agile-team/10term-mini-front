@@ -23,7 +23,7 @@ interface LoginFailResponse {
   success: false;
   data: {
     message: string;
-  }
+  };
 }
 
 type LoginResponse = LoginSuccessResponse | LoginFailResponse;
@@ -51,7 +51,7 @@ interface SignupFailResponse {
   success: false;
   data: {
     message: string;
-    field: ("username" | "nickname")[];
+    field: ('username' | 'nickname')[];
   };
 }
 
@@ -68,7 +68,7 @@ interface LogoutFailResponse {
   status: 500;
   success: false;
   data: {
-    message: string
+    message: string;
   };
 }
 
@@ -87,15 +87,17 @@ interface RefreshTokenFailResponse {
   success: false;
   data: {
     message: string;
-  }
+  };
 }
 
 type RefreshTokenResponse = RefreshTokenSuccessResponse | RefreshTokenFailResponse;
 
-export type { 
-  User, 
-  LoginRequest, LoginResponse, 
-  SignupRequest, SignupResponse, 
+export type {
+  User,
+  LoginRequest,
+  LoginResponse,
+  SignupRequest,
+  SignupResponse,
   LogoutResponse,
-  RefreshTokenResponse, 
+  RefreshTokenResponse,
 };

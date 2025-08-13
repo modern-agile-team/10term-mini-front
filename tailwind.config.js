@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -15,13 +12,12 @@ export default {
         'site-red-50': 'rgba(255, 0, 39, 0.55)',
       },
       fontFamily: {
-        sans: ["Pretendard", "ui-sans-serif", "system-ui", "sans-serif"],   // 전역 기본
-        pretendard: ["Pretendard", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
-        interblack: ["InterBlack"],
-      }
+        sans: ['Pretendard', 'ui-sans-serif', 'system-ui', 'sans-serif'], // 전역 기본
+        pretendard: ['Pretendard', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        interblack: ['InterBlack'],
+      },
     },
   },
   plugins: [],
-}
-
+};

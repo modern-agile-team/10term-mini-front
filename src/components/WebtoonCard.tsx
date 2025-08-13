@@ -1,6 +1,6 @@
-import { Link } from "react-router";
-import type { Webtoon } from "../types/webtoon";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { Link } from 'react-router';
+import type { Webtoon } from '../types/webtoon';
+import { StarIcon } from '@heroicons/react/24/solid';
 
 function WebtoonCard({
   id,
@@ -8,12 +8,16 @@ function WebtoonCard({
   thumbnailUrl,
   averageRating,
   withBorder = false,
-}: Omit<Webtoon, "weekdays"> & { withBorder?: boolean }) {
+}: Omit<Webtoon, 'weekdays'> & { withBorder?: boolean }) {
   return (
     <div>
       <Link to={`/webtoon/${id}`} className="block">
-      <div className={`${withBorder ? "border-2" : ""} overflow-hidden`}>
-          <img src={thumbnailUrl} alt={title} className="w-[160px] h-[207px] object-cover transition-transform duration-300 hover:scale-105"/>
+        <div className={`${withBorder ? 'border-2' : ''} overflow-hidden`}>
+          <img
+            src={thumbnailUrl}
+            alt={title}
+            className="w-[160px] h-[207px] object-cover transition-transform duration-300 hover:scale-105"
+          />
         </div>
         <p className="text-sm font-semibold mt-2 hover:underline">{title}</p>
       </Link>

@@ -1,30 +1,30 @@
-import DaySectionList from "@/components/DaySectionList";
-import DaySectionGrid from "@/components/DaySectionGrid";
-import { DAY_MAPPING, type DayOfWeek } from "@/constants/date.constants";
-import useWebtoons from "@/hooks/useWebtoons";
-import { contains, objectKeys } from "@modern-kit/utils";
-import { BUTTON_INFOS, WEBTOON_SORT_OPTIONS, type WebtoonSortOption } from "@/constants/webtoon.constants";
-import { useSearchParams } from "react-router";
-import SectionTitle from "@/components/SectionTitle";
+import DaySectionList from '@/components/DaySectionList';
+import DaySectionGrid from '@/components/DaySectionGrid';
+import { DAY_MAPPING, type DayOfWeek } from '@/constants/date.constants';
+import useWebtoons from '@/hooks/useWebtoons';
+import { contains, objectKeys } from '@modern-kit/utils';
+import {
+  BUTTON_INFOS,
+  WEBTOON_SORT_OPTIONS,
+  type WebtoonSortOption,
+} from '@/constants/webtoon.constants';
+import { useSearchParams } from 'react-router';
+import SectionTitle from '@/components/SectionTitle';
 
 function WebtoonMain() {
   const days = objectKeys(DAY_MAPPING);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedDay = searchParams.get("day") as DayOfWeek;
-  const sortParam = searchParams.get("sort");
+  const selectedDay = searchParams.get('day') as DayOfWeek;
+  const sortParam = searchParams.get('sort');
 
   const sort: WebtoonSortOption = contains(WEBTOON_SORT_OPTIONS, sortParam)
     ? sortParam
-    : "favorite";
+    : 'favorite';
 
   const handleSortClick = (type: string) => {
-    setSearchParams(
-      selectedDay
-        ? { day: selectedDay, sort: type }
-        : { sort: type }
-    );
-  }
+    setSearchParams(selectedDay ? { day: selectedDay, sort: type } : { sort: type });
+  };
 
   const webtoons = useWebtoons(sort, selectedDay);
 
@@ -37,7 +37,7 @@ function WebtoonMain() {
             <button
               key={item.type}
               onClick={() => handleSortClick(item.type)}
-              className={`ml-1 ${sort === item.type ? "text-site-red" : ""}`}
+              className={`ml-1 ${sort === item.type ? 'text-site-red' : ''}`}
             >
               {item.content}
             </button>
@@ -45,20 +45,20 @@ function WebtoonMain() {
         </div>
       </div>
       <main className="flex mt-[15px]">
-      {selectedDay ? (
-        <DaySectionGrid
-          key={selectedDay}
-          webtoons={webtoons.filter(w => w.weekdays.includes(selectedDay as DayOfWeek))}
-        />
-      ) : (
-        days.map((day) => (
-          <DaySectionList
-            key={day}
-            day={day}
-            webtoons={webtoons.filter(w => w.weekdays.includes(day))}
+        {selectedDay ? (
+          <DaySectionGrid
+            key={selectedDay}
+            webtoons={webtoons.filter((w) => w.weekdays.includes(selectedDay as DayOfWeek))}
           />
-        ))
-      )}
+        ) : (
+          days.map((day) => (
+            <DaySectionList
+              key={day}
+              day={day}
+              webtoons={webtoons.filter((w) => w.weekdays.includes(day))}
+            />
+          ))
+        )}
       </main>
     </div>
   );
