@@ -4,7 +4,7 @@ import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { requestLogout } from '../apis/auth';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router'; 
-import { DAY_MAPPING, DAYS } from "@/constants/date.constants";
+import { DAY_MAPPING, DAYS, UI_DAYS } from "@/constants/date.constants";
 
 interface HeaderProps {
   user: {
@@ -112,14 +112,14 @@ function Header({ user }: HeaderProps) {
               요일전체
             </button>
           </li>
-          {DAYS.map((day) => (
+          {UI_DAYS.map((day) => (
             <li key={day}>
               <button
                 type="button"
                 className={`py-3 w-6 ${selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''}`}
                 onClick={() => setSearchParams({ day })}
               >
-                {DAY_MAPPING[day].replace('요웹툰', '')}
+                {DAY_MAPPING[day].replace("요웹툰", "")}
               </button>
             </li>
           ))}

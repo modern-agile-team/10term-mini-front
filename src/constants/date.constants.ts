@@ -11,3 +11,4 @@ export const DAY_MAPPING = {
 export type DayOfWeek = keyof typeof DAY_MAPPING;
 
 export const DAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
+export const UI_DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
