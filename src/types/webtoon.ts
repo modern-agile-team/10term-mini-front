@@ -1,23 +1,11 @@
-import { DAY_MAPPING } from "../constants/date.constants";
-
-type DayOfWeek = keyof typeof DAY_MAPPING
+import type { DayOfWeek } from "@/constants/date.constants"
 
 interface Webtoon {
   id: number;
   title: string;
-  day_of_week: DayOfWeek;
-  thumbnail_url: string;
+  weekdays: DayOfWeek[];
+  thumbnailUrl: string;
+  averageRating?: number;
 }
 
-interface DaySectionProps {
-  day: DayOfWeek;
-  webtoons: Webtoon[];
-}
-
-interface WebtoonCardProps {
-  id: number;
-  title: string;
-  thumbnail_url: string;
-}
-
-export type { DayOfWeek, Webtoon, DaySectionProps, WebtoonCardProps };
+export type { Webtoon };

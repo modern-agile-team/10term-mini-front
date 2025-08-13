@@ -1,22 +1,31 @@
 import { useEffect, useState } from "react";
-import type { Webtoon, WebtoonSortOption } from "../types/webtoon";
-import { requestAllWebtoons } from "../apis/webtoons";
+import type { Webtoon } from "@/types/webtoon";
+import type { WebtoonSortOption } from "@/constants/webtoon.constants";
+import { requestAllWebtoons, requestWebtoonsByDay } from "@/apis/webtoons";
+import type { DayOfWeek } from "@/constants/date.constants";
 
-function useWebtoons(sort: WebtoonSortOption) {
+function useWebtoons(sort: WebtoonSortOption, day?: DayOfWeek) {
   const [webtoons, setWebtoons] = useState<Webtoon[]>([]);
 
   useEffect(() => {
     const getWebtoons = async () => {
       try {
-        const data = await requestAllWebtoons(sort);
+        let data;
+        
+        if (day) {
+          data = await requestWebtoonsByDay(day, sort);
+        } else {
+          data = await requestAllWebtoons(sort);
+        }
+        
         setWebtoons(data);
-      } catch (err: any) {
-        console.error("웹툰 목록 불러오기 실패:", err);
+      } catch (err) {
+        console.error("웹툰 목록 불러오기 실패: ", err);
       }
     };
 
     getWebtoons();
-  }, [sort]);
+  }, [sort, day]);
 
   return webtoons;
 }

@@ -3,7 +3,8 @@ import n from "/n.svg"
 import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { requestLogout } from '../apis/auth';
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useSearchParams } from 'react-router'; 
+import { DAY_MAPPING, UI_DAYS } from "@/constants/date.constants";
 
 interface HeaderProps {
   user: {
@@ -21,10 +22,12 @@ function Header({ user }: HeaderProps) {
   }
 
   const [inputValue, setInputValue] = useState("");
-
   const handleInputValue = (event : React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   }
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedDay = searchParams.get("day");
 
   return (
     <header className="">
@@ -97,20 +100,30 @@ function Header({ user }: HeaderProps) {
       <div className="h-12 flex items-center justify-between ">
         {/* HeaderDay */}
         <nav>
-          <ul className="flex gap-8 text-[15px] font-pretendard font-semibold">
-              <li className="pl-1 py-3 text-site-red border-b-2 border-site-red">
-                <a href="/">요일전체</a>
-              </li>
-              <li className="py-3">월</li>
-              <li className="py-3">화</li>
-              <li className="py-3">수</li>
-              <li className="py-3">목</li>
-              <li className="py-3">금</li>
-              <li className="py-3">토</li>
-              <li className="py-3">일</li>
-              <li className="py-3">신작</li>
-              <li className="py-3">완결</li>
-            </ul>
+          <ul className="flex gap-6 text-[15px] font-pretendard font-semibold">
+          <li>
+            <button
+              type="button"
+              className={`px-1 py-3 border-b-2 ${
+                !selectedDay ? 'text-site-red border-site-red' : 'border-transparent'
+              }`}
+              onClick={() => setSearchParams({})} // 전부 초기화(의도대로)
+            >
+              요일전체
+            </button>
+          </li>
+          {UI_DAYS.map((day) => (
+            <li key={day}>
+              <button
+                type="button"
+                className={`py-3 w-6 ${selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''}`}
+                onClick={() => setSearchParams({ day })}
+              >
+                {DAY_MAPPING[day].replace("요웹툰", "")}
+              </button>
+            </li>
+          ))}
+          </ul>
         </nav>
       </div>
       <hr />

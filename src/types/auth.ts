@@ -9,18 +9,17 @@ interface LoginRequest {
 }
 
 interface LoginSuccessResponse {
-  status: 200;
   success: true;
   data: {
     message: string;
-    accessToken: string;
-    refreshToken: string;
-    user: User;
+    content: {
+      accessToken: string;
+      user: User;
+    };
   };
 }
 
 interface LoginFailResponse {
-  status: 401;
   success: false;
   data: {
     message: string;
@@ -36,14 +35,14 @@ interface SignupRequest {
 }
 
 interface SignupSuccessResponse {
-  status: 201;
   success: true;
   data: {
-    field: null;
     message: string;
-    accessToken: string;
-    refreshToken: string;
-    user: User;
+    content: {
+      accessToken: string;
+      refreshToken: string;
+      user: User;
+    };
   };
 }
 
@@ -51,6 +50,7 @@ interface SignupFailResponse {
   status: 409;
   success: false;
   data: {
+    message: string;
     field: ("username" | "nickname")[];
   };
 }
@@ -58,10 +58,9 @@ interface SignupFailResponse {
 type SignupResponse = SignupSuccessResponse | SignupFailResponse;
 
 interface LogoutSuccessResponse {
-  status: 200;
   success: true;
   data: {
-    message: string
+    message: string;
   };
 }
 
@@ -76,12 +75,11 @@ interface LogoutFailResponse {
 type LogoutResponse = LogoutSuccessResponse | LogoutFailResponse;
 
 interface RefreshTokenSuccessResponse {
-  status: 200;
   success: true;
   data: {
     message: string;
-    accessToken: string;
-  }
+    content: string;
+  };
 }
 
 interface RefreshTokenFailResponse {

@@ -1,10 +1,12 @@
-import { instance } from "@/apis/axios";
+import instance from "@/apis/axios";
 import type { LoginRequest, LoginResponse, SignupRequest, SignupResponse, LogoutResponse, RefreshTokenResponse } from "@/types/auth";
 
-export const requestLogin = async (body: LoginRequest): Promise<LoginResponse> => {
-  const { data } = await instance.post<LoginResponse>("/api/auth/login", body);
+export async function requestLogin(
+  loginData: LoginRequest
+): Promise<LoginResponse> {
+  const { data } = await instance.post<LoginResponse>("/api/auth/login", loginData);
   return data;
-};
+}
 
 export const requestSignup = async (body: SignupRequest): Promise<SignupResponse> => {
   const { data } = await instance.post<SignupResponse>("/api/auth/signup", body);
