@@ -6,12 +6,12 @@ import useLocalStorage from './useLocalStorage';
 
 function useLogin() {
   const navigate = useNavigate();
-  
-  const [, setUser] = useLocalStorage<User | null>("user", null);
-  const [, setAccessToken] = useLocalStorage<string | null>("accessToken", null);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [, setUser] = useLocalStorage<User | null>('user', null);
+  const [, setAccessToken] = useLocalStorage<string | null>('accessToken', null);
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -21,12 +21,12 @@ function useLogin() {
     try {
       const data = await requestLogin(loginData);
       if (data.success) {
-        setAccessToken(data.data.content.accessToken)
+        setAccessToken(data.data.content.accessToken);
         setUser(data.data.content.user);
-        navigate("/");
+        navigate('/');
       }
     } catch {
-      setErrorMsg("아이디 또는 비밀번호가 올바르지 않습니다.");
+      setErrorMsg('아이디 또는 비밀번호가 올바르지 않습니다.');
     }
   };
 
@@ -34,7 +34,7 @@ function useLogin() {
     e.preventDefault();
 
     if (!username || !password) {
-      alert("아이디와 비밀번호를 확인하세요.")
+      alert('아이디와 비밀번호를 확인하세요.');
       return;
     }
 

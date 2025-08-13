@@ -1,33 +1,33 @@
-import naver from "/naver.svg"
-import n from "/n.svg"
+import naver from '/naver.svg';
+import n from '/n.svg';
 import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { requestLogout } from '../apis/auth';
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router'; 
-import { DAY_MAPPING, UI_DAYS } from "@/constants/date.constants";
+import { Link, useSearchParams } from 'react-router';
+import { DAY_MAPPING, UI_DAYS } from '@/constants/date.constants';
 
 interface HeaderProps {
   user: {
-    username: string,
-    nickname: string,
-  } | null
+    username: string;
+    nickname: string;
+  } | null;
 }
 
 function Header({ user }: HeaderProps) {
   const handleLogout = async () => {
     await requestLogout();
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
     window.location.reload();
-  }
+  };
 
-  const [inputValue, setInputValue] = useState("");
-  const handleInputValue = (event : React.ChangeEvent<HTMLInputElement>) => {
+  const [inputValue, setInputValue] = useState('');
+  const handleInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
-  }
+  };
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedDay = searchParams.get("day");
+  const selectedDay = searchParams.get('day');
 
   return (
     <header className="">
@@ -42,21 +42,23 @@ function Header({ user }: HeaderProps) {
           </Link>
         </h1>
         <div className="flex items-center justify-between">
-          <div className="flex items-center border my-[14px] mr-[18px] gap-x-2
-          group focus-within:outline focus-within:outline-2 focus-within:outline-blue-500 rounded-sm">
-            <input 
-            type="text"
-            value={inputValue}
-            onChange={handleInputValue}
-            placeholder="제목/작가로 검색할 수 있습니다." 
-            maxLength={18}
-            className="w-60 pl-3 h-9 text-base
+          <div
+            className="flex items-center border my-[14px] mr-[18px] gap-x-2
+          group focus-within:outline focus-within:outline-2 focus-within:outline-blue-500 rounded-sm"
+          >
+            <input
+              type="text"
+              value={inputValue}
+              onChange={handleInputValue}
+              placeholder="제목/작가로 검색할 수 있습니다."
+              maxLength={18}
+              className="w-60 pl-3 h-9 text-base
             focus:outline-none"
             />
             <button
               onClick={() => setInputValue('')}
               className={inputValue ? '' : 'opacity-0 pointer-events-none'}
-              >
+            >
               <XCircleIcon className="w-5 h-5 text-gray-500 cursor-pointer" />
             </button>
             <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
@@ -92,7 +94,7 @@ function Header({ user }: HeaderProps) {
         <div>
           <button className="flex items-center font-inter bg-site-red text-white text-sm px-10 h-10 rounded">
             RANDOM
-            <img src={n} className="absolute ml-[80px] mb-[15px]"/>
+            <img src={n} className="absolute ml-[80px] mb-[15px]" />
           </button>
         </div>
       </div>
@@ -101,28 +103,28 @@ function Header({ user }: HeaderProps) {
         {/* HeaderDay */}
         <nav>
           <ul className="flex gap-6 text-[15px] font-pretendard font-semibold">
-          <li>
-            <button
-              type="button"
-              className={`px-1 py-3 border-b-2 ${
-                !selectedDay ? 'text-site-red border-site-red' : 'border-transparent'
-              }`}
-              onClick={() => setSearchParams({})} // 전부 초기화(의도대로)
-            >
-              요일전체
-            </button>
-          </li>
-          {UI_DAYS.map((day) => (
-            <li key={day}>
+            <li>
               <button
                 type="button"
-                className={`py-3 w-6 ${selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''}`}
-                onClick={() => setSearchParams({ day })}
+                className={`px-1 py-3 border-b-2 ${
+                  !selectedDay ? 'text-site-red border-site-red' : 'border-transparent'
+                }`}
+                onClick={() => setSearchParams({})} // 전부 초기화(의도대로)
               >
-                {DAY_MAPPING[day].replace("요웹툰", "")}
+                요일전체
               </button>
             </li>
-          ))}
+            {UI_DAYS.map((day) => (
+              <li key={day}>
+                <button
+                  type="button"
+                  className={`py-3 w-6 ${selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''}`}
+                  onClick={() => setSearchParams({ day })}
+                >
+                  {DAY_MAPPING[day].replace('요웹툰', '')}
+                </button>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>
