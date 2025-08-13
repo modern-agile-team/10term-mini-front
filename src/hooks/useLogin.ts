@@ -21,8 +21,8 @@ function useLogin() {
     try {
       const data = await requestLogin(loginData);
       if (data.success) {
-        setAccessToken(data.data.accessToken)
-        setUser(data.data.user);
+        setAccessToken(data.data.content.accessToken)
+        setUser(data.data.content.user);
         navigate("/");
       }
     } catch {
