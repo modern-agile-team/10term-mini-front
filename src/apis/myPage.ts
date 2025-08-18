@@ -1,17 +1,31 @@
 import { instance } from '@/apis/axios';
 
-export const requestUserInfo = () => {
-  return instance.get<{ data: { content: { nickname: string } } }>('/api/users/me');
+export const requestUserInfo = async (): Promise<{ nickname: string }> => {
+  const res = await instance.get<{ data: { content: { nickname: string } } }>('/api/users/me');
+  return res.data.data.content;
 };
 
-export const requestNicknameCheck = (nickname: string) =>
-  instance.get<{ data: { content: { isAvailable: boolean } } }>(`/api/users/nicknames/${nickname}`);
+export const requestNicknameCheck = async (nickname: string): Promise<boolean> => {
+  const res = await instance.get<{ data: { content: { isAvailable: boolean } } }>(
+    `/api/users/nicknames/${nickname}`,
+  );
+  return res.data.data.content.isAvailable;
+};
 
-export const requestNicknameUpdate = (newNickname: string) =>
-  instance.patch<{ data: { message: string } }>('/api/users/me/nickname', { newNickname });
+export const requestNicknameUpdate = async (newNickname: string): Promise<string> => {
+  const res = await instance.patch<{ data: { message: string } }>('/api/users/me/nickname', {
+    newNickname,
+  });
+  return res.data.data.message;
+};
 
-export const requestPasswordUpdate = (currentPassword: string, newPassword: string) =>
-  instance.patch<{ data: { message: string } }>('/api/users/me/password', {
+export const requestPasswordUpdate = async (
+  currentPassword: string,
+  newPassword: string,
+): Promise<string> => {
+  const res = await instance.patch<{ data: { message: string } }>('/api/users/me/password', {
     currentPassword,
     newPassword,
   });
+  return res.data.data.message;
+};

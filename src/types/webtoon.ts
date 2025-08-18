@@ -8,4 +8,12 @@ interface Webtoon {
   averageRating?: number;
 }
 
-export type { Webtoon };
+interface FavoriteWebtoon {
+  webtoonId: number;
+  title: string;
+  thumbnailUrl: string;
+  writer: string;
+  updatedAt: string;
+}
+
+export type { Webtoon, FavoriteWebtoon };

@@ -1,13 +1,7 @@
 import { useEffect, useState } from 'react';
 import { instance } from '@/apis/axios';
-
-interface FavoriteWebtoon {
-  webtoonId: number;
-  title: string;
-  thumbnailUrl: string;
-  writer: string;
-  updatedAt: string;
-}
+import { requestDeleteFavorites } from '@/apis/favorites';
+import type { FavoriteWebtoon } from '@/types/webtoon';
 
 export const useFavorites = () => {
   const [favorites, setFavorites] = useState<FavoriteWebtoon[]>([]);
@@ -16,14 +10,16 @@ export const useFavorites = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    instance
-      .get('/api/users/me/favorites')
-      .then((res) => {
+    const fetchFavorites = async () => {
+      try {
+        const res = await instance.get('/api/users/me/favorites');
         setFavorites(res.data.data.content);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error('관심 웹툰 불러오기 실패:', err);
-      });
+      }
+    };
+
+    fetchFavorites();
   }, []);
 
   const toggleEditMode = () => {
@@ -44,9 +40,7 @@ export const useFavorites = () => {
     }
 
     try {
-      await instance.delete('/api/users/me/favorites', {
-        data: { webtoonIds: selectedIds },
-      });
+      await requestDeleteFavorites(selectedIds);
 
       setFavorites((prev) => prev.filter((webtoon) => !selectedIds.includes(webtoon.webtoonId)));
 

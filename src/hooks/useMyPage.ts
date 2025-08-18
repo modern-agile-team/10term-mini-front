@@ -92,8 +92,7 @@ export function useMyPage() {
 
   const handleCheckNickname = async () => {
     try {
-      const response = await requestNicknameCheck(nickname);
-      const isAvailable = response.data.data.content.isAvailable;
+      const isAvailable = await requestNicknameCheck(nickname);
       if (isAvailable) {
         setServerNicknameError(null);
         setIsNicknameValid(true);
@@ -111,7 +110,7 @@ export function useMyPage() {
       if (isNicknameValid) {
         await requestNicknameUpdate(nickname);
         const userInfoResponse = await requestUserInfo();
-        const updatedNickname = userInfoResponse.data.data.content;
+        const updatedNickname = userInfoResponse;
         setUser({ ...user, ...updatedNickname });
       }
 
