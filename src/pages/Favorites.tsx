@@ -1,58 +1,19 @@
-import { useEffect, useState } from 'react';
-import { instance } from '@/apis/axios';
 import { formatDateShort } from '@/utils/date';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import DeleteFavoriteModal from '@/components/DeleteFavoriteModal';
+import { useFavorites } from '@/hooks/useFavorites';
 
 function Favorites() {
-  const [favorites, setFavorites] = useState([]);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    instance
-      .get('/api/users/me/favorites')
-      .then((res) => {
-        setFavorites(res.data.data.content);
-      })
-      .catch((err) => {
-        console.error('관심 웹툰 불러오기 실패:', err);
-      });
-  }, []);
-
-  const toggleEditMode = () => {
-    setIsEditMode((prev) => !prev);
-    setSelectedIds([]); // 편집 모드 껐다 켤 때 선택 초기화
-  };
-
-  const toggleSelect = (id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    );
-  };
-
-  const handleDelete = async () => {
-    if (selectedIds.length === 0) {
-      alert('삭제할 웹툰을 선택해주세요.');
-      return;
-    }
-
-    try {
-      const res = await instance.delete('/api/users/me/favorites', {
-        data: { webtoonIds: selectedIds },
-      });
-
-      setFavorites((prev) => prev.filter((webtoon) => !selectedIds.includes(webtoon.webtoonId)));
-
-      setSelectedIds([]);
-      setIsEditMode(false);
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error('삭제 실패:', error);
-      alert('삭제에 실패했습니다.');
-    }
-  };
+  const {
+    favorites,
+    isEditMode,
+    selectedIds,
+    isModalOpen,
+    setIsModalOpen,
+    toggleEditMode,
+    toggleSelect,
+    handleDelete,
+  } = useFavorites();
 
   return (
     <>
