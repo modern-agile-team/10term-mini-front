@@ -1,169 +1,40 @@
-import useLocalStorage from '@/hooks/useLocalStorage';
+import { useMyPage } from '@/hooks/useMyPage';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
-import type { User } from '@/types/auth';
-import { useEffect, useMemo, useState } from 'react';
-import { instance } from '@/apis/axios';
-import { useNavigate } from 'react-router';
-import {
-  requestNicknameCheck,
-  requestNicknameUpdate,
-  requestPasswordUpdate,
-  requestUserInfo,
-} from '@/apis/myPage';
-import { requestLogout } from '@/apis/auth';
 
 function MyPage() {
-  const navigate = useNavigate();
+  const {
+    nickname,
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
 
-  const [user, setUser] = useLocalStorage<User>('user', {
-    username: '',
-    nickname: '',
-  });
+    setNickname,
+    setCurrentPassword,
+    setNewPassword,
+    setConfirmNewPassword,
 
-  const [nickname, setNickname] = useState(user.nickname);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    nicknameError,
+    currentPasswordError,
+    newPasswordError,
+    confirmNewPasswordError,
 
-  const [isNicknameTouched, setNicknameTouched] = useState(false);
-  const [isCurrentPasswordTouched, setCurrentPasswordTouched] = useState(false);
-  const [isNewPasswordTouched, setNewPasswordTouched] = useState(false);
-  const [isConfirmNewPasswordTouched, setConfirmNewPasswordTouched] = useState(false);
+    isNicknameTouched,
+    isCurrentPasswordTouched,
+    isNewPasswordTouched,
+    isConfirmNewPasswordTouched,
 
-  const [serverNicknameError, setServerNicknameError] = useState<string | null>(null);
-  const [serverCurrentPasswordError, setServerCurrentPasswordError] = useState<string | null>(null);
-  const [serverNewPasswordError, setServerNewPasswordError] = useState<string | null>(null);
+    setNicknameTouched,
+    setCurrentPasswordTouched,
+    setNewPasswordTouched,
+    setConfirmNewPasswordTouched,
 
-  const [isNicknameValid, setIsNicknameValid] = useState(false);
+    handleCheckNickname,
+    handleSubmit,
+    handleBack,
 
-  const nicknameRegex = /^[가-힣a-zA-Z0-9]+$/;
-  const passwordRegex =
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,20}$/;
-
-  useEffect(() => {
-    setServerNicknameError(null);
-  }, [nickname]);
-  useEffect(() => {
-    setServerCurrentPasswordError(null);
-  }, [newPassword]);
-  useEffect(() => {
-    setServerNewPasswordError(null);
-  }, [newPassword]);
-
-  const nicknameError = useMemo(() => {
-    if (serverNicknameError) return serverNicknameError;
-
-    if (!isNicknameTouched) return null;
-    if (nickname.trim() === '') return '닉네임을 입력해주세요.';
-
-    const hasHangul = /[가-힣]/.test(nickname);
-    const maxLength = hasHangul ? 10 : 30;
-
-    if (nickname.length > maxLength || !nicknameRegex.test(nickname)) {
-      return '닉네임은 한글 10자, 영문/숫자 30자 이내로 구성되어야 합니다.';
-    }
-
-    return null;
-  }, [nickname, isNicknameTouched, serverNicknameError]);
-
-  const currentPasswordError = useMemo(() => {
-    if (serverCurrentPasswordError) return serverCurrentPasswordError;
-
-    if (!isCurrentPasswordTouched) return null;
-    if (currentPassword.trim() === '') {
-      return '현재 비밀번호를 입력해주세요.';
-    }
-    return null;
-  }, [currentPassword, isCurrentPasswordTouched]);
-
-  const newPasswordError = useMemo(() => {
-    if (serverNewPasswordError) return serverNewPasswordError;
-
-    if (!isNewPasswordTouched) return null;
-    if (newPassword.trim() === '') {
-      return '새 비밀번호를 입력해주세요.';
-    }
-    if (!passwordRegex.test(newPassword)) {
-      return '비밀번호는 8~20자이며, 영문자, 숫자, 특수문자를 각각 1자 이상 포함해야 합니다.';
-    }
-    return null;
-  }, [newPassword, isNewPasswordTouched]);
-
-  const confirmNewPasswordError = useMemo(() => {
-    if (!isConfirmNewPasswordTouched) return null;
-    if (confirmNewPassword.trim() === '') {
-      return '비밀번호 확인을 입력해주세요.';
-    }
-    if (newPassword !== confirmNewPassword) {
-      return '비밀번호가 일치하지 않습니다.';
-    }
-    return null;
-  }, [newPassword, confirmNewPassword, isConfirmNewPasswordTouched]);
-
-  const handleCheckNickname = async () => {
-    try {
-      const response = await requestNicknameCheck(nickname);
-      const isAvailable = response.data.data.content.isAvailable;
-
-      if (isAvailable) {
-        setServerNicknameError(null);
-        setIsNicknameValid(true);
-      } else {
-        setServerNicknameError('이미 사용 중인 닉네임입니다.');
-        setIsNicknameValid(false);
-      }
-    } catch (err) {
-      setIsNicknameValid(false);
-    }
-  };
-
-  const handleSubmit = async () => {
-    try {
-      if (isNicknameValid) {
-        await requestNicknameUpdate(nickname);
-
-        const userInfoResponse = await requestUserInfo();
-        const updatedNickname = userInfoResponse.data.data.content;
-
-        setUser({
-          ...user,
-          ...updatedNickname,
-        });
-      }
-
-      if (isPasswordValid) {
-        await requestPasswordUpdate(currentPassword, newPassword);
-
-        await requestLogout();
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('user');
-
-        alert('비밀번호가 변경되어 로그아웃됩니다.');
-        window.location.href = '/login';
-
-        return;
-      }
-
-      alert('변경 완료');
-      window.location.reload();
-    } catch (err) {
-      console.error('변경 처리 중 오류 발생:', err);
-      alert('변경에 실패했습니다.');
-    }
-  };
-
-  const handleBack = () => {
-    if (window.history.length > 2) {
-      window.history.back();
-    } else {
-      navigate('/');
-    }
-  };
-
-  const isPasswordValid =
-    newPassword && confirmNewPassword && !newPasswordError && !confirmNewPasswordError;
-
-  const isFormValid = isNicknameValid || isPasswordValid;
+    isNicknameValid,
+    isFormValid,
+  } = useMyPage();
 
   return (
     <div className="m-20">
