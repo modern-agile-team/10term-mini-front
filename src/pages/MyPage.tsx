@@ -4,7 +4,12 @@ import type { User } from '@/types/auth';
 import { useEffect, useMemo, useState } from 'react';
 import { instance } from '@/apis/axios';
 import { useNavigate } from 'react-router';
-import { requestNicknameUpdate, requestPasswordUpdate, requestUserInfo } from '@/apis/myPage';
+import {
+  requestNicknameCheck,
+  requestNicknameUpdate,
+  requestPasswordUpdate,
+  requestUserInfo,
+} from '@/apis/myPage';
 import { requestLogout } from '@/apis/auth';
 
 function MyPage() {
@@ -97,8 +102,8 @@ function MyPage() {
 
   const handleCheckNickname = async () => {
     try {
-      const res = await instance.get(`/api/users/nicknames/${nickname}`);
-      const isAvailable = res.data.data.content.isAvailable;
+      const response = await requestNicknameCheck(nickname);
+      const isAvailable = response.data.data.content.isAvailable;
 
       if (isAvailable) {
         setServerNicknameError(null);
