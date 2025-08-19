@@ -9,21 +9,21 @@ import type {
 } from '@/types/auth';
 
 export async function requestLogin(loginData: LoginRequest): Promise<LoginResponse> {
-  const { data } = await instance.post<LoginResponse>('/api/auth/login', loginData);
+  const { data } = await instance.post<LoginResponse>('/auth/login', loginData);
   return data;
 }
 
 export const requestSignup = async (body: SignupRequest): Promise<SignupResponse> => {
-  const { data } = await instance.post<SignupResponse>('/api/auth/signup', body);
+  const { data } = await instance.post<SignupResponse>('/auth/signup', body);
   return data;
 };
 
 export const requestLogout = async (): Promise<LogoutResponse> => {
-  const { data } = await instance.post<LogoutResponse>('/api/auth/logout');
+  const { data } = await instance.post<LogoutResponse>('/auth/logout');
   return data;
 };
 
 export const requestRefreshToken = async (): Promise<RefreshTokenResponse> => {
-  const { data } = await instance.post<RefreshTokenResponse>('/api/auth/token');
+  const { data } = await instance.post<RefreshTokenResponse>('/auth/token');
   return data;
 };
