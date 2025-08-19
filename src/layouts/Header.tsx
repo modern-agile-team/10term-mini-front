@@ -1,7 +1,7 @@
 import naver from '/naver.svg';
 import n from '/n.svg';
 import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { requestLogout } from '../apis/auth';
+import { requestLogout } from '@/apis/auth';
 import { useState } from 'react';
 import { Link, NavLink, useSearchParams, useLocation } from 'react-router';
 import { DAY_MAPPING, UI_DAYS } from '@/constants/date.constants';
