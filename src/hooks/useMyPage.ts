@@ -9,6 +9,7 @@ import {
   requestUserInfo,
 } from '@/apis/myPage';
 import { requestLogout } from '@/apis/auth';
+import { nicknameRegex, passwordRegex } from '@/constants/regex.constants';
 
 export function useMyPage() {
   const navigate = useNavigate();
@@ -33,10 +34,6 @@ export function useMyPage() {
   const [serverNewPasswordError, setServerNewPasswordError] = useState<string | null>(null);
 
   const [isNicknameValid, setIsNicknameValid] = useState(false);
-
-  const nicknameRegex = /^[가-힣a-zA-Z0-9]+$/;
-  const passwordRegex =
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,20}$/;
 
   useEffect(() => {
     setServerNicknameError(null);

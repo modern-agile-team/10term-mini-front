@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
-import type { User, SignupRequest, SignupResponse } from '../types/auth';
-import { requestSignup } from '../apis/auth';
-import useLocalStorage from './useLocalStorage';
+import type { User, SignupRequest, SignupResponse } from '@/types/auth';
+import { requestSignup } from '@/apis/auth';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import { nicknameRegex, passwordRegex, usernameRegex } from '@/constants/regex.constants';
 
 function useSignup() {
   const navigate = useNavigate();
@@ -25,11 +26,6 @@ function useSignup() {
 
   const [serverUsernameError, setServerUsernameError] = useState<string | null>(null);
   const [serverNicknameError, setServerNicknameError] = useState<string | null>(null);
-
-  const usernameRegex = /^[a-z0-9_-]{5,20}$/;
-  const nicknameRegex = /^[가-힣a-zA-Z0-9]+$/;
-  const passwordRegex =
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,20}$/;
 
   useEffect(() => {
     setServerUsernameError(null);
