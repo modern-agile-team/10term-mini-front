@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { instance } from '@/apis/axios';
-import { requestDeleteFavorites } from '@/apis/favorites';
+import { requestFavorites, requestDeleteFavorites } from '@/apis/favorites';
 import type { FavoriteWebtoon } from '@/types/webtoon';
 
 export const useFavorites = () => {
@@ -12,8 +11,8 @@ export const useFavorites = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const res = await instance.get('users/me/favorites');
-        setFavorites(res.data.data.content);
+        const res = await requestFavorites();
+        setFavorites(res);
       } catch (err) {
         console.error('관심 웹툰 불러오기 실패:', err);
       }
