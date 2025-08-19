@@ -43,9 +43,9 @@ function MyPage() {
         <p className="mr-4 py-1 text-gray-400">네이버 별명과 비밀번호를 수정하실 수 있습니다.</p>
       </div>
       <div className="flex flex-col items-start w-full mt-5 border-t border-b">
-        <div className="flex items-center">
+        <div className="flex">
           <div className="bg-gray-100 w-[175px] h-[120px] p-5">별명</div>
-          <div className="flex flex-col mx-6 my-5">
+          <div className="flex flex-col mx-6 mt-8">
             <div
               className={`flex relative border-[1.2px] rounded-md w-[310px] h-[45px]
                 ${
@@ -69,11 +69,11 @@ function MyPage() {
               />
             </div>
             {nicknameError ? (
-              <div className="absolute left-[310px] bottom-[490px] w-full text-left text-red-600 text-xs">
+              <div className="mt-2 left-[310px] bottom-[490px] w-full text-left text-red-600 text-xs">
                 - {nicknameError}
               </div>
             ) : isNicknameValid ? (
-              <div className="absolute left-[310px] bottom-[490px] w-full text-left text-green-500 text-xs">
+              <div className="mt-2 left-[310px] bottom-[490px] w-full text-left text-green-500 text-xs">
                 - 사용 가능한 닉네임입니다.
               </div>
             ) : null}
@@ -81,7 +81,7 @@ function MyPage() {
 
           <button
             onClick={handleCheckNickname}
-            className="my-5 px-2 py-2 text-sm text-gray-500 rounded-md border-2 h-[45px]"
+            className="mt-8 px-2 py-2 text-sm text-gray-500 rounded-md border-2 h-[45px]"
           >
             중복확인
           </button>
