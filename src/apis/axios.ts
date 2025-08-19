@@ -30,7 +30,7 @@ const instance = axios.create(common);
 instance.interceptors.request.use((config) => {
   const token = localStorage.getItem('accessToken');
 
-  const isAuthPath = config.url?.includes('/auth/login') || config.url?.includes('/auth/signup');
+  const isAuthPath = config.url?.includes('auth/login') || config.url?.includes('auth/signup');
 
   if (token && !isAuthPath) config.headers.Authorization = `Bearer ${token}`;
 
@@ -43,7 +43,7 @@ instance.interceptors.response.use(
     const originalRequest = error.config as RetryConfig;
 
     const isAuthPath =
-      originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/signup');
+      originalRequest.url?.includes('auth/login') || originalRequest.url?.includes('auth/signup');
 
     if (error.response?.status === 401 && !originalRequest._retry && !isAuthPath) {
       originalRequest._retry = true;

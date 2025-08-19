@@ -12,7 +12,7 @@ export const useFavorites = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const res = await instance.get('/api/users/me/favorites');
+        const res = await instance.get('users/me/favorites');
         setFavorites(res.data.data.content);
       } catch (err) {
         console.error('관심 웹툰 불러오기 실패:', err);
