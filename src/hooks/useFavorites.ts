@@ -1,65 +1,24 @@
-import { useEffect, useState } from 'react';
-import { requestFavorites, requestDeleteFavorites } from '@/apis/favorites';
-import type { FavoriteWebtoon } from '@/types/webtoon';
+import useFavoritesData from '@/hooks/useFavoritesData';
+import useFavoritesUI from '@/hooks/useFavoritesUI';
 
-export const useFavorites = () => {
-  const [favorites, setFavorites] = useState<FavoriteWebtoon[]>([]);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function useFavorites() {
+  const data = useFavoritesData();
+  const ui = useFavoritesUI();
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const res = await requestFavorites();
-        setFavorites(res);
-      } catch (err) {
-        console.error('관심 웹툰 불러오기 실패:', err);
-      }
-    };
-
-    fetchFavorites();
-  }, []);
-
-  const toggleEditMode = () => {
-    setIsEditMode((prev) => !prev);
-    setSelectedIds([]);
-  };
-
-  const toggleSelect = (id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    );
-  };
-
-  const handleDelete = async () => {
-    if (selectedIds.length === 0) {
-      alert('삭제할 웹툰을 선택해주세요.');
-      return;
-    }
-
+  const handleConfirmDelete = async () => {
     try {
-      await requestDeleteFavorites(selectedIds);
-
-      setFavorites((prev) => prev.filter((webtoon) => !selectedIds.includes(webtoon.webtoonId)));
-
-      setSelectedIds([]);
-      setIsEditMode(false);
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error('삭제 실패:', error);
+      await data.deleteFavorites(ui.selectedIds);
+      ui.resetSelection();
+      ui.toggleEditMode();
+      ui.setIsModalOpen(false);
+    } catch {
       alert('삭제에 실패했습니다.');
     }
   };
 
   return {
-    favorites,
-    isEditMode,
-    selectedIds,
-    isModalOpen,
-    setIsModalOpen,
-    toggleEditMode,
-    toggleSelect,
-    handleDelete,
+    ...data,
+    ...ui,
+    handleConfirmDelete,
   };
-};
+}

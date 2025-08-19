@@ -1,24 +1,27 @@
 import { formatDateShort } from '@/utils/date';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import DeleteFavoriteModal from '@/components/DeleteFavoriteModal';
-import { useFavorites } from '@/hooks/useFavorites';
+import useFavorites from '@/hooks/useFavorites';
 
 function Favorites() {
   const {
+    handleConfirmDelete,
     favorites,
     isEditMode,
+    toggleEditMode,
     selectedIds,
+    toggleSelect,
     isModalOpen,
     setIsModalOpen,
-    toggleEditMode,
-    toggleSelect,
-    handleDelete,
   } = useFavorites();
 
   return (
     <>
       {isModalOpen && (
-        <DeleteFavoriteModal onConfirm={handleDelete} onCancel={() => setIsModalOpen(false)} />
+        <DeleteFavoriteModal
+          onConfirm={handleConfirmDelete}
+          onCancel={() => setIsModalOpen(false)}
+        />
       )}
       <div className="flex justify-between mt-[50px]">
         <div>
