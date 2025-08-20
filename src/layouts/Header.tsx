@@ -3,7 +3,7 @@ import n from '/n.svg';
 import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { requestLogout } from '@/apis/auth';
 import { useState } from 'react';
-import { Link, NavLink, useSearchParams, useLocation } from 'react-router';
+import { Link, NavLink, useSearchParams, useLocation, useNavigate } from 'react-router';
 import { DAY_MAPPING, UI_DAYS } from '@/constants/date.constants';
 interface HeaderProps {
   user: {
@@ -13,6 +13,8 @@ interface HeaderProps {
 }
 
 function Header({ user }: HeaderProps) {
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     await requestLogout();
     localStorage.removeItem('accessToken');
@@ -91,9 +93,13 @@ function Header({ user }: HeaderProps) {
             <li className="leading-[24px]">
               <NavLink
                 to="/"
-                end
                 className={({ isActive }) =>
-                  `px-5 py-4 leading-[24px] block ${isActive ? 'bg-site-red text-white' : ''}`
+                  `px-5 py-4 leading-[24px] block ${
+                    isActive ||
+                    (location.pathname !== '/favorites' && location.pathname !== '/mypage')
+                      ? 'bg-site-red text-white'
+                      : ''
+                  }`
                 }
               >
                 웹툰
@@ -141,24 +147,28 @@ function Header({ user }: HeaderProps) {
                     className={`px-1 py-3 border-b-2 ${
                       !selectedDay ? 'text-site-red border-site-red' : 'border-transparent'
                     }`}
-                    onClick={() => setSearchParams({})}
+                    onClick={() => navigate('/')}
                   >
                     요일전체
                   </button>
                 </li>
-                {UI_DAYS.map((day) => (
-                  <li key={day}>
-                    <button
-                      type="button"
-                      className={`py-3 w-6 ${
-                        selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''
-                      }`}
-                      onClick={() => setSearchParams({ day })}
-                    >
-                      {DAY_MAPPING[day].replace('요웹툰', '')}
-                    </button>
-                  </li>
-                ))}
+                {UI_DAYS.map((day) => {
+                  return (
+                    <li key={day}>
+                      <button
+                        type="button"
+                        className={`py-3 w-6 ${
+                          selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''
+                        }`}
+                        onClick={() => {
+                          navigate('/?day=' + day);
+                        }}
+                      >
+                        {DAY_MAPPING[day].replace('요웹툰', '')}
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </div>

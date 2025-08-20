@@ -23,7 +23,7 @@ function App() {
           <Route path="/" element={<WebtoonMain />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/webtoon:id" element={<WebtoonDetail />} />
+          <Route path="/webtoon/:id" element={<WebtoonDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>
