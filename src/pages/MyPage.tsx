@@ -4,36 +4,31 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 function MyPage() {
   const {
     nickname,
-    currentPassword,
-    newPassword,
-    confirmNewPassword,
-
-    setNickname,
-    setCurrentPassword,
-    setNewPassword,
-    setConfirmNewPassword,
-
     nicknameError,
+    onNicknameChange,
+    serverNicknameError,
+    isNicknameValid,
+
+    currentPassword,
     currentPasswordError,
+    onCurrentPasswordChange,
+    serverCurrentPasswordError,
+
+    newPassword,
     newPasswordError,
-    confirmNewPasswordError,
+    onNewPasswordChange,
+    serverNewPasswordError,
 
-    isNicknameTouched,
-    isCurrentPasswordTouched,
-    isNewPasswordTouched,
-    isConfirmNewPasswordTouched,
+    confirmPassword,
+    confirmPasswordError,
+    onConfirmPasswordChange,
 
-    setNicknameTouched,
-    setCurrentPasswordTouched,
-    setNewPasswordTouched,
-    setConfirmNewPasswordTouched,
+    isPasswordValid,
+    isFormValid,
 
     handleCheckNickname,
     handleSubmit,
     handleBack,
-
-    isNicknameValid,
-    isFormValid,
   } = useMyPage();
 
   return (
@@ -49,7 +44,7 @@ function MyPage() {
             <div
               className={`flex relative border-[1.2px] rounded-md w-[310px] h-[45px]
                 ${
-                  nicknameError
+                  nicknameError || serverNicknameError
                     ? 'border-red-500'
                     : isNicknameValid
                       ? 'border-site-green'
@@ -62,15 +57,16 @@ function MyPage() {
                 maxLength={30}
                 value={nickname}
                 placeholder="닉네임"
-                onChange={(e) => setNickname(e.target.value)}
-                onBlur={() => setNicknameTouched(true)}
+                onChange={onNicknameChange}
                 className="peer px-[15px] w-[310px] h-[45px] bg-transparent focus:outline-none"
                 autoComplete="off"
               />
             </div>
-            {nicknameError ? (
+            {nicknameError || serverNicknameError ? (
               <div className="mt-2 left-[310px] bottom-[490px] w-full text-left text-red-600 text-xs">
-                - {nicknameError}
+                -{' '}
+                {serverNicknameError ||
+                  '닉네임은 한글 10자, 영문/숫자 30자 이내로 구성되어야 합니다.'}
               </div>
             ) : isNicknameValid ? (
               <div className="mt-2 left-[310px] bottom-[490px] w-full text-left text-green-500 text-xs">
@@ -93,7 +89,7 @@ function MyPage() {
           <div
             className={`flex mx-6 mt-3 mb-2 relative border-[1.2px] rounded-md w-[402px] h-[60px]
               ${
-                currentPasswordError
+                currentPasswordError || serverCurrentPasswordError
                   ? 'border-site-red'
                   : 'border-input-border focus-within:border-site-green'
               }`}
@@ -102,8 +98,7 @@ function MyPage() {
               id="currentPassword"
               type="password"
               value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              onBlur={() => setCurrentPasswordTouched(true)}
+              onChange={onCurrentPasswordChange}
               maxLength={30}
               placeholder=" "
               className="peer px-[15px] pt-[10px] w-[402px] h-[60px] bg-transparent focus:outline-none"
@@ -123,13 +118,15 @@ function MyPage() {
               현재 비밀번호
             </label>
           </div>
-          {currentPasswordError && (
-            <div className="mx-7 my-2 text-left text-red-600 text-xs">- {currentPasswordError}</div>
+          {(currentPasswordError || serverCurrentPasswordError) && (
+            <div className="mx-7 my-2 text-left text-red-600 text-xs">
+              - {serverCurrentPasswordError || '현재 비밀번호를 입력해주세요'}
+            </div>
           )}
           <div
             className={`flex mx-6 my-3 relative border-[1.2px] rounded-md w-[402px] h-[60px]
               ${
-                newPasswordError
+                newPasswordError || serverNewPasswordError
                   ? 'border-site-red'
                   : 'border-input-border focus-within:border-site-green'
               }`}
@@ -138,8 +135,7 @@ function MyPage() {
               id="newPassword"
               type="password"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              onBlur={() => setNewPasswordTouched(true)}
+              onChange={onNewPasswordChange}
               maxLength={30}
               placeholder=" "
               className="peer px-[15px] pt-[10px] w-[402px] h-[60px] bg-transparent focus:outline-none"
@@ -159,22 +155,26 @@ function MyPage() {
               새 비밀번호
             </label>
             <div className="m-2 mt-[13px] mr-[10px]">
-              {!isNewPasswordTouched ? (
+              {!newPassword ? (
                 <CheckCircleIcon className="w-8 h-8 text-gray-400 transition duration-200" />
-              ) : newPasswordError ? (
+              ) : newPasswordError || serverNewPasswordError ? (
                 <XCircleIcon className="w-8 h-8 text-red-500 transition duration-200" />
               ) : (
                 <CheckCircleIcon className="w-8 h-8 text-site-green transition duration-200" />
               )}
             </div>
           </div>
-          {newPasswordError && (
-            <div className="mx-7 my-2 text-left text-red-600 text-xs">- {newPasswordError}</div>
+          {(newPasswordError || serverNewPasswordError) && (
+            <div className="mx-7 my-2 text-left text-red-600 text-xs">
+              -{' '}
+              {serverNewPasswordError ||
+                '비밀번호는 8~20자이며, 영문자, 숫자, 특수문자를 각각 1자 이상 포함해야 합니다.'}
+            </div>
           )}
           <div
             className={`flex mx-6 mt-2 my-4 relative border-[1.2px] rounded-md w-[402px] h-[60px]
               ${
-                confirmNewPasswordError
+                confirmPasswordError
                   ? 'border-site-red'
                   : 'border-input-border focus-within:border-site-green'
               }`}
@@ -182,9 +182,8 @@ function MyPage() {
             <input
               id="confirmNewPassword"
               type="password"
-              value={confirmNewPassword}
-              onChange={(e) => setConfirmNewPassword(e.target.value)}
-              onBlur={() => setConfirmNewPasswordTouched(true)}
+              value={confirmPassword}
+              onChange={onConfirmPasswordChange}
               maxLength={30}
               placeholder=" "
               className="peer px-[15px] pt-[10px] w-[402px] h-[60px] bg-transparent focus:outline-none"
@@ -204,18 +203,18 @@ function MyPage() {
               비밀번호 확인
             </label>
             <div className="m-2 mt-[13px] mr-[10px]">
-              {!isConfirmNewPasswordTouched ? (
+              {!confirmPassword ? (
                 <CheckCircleIcon className="w-8 h-8 text-gray-400 transition duration-200" />
-              ) : confirmNewPasswordError ? (
+              ) : confirmPasswordError ? (
                 <XCircleIcon className="w-8 h-8 text-red-500 transition duration-200" />
               ) : (
                 <CheckCircleIcon className="w-8 h-8 text-site-green transition duration-200" />
               )}
             </div>
           </div>
-          {confirmNewPasswordError && (
+          {confirmPasswordError && (
             <div className="mx-7 my-4 text-left text-red-600 text-xs">
-              - {confirmNewPasswordError}
+              - 비밀번호가 일치하지 않습니다
             </div>
           )}
         </div>
