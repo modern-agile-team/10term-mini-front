@@ -5,26 +5,26 @@ import { passwordRegex } from '@/constants/regex.constants';
 interface UsePasswordReturn {
   currentPassword: string;
   currentPasswordError: string | null;
-  onCurrentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCurrentPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   serverCurrentPasswordError: string | null;
 
   newPassword: string;
   newPasswordError: string | null;
-  onNewChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onNewPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   serverNewPasswordError: string | null;
 
   confirmPassword: string;
   confirmPasswordError: string | null;
-  onConfirmChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onConfirmPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
-  isValid: boolean;
+  isPasswordValid: boolean;
 }
 
 export function usePassword(): UsePasswordReturn {
   const {
     value: currentPassword,
     error: currentPasswordError,
-    onChange: onCurrentChange,
+    onChange: onCurrentPasswordChange,
   } = useInputState('', {
     validate: (value) => (!value.trim() ? '현재 비밀번호를 입력해주세요' : null),
   });
@@ -32,7 +32,7 @@ export function usePassword(): UsePasswordReturn {
   const {
     value: newPassword,
     error: newPasswordError,
-    onChange: onNewChange,
+    onChange: onNewPasswordChange,
   } = useInputState('', {
     validate: (value) => {
       if (!value) return null;
@@ -46,7 +46,7 @@ export function usePassword(): UsePasswordReturn {
   const {
     value: confirmPassword,
     error: confirmPasswordError,
-    onChange: onConfirmChange,
+    onChange: onConfirmPasswordChange,
   } = useInputState('', {
     validate: (value) => {
       if (!newPassword) return null;
@@ -66,7 +66,7 @@ export function usePassword(): UsePasswordReturn {
     setServerNewPasswordError(null);
   }, [newPassword]);
 
-  const isValid = Boolean(
+  const isPasswordValid = Boolean(
     newPassword &&
       confirmPassword &&
       !newPasswordError &&
@@ -77,18 +77,18 @@ export function usePassword(): UsePasswordReturn {
   return {
     currentPassword,
     currentPasswordError,
-    onCurrentChange,
+    onCurrentPasswordChange,
     serverCurrentPasswordError,
 
     newPassword,
     newPasswordError,
-    onNewChange,
+    onNewPasswordChange,
     serverNewPasswordError,
 
     confirmPassword,
     confirmPasswordError,
-    onConfirmChange,
+    onConfirmPasswordChange,
 
-    isValid,
+    isPasswordValid,
   };
 }

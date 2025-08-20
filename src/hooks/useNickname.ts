@@ -8,9 +8,9 @@ interface UseNicknameReturn {
   nickname: string;
   nicknameError: string | null;
   onNicknameChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  serverError: string | null;
-  isValid: boolean;
-  handleCheck: () => Promise<void>;
+  serverNicknameError: string | null;
+  isNicknameValid: boolean;
+  handleCheckNickname: () => Promise<void>;
 }
 
 export function useNickname(initialNickname: string): UseNicknameReturn {
@@ -28,30 +28,30 @@ export function useNickname(initialNickname: string): UseNicknameReturn {
     },
   });
 
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [serverNicknameError, setserverNicknameError] = useState<string | null>(null);
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
 
   useEffect(() => {
-    setServerError(null);
-    setIsValid(false);
+    setserverNicknameError(null);
+    setIsNicknameValid(false);
   }, [nickname]);
 
-  const handleCheck = async (): Promise<void> => {
+  const handleCheckNickname = async (): Promise<void> => {
     if (nicknameError) return;
 
     try {
       const isAvailable = await requestNicknameCheck(nickname);
 
       if (isAvailable) {
-        setServerError(null);
-        setIsValid(true);
+        setserverNicknameError(null);
+        setIsNicknameValid(true);
       } else {
-        setServerError('이미 사용 중인 닉네임입니다.');
-        setIsValid(false);
+        setserverNicknameError('이미 사용 중인 닉네임입니다.');
+        setIsNicknameValid(false);
       }
     } catch (error) {
-      setServerError('닉네임 중복 확인 중 오류가 발생했습니다');
-      setIsValid(false);
+      setserverNicknameError('닉네임 중복 확인 중 오류가 발생했습니다');
+      setIsNicknameValid(false);
     }
   };
 
@@ -59,8 +59,8 @@ export function useNickname(initialNickname: string): UseNicknameReturn {
     nickname,
     nicknameError,
     onNicknameChange,
-    serverError,
-    isValid,
-    handleCheck,
+    serverNicknameError,
+    isNicknameValid,
+    handleCheckNickname,
   };
 }
