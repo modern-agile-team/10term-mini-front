@@ -3,18 +3,18 @@ import { useInputState } from '@/hooks/useInputState';
 import { passwordRegex } from '@/constants/regex.constants';
 
 interface UsePasswordReturn {
-  current: string;
-  currentError: string | null;
+  currentPassword: string;
+  currentPasswordError: string | null;
   onCurrentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  serverCurrentError: string | null;
+  serverCurrentPasswordError: string | null;
 
-  new: string;
-  newError: string | null;
+  newPassword: string;
+  newPasswordError: string | null;
   onNewChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  serverNewError: string | null;
+  serverNewPasswordError: string | null;
 
-  confirm: string;
-  confirmError: string | null;
+  confirmPassword: string;
+  confirmPasswordError: string | null;
   onConfirmChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
   isValid: boolean;
@@ -22,8 +22,8 @@ interface UsePasswordReturn {
 
 export function usePassword(): UsePasswordReturn {
   const {
-    value: current,
-    error: currentError,
+    value: currentPassword,
+    error: currentPasswordError,
     onChange: onCurrentChange,
   } = useInputState('', {
     validate: (value) => (!value.trim() ? '현재 비밀번호를 입력해주세요' : null),
@@ -31,7 +31,7 @@ export function usePassword(): UsePasswordReturn {
 
   const {
     value: newPassword,
-    error: newError,
+    error: newPasswordError,
     onChange: onNewChange,
   } = useInputState('', {
     validate: (value) => {
@@ -44,8 +44,8 @@ export function usePassword(): UsePasswordReturn {
   });
 
   const {
-    value: confirm,
-    error: confirmError,
+    value: confirmPassword,
+    error: confirmPasswordError,
     onChange: onConfirmChange,
   } = useInputState('', {
     validate: (value) => {
@@ -55,32 +55,38 @@ export function usePassword(): UsePasswordReturn {
     },
   });
 
-  const [serverCurrentError, setServerCurrentError] = useState<string | null>(null);
-  const [serverNewError, setServerNewError] = useState<string | null>(null);
+  const [serverCurrentPasswordError, setServerCurrentPasswordError] = useState<string | null>(null);
+  const [serverNewPasswordError, setServerNewPasswordError] = useState<string | null>(null);
 
   useEffect(() => {
-    setServerCurrentError(null);
-  }, [current]);
+    setServerCurrentPasswordError(null);
+  }, [currentPassword]);
 
   useEffect(() => {
-    setServerNewError(null);
+    setServerNewPasswordError(null);
   }, [newPassword]);
 
-  const isValid = Boolean(newPassword && confirm && !newError && !confirmError && !serverNewError);
+  const isValid = Boolean(
+    newPassword &&
+      confirmPassword &&
+      !newPasswordError &&
+      !confirmPasswordError &&
+      !serverNewPasswordError,
+  );
 
   return {
-    current,
-    currentError,
+    currentPassword,
+    currentPasswordError,
     onCurrentChange,
-    serverCurrentError,
+    serverCurrentPasswordError,
 
-    new: newPassword,
-    newError,
+    newPassword,
+    newPasswordError,
     onNewChange,
-    serverNewError,
+    serverNewPasswordError,
 
-    confirm,
-    confirmError,
+    confirmPassword,
+    confirmPasswordError,
     onConfirmChange,
 
     isValid,
