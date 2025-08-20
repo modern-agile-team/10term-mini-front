@@ -41,7 +41,7 @@ function useSignup() {
     if (!usernameRegex.test(username)) {
       return '아이디는 5~20자 이내의 영어 소문자(a-z), 숫자(0-9), 특수문자(_, -)로 구성되어야 합니다.';
     }
-    return null; // 유효
+    return null;
   }, [username, isUsernameTouched, serverUsernameError]);
 
   const nicknameError = useMemo(() => {

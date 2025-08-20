@@ -1,16 +1,10 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import type { User } from '@/types/auth';
 import useLocalStorage from '@/hooks/useLocalStorage';
-import {
-  requestNicknameCheck,
-  requestNicknameUpdate,
-  requestPasswordUpdate,
-  requestUserInfo,
-} from '@/apis/myPage';
+import { requestNicknameUpdate, requestPasswordUpdate, requestUserInfo } from '@/apis/myPage';
 import { requestLogout } from '@/apis/auth';
-import { nicknameRegex, passwordRegex } from '@/constants/regex.constants';
-import { useInputState } from '@/hooks/useInputState';
+import { usePassword } from '@/hooks/usePassword';
+import { useNickname } from '@/hooks/useNickname';
 
 export function useMyPage() {
   const navigate = useNavigate();
@@ -20,97 +14,30 @@ export function useMyPage() {
   });
 
   const {
-    value: nickname,
-    error: nicknameError,
-    onChange: onNicknameChange,
-  } = useInputState(user.nickname, {
-    validate: (value) => {
-      if (!value.trim()) return '닉네임을 입력해주세요';
-      if (!nicknameRegex.test(value))
-        return '닉네임은 한글 10자, 영문/숫자 30자 이내로 구성되어야 합니다';
-      return null;
-    },
-  });
+    nickname,
+    nicknameError,
+    onNicknameChange,
+    serverError: serverNicknameError,
+    isValid: isNicknameValid,
+    handleCheck: handleCheckNickname,
+  } = useNickname(user.nickname);
 
   const {
-    value: currentPassword,
-    error: currentPasswordError,
-    onChange: onCurrentPasswordChange,
-  } = useInputState('', {
-    validate: (value) => (!value.trim() ? '현재 비밀번호를 입력해주세요' : null),
-  });
-
-  const {
-    value: newPassword,
-    error: newPasswordError,
-    onChange: onNewPasswordChange,
-  } = useInputState('', {
-    validate: (value) => {
-      if (!value) return null; // 빈 값은 허용
-      if (!passwordRegex.test(value)) {
-        return '비밀번호는 8~20자이며, 영문자, 숫자, 특수문자를 각각 1자 이상 포함해야 합니다';
-      }
-      return null;
-    },
-  });
-
-  const {
-    value: confirmPassword,
-    error: confirmPasswordError,
-    onChange: onConfirmPasswordChange,
-  } = useInputState('', {
-    validate: (value) => {
-      if (!newPassword) return null; // 새 비밀번호가 없으면 검증 스킵
-      if (value !== newPassword) return '비밀번호가 일치하지 않습니다';
-      return null;
-    },
-  });
-
-  const [serverNicknameError, setServerNicknameError] = useState<string | null>(null);
-  const [serverCurrentPasswordError, setServerCurrentPasswordError] = useState<string | null>(null);
-  const [serverNewPasswordError, setServerNewPasswordError] = useState<string | null>(null);
-  const [isNicknameValid, setIsNicknameValid] = useState(false);
-
-  useEffect(() => {
-    setServerNicknameError(null);
-    setIsNicknameValid(false);
-  }, [nickname]);
-
-  useEffect(() => {
-    setServerCurrentPasswordError(null);
-  }, [currentPassword]);
-
-  useEffect(() => {
-    setServerNewPasswordError(null);
-  }, [newPassword]);
-
-  const isPasswordValid = Boolean(
-    newPassword &&
-      confirmPassword &&
-      !newPasswordError &&
-      !confirmPasswordError &&
-      !serverNewPasswordError,
-  );
+    current: currentPassword,
+    currentError: currentPasswordError,
+    onCurrentChange: onCurrentPasswordChange,
+    serverCurrentError: serverCurrentPasswordError,
+    new: newPassword,
+    newError: newPasswordError,
+    onNewChange: onNewPasswordChange,
+    serverNewError: serverNewPasswordError,
+    confirm: confirmPassword,
+    confirmError: confirmPasswordError,
+    onConfirmChange: onConfirmPasswordChange,
+    isValid: isPasswordValid,
+  } = usePassword();
 
   const isFormValid = isNicknameValid || isPasswordValid;
-
-  const handleCheckNickname = async () => {
-    if (nicknameError) return;
-
-    try {
-      const isAvailable = await requestNicknameCheck(nickname);
-      if (isAvailable) {
-        setServerNicknameError(null);
-        setIsNicknameValid(true);
-      } else {
-        setServerNicknameError('이미 사용 중인 닉네임입니다');
-        setIsNicknameValid(false);
-      }
-    } catch (error) {
-      setServerNicknameError('닉네임 중복 확인 중 오류가 발생했습니다');
-      setIsNicknameValid(false);
-    }
-  };
 
   const handleSubmit = async () => {
     try {
