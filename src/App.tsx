@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
-import BaseLayout from './layouts/BaseLayout';
-import useTokenRefresher from './hooks/useTokenRefresher';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Welcome from './pages/Welcome';
-import WebtoonMain from './pages/WebtoonMain';
+import BaseLayout from '@/layouts/BaseLayout';
+import useTokenRefresher from '@/hooks/useTokenRefresher';
+import Login from '@/pages/Login';
+import Signup from '@/pages/Signup';
+import Welcome from '@/pages/Welcome';
+import WebtoonMain from '@/pages/WebtoonMain';
+import Favorites from '@/pages/Favorites';
+import MyPage from '@/pages/MyPage';
 
 function App() {
   useTokenRefresher();
@@ -18,6 +20,8 @@ function App() {
 
         <Route element={<BaseLayout />}>
           <Route path="/" element={<WebtoonMain />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,11 +1,10 @@
 import naver from '/naver.svg';
 import n from '/n.svg';
 import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { requestLogout } from '../apis/auth';
+import { requestLogout } from '@/apis/auth';
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router';
+import { Link, NavLink, useSearchParams, useLocation } from 'react-router';
 import { DAY_MAPPING, UI_DAYS } from '@/constants/date.constants';
-
 interface HeaderProps {
   user: {
     username: string;
@@ -28,6 +27,9 @@ function Header({ user }: HeaderProps) {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedDay = searchParams.get('day');
+
+  const EXCLUDED_PATHS = ['/favorites', '/mypage'];
+  const location = useLocation();
 
   return (
     <header className="">
@@ -86,9 +88,37 @@ function Header({ user }: HeaderProps) {
         {/* HeaderNav */}
         <nav>
           <ul className="flex text-[17px] font-pretendard font-normal">
-            <li className="px-5 py-4 bg-site-red text-white">웹툰</li>
-            <li className="px-5 py-4">관심목록</li>
-            <li className="px-5 py-4">마이페이지</li>
+            <li className="leading-[24px]">
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) =>
+                  `px-5 py-4 leading-[24px] block ${isActive ? 'bg-site-red text-white' : ''}`
+                }
+              >
+                웹툰
+              </NavLink>
+            </li>
+            <li className="leading-[24px]">
+              <NavLink
+                to="/favorites"
+                className={({ isActive }) =>
+                  `px-5 py-4 leading-[24px] block ${isActive ? 'bg-site-red text-white' : ''}`
+                }
+              >
+                관심목록
+              </NavLink>
+            </li>
+            <li className="leading-[24px]">
+              <NavLink
+                to="/mypage"
+                className={({ isActive }) =>
+                  `px-5 py-4 leading-[24px] block ${isActive ? 'bg-site-red text-white' : ''}`
+                }
+              >
+                마이페이지
+              </NavLink>
+            </li>
           </ul>
         </nav>
         <div>
@@ -99,36 +129,42 @@ function Header({ user }: HeaderProps) {
         </div>
       </div>
       <hr />
-      <div className="h-12 flex items-center justify-between ">
-        {/* HeaderDay */}
-        <nav>
-          <ul className="flex gap-6 text-[15px] font-pretendard font-semibold">
-            <li>
-              <button
-                type="button"
-                className={`px-1 py-3 border-b-2 ${
-                  !selectedDay ? 'text-site-red border-site-red' : 'border-transparent'
-                }`}
-                onClick={() => setSearchParams({})} // 전부 초기화(의도대로)
-              >
-                요일전체
-              </button>
-            </li>
-            {UI_DAYS.map((day) => (
-              <li key={day}>
-                <button
-                  type="button"
-                  className={`py-3 w-6 ${selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''}`}
-                  onClick={() => setSearchParams({ day })}
-                >
-                  {DAY_MAPPING[day].replace('요웹툰', '')}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-      <hr />
+      {!EXCLUDED_PATHS.includes(location.pathname) && (
+        <>
+          <div className="h-12 flex items-center justify-between">
+            {/* HeaderDay */}
+            <nav>
+              <ul className="flex gap-6 text-[15px] font-pretendard font-semibold">
+                <li>
+                  <button
+                    type="button"
+                    className={`px-1 py-3 border-b-2 ${
+                      !selectedDay ? 'text-site-red border-site-red' : 'border-transparent'
+                    }`}
+                    onClick={() => setSearchParams({})}
+                  >
+                    요일전체
+                  </button>
+                </li>
+                {UI_DAYS.map((day) => (
+                  <li key={day}>
+                    <button
+                      type="button"
+                      className={`py-3 w-6 ${
+                        selectedDay === day ? 'border-b-2 border-site-red text-site-red' : ''
+                      }`}
+                      onClick={() => setSearchParams({ day })}
+                    >
+                      {DAY_MAPPING[day].replace('요웹툰', '')}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+          <hr />
+        </>
+      )}
     </header>
   );
 }
