@@ -23,7 +23,6 @@ function MyPage() {
     confirmPasswordError,
     onConfirmPasswordChange,
 
-    isPasswordValid,
     isFormValid,
 
     handleCheckNickname,
@@ -62,17 +61,16 @@ function MyPage() {
                 autoComplete="off"
               />
             </div>
-            {nicknameError || serverNicknameError ? (
+            {(nicknameError || serverNicknameError) && (
               <div className="mt-2 left-[310px] bottom-[490px] w-full text-left text-red-600 text-xs">
-                -{' '}
-                {serverNicknameError ||
-                  '닉네임은 한글 10자, 영문/숫자 30자 이내로 구성되어야 합니다.'}
+                - {serverNicknameError || nicknameError}
               </div>
-            ) : isNicknameValid ? (
+            )}
+            {!nicknameError && !serverNicknameError && isNicknameValid && (
               <div className="mt-2 left-[310px] bottom-[490px] w-full text-left text-green-500 text-xs">
                 - 사용 가능한 닉네임입니다.
               </div>
-            ) : null}
+            )}
           </div>
 
           <button
@@ -120,7 +118,7 @@ function MyPage() {
           </div>
           {(currentPasswordError || serverCurrentPasswordError) && (
             <div className="mx-7 my-2 text-left text-red-600 text-xs">
-              - {serverCurrentPasswordError || '현재 비밀번호를 입력해주세요'}
+              - {serverCurrentPasswordError || currentPasswordError}
             </div>
           )}
           <div
@@ -166,9 +164,7 @@ function MyPage() {
           </div>
           {(newPasswordError || serverNewPasswordError) && (
             <div className="mx-7 my-2 text-left text-red-600 text-xs">
-              -{' '}
-              {serverNewPasswordError ||
-                '비밀번호는 8~20자이며, 영문자, 숫자, 특수문자를 각각 1자 이상 포함해야 합니다.'}
+              - {serverNewPasswordError || newPasswordError}
             </div>
           )}
           <div

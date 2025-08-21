@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react';
 import { useInputState } from '@/hooks/useInputState';
 import { passwordRegex } from '@/constants/regex.constants';
 
 interface UsePasswordReturn {
   currentPassword: string;
-  currentPasswordError: string | null;
-  onCurrentPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  currentPasswordError: string | undefined;
   serverCurrentPasswordError: string | null;
+  onCurrentPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setServerCurrentPasswordError: (error: string | null) => void;
 
   newPassword: string;
-  newPasswordError: string | null;
-  onNewPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  newPasswordError: string | undefined;
   serverNewPasswordError: string | null;
+  onNewPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setServerNewPasswordError: (error: string | null) => void;
 
   confirmPassword: string;
-  confirmPasswordError: string | null;
+  confirmPasswordError: string | undefined;
   onConfirmPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
   isPasswordValid: boolean;
@@ -24,22 +25,26 @@ export function usePassword(): UsePasswordReturn {
   const {
     value: currentPassword,
     error: currentPasswordError,
+    serverError: serverCurrentPasswordError,
     onChange: onCurrentPasswordChange,
+    setServerError: setServerCurrentPasswordError,
   } = useInputState('', {
-    validate: (value) => (!value.trim() ? '현재 비밀번호를 입력해주세요' : null),
+    validate: (value) => (!value.trim() ? '현재 비밀번호를 입력해주세요' : undefined),
   });
 
   const {
     value: newPassword,
     error: newPasswordError,
+    serverError: serverNewPasswordError,
     onChange: onNewPasswordChange,
+    setServerError: setServerNewPasswordError,
   } = useInputState('', {
     validate: (value) => {
-      if (!value) return null;
+      if (!value) return undefined;
       if (!passwordRegex.test(value)) {
         return '비밀번호는 8~20자이며, 영문자, 숫자, 특수문자를 각각 1자 이상 포함해야 합니다';
       }
-      return null;
+      return undefined;
     },
   });
 
@@ -49,22 +54,11 @@ export function usePassword(): UsePasswordReturn {
     onChange: onConfirmPasswordChange,
   } = useInputState('', {
     validate: (value) => {
-      if (!newPassword) return null;
+      if (!newPassword) return undefined;
       if (value !== newPassword) return '비밀번호가 일치하지 않습니다';
-      return null;
+      return undefined;
     },
   });
-
-  const [serverCurrentPasswordError, setServerCurrentPasswordError] = useState<string | null>(null);
-  const [serverNewPasswordError, setServerNewPasswordError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setServerCurrentPasswordError(null);
-  }, [currentPassword]);
-
-  useEffect(() => {
-    setServerNewPasswordError(null);
-  }, [newPassword]);
 
   const isPasswordValid = Boolean(
     newPassword &&
@@ -77,13 +71,15 @@ export function usePassword(): UsePasswordReturn {
   return {
     currentPassword,
     currentPasswordError,
-    onCurrentPasswordChange,
     serverCurrentPasswordError,
+    onCurrentPasswordChange,
+    setServerCurrentPasswordError,
 
     newPassword,
     newPasswordError,
-    onNewPasswordChange,
     serverNewPasswordError,
+    onNewPasswordChange,
+    setServerNewPasswordError,
 
     confirmPassword,
     confirmPasswordError,

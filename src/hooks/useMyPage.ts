@@ -25,15 +25,20 @@ export function useMyPage() {
   const {
     currentPassword,
     currentPasswordError,
-    onCurrentPasswordChange,
     serverCurrentPasswordError,
+    onCurrentPasswordChange,
+    setServerCurrentPasswordError,
+
     newPassword,
     newPasswordError,
-    onNewPasswordChange,
     serverNewPasswordError,
+    onNewPasswordChange,
+    setServerNewPasswordError,
+
     confirmPassword,
     confirmPasswordError,
     onConfirmPasswordChange,
+
     isPasswordValid,
   } = usePassword();
 
@@ -41,23 +46,29 @@ export function useMyPage() {
 
   const handleSubmit = async () => {
     try {
+      if (isPasswordValid) {
+        try {
+          await requestPasswordUpdate(currentPassword, newPassword);
+          await requestLogout();
+          localStorage.clear();
+
+          alert('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
+          window.location.href = '/login';
+          return;
+        } catch (error: any) {
+          setServerCurrentPasswordError('비밀번호 변경 중 오류가 발생했습니다');
+          return;
+        }
+      }
+
       if (isNicknameValid) {
         await requestNicknameUpdate(nickname);
         const userInfoResponse = await requestUserInfo();
+
         setUser({ ...user, ...userInfoResponse });
+        alert('닉네임이 변경되었습니다.');
+        window.location.reload();
       }
-
-      if (isPasswordValid) {
-        await requestPasswordUpdate(currentPassword, newPassword);
-        await requestLogout();
-        localStorage.clear();
-        alert('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
-        window.location.href = '/login';
-        return;
-      }
-
-      alert('변경이 완료되었습니다.');
-      window.location.reload();
     } catch (error) {
       alert('변경 중 오류가 발생했습니다.');
       console.error('Error:', error);
@@ -81,19 +92,18 @@ export function useMyPage() {
 
     currentPassword,
     currentPasswordError,
-    onCurrentPasswordChange,
     serverCurrentPasswordError,
+    onCurrentPasswordChange,
 
     newPassword,
     newPasswordError,
-    onNewPasswordChange,
     serverNewPasswordError,
+    onNewPasswordChange,
 
     confirmPassword,
     confirmPasswordError,
     onConfirmPasswordChange,
 
-    isPasswordValid,
     isFormValid,
 
     handleCheckNickname,
