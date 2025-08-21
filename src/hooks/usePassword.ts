@@ -1,5 +1,6 @@
 import { useInputState } from '@/hooks/useInputState';
 import { passwordRegex } from '@/constants/regex.constants';
+import { useEffect } from 'react';
 
 interface UsePasswordReturn {
   currentPassword: string;
@@ -52,6 +53,7 @@ export function usePassword(): UsePasswordReturn {
     value: confirmPassword,
     error: confirmPasswordError,
     onChange: onConfirmPasswordChange,
+    validate: validateConfirmPassword,
   } = useInputState('', {
     validate: (value) => {
       if (!newPassword) return undefined;
@@ -60,8 +62,17 @@ export function usePassword(): UsePasswordReturn {
     },
   });
 
+  useEffect(() => {
+    if (confirmPassword) {
+      validateConfirmPassword(confirmPassword);
+    }
+  }, [newPassword, confirmPassword, validateConfirmPassword]);
+
   const isPasswordValid = Boolean(
-    newPassword &&
+    currentPassword &&
+      !currentPasswordError &&
+      !serverCurrentPasswordError &&
+      newPassword &&
       confirmPassword &&
       !newPasswordError &&
       !confirmPasswordError &&

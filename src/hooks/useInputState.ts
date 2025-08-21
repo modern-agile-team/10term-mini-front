@@ -15,13 +15,14 @@ interface UseInputStateReturn {
   resetError: () => void;
   resetValue: () => void;
   reset: () => void;
+  validate: (value: string) => void; // validate 함수 추가
 }
 
 export const useInputState = (
   initialValue: string = '',
   options: UseInputStateOptions = {},
 ): UseInputStateReturn => {
-  const { validate } = options;
+  const { validate: validateOption } = options;
 
   const [value, setValue] = useState<string>(initialValue);
   const [error, setError] = useState<string>();
@@ -31,12 +32,12 @@ export const useInputState = (
     (newValue: string) => {
       setValue(newValue);
       setServerError(null);
-      if (validate) {
-        const validationError = validate(newValue);
+      if (validateOption) {
+        const validationError = validateOption(newValue);
         setError(validationError);
       }
     },
-    [validate],
+    [validateOption],
   );
 
   const onChange = useCallback(
@@ -60,6 +61,16 @@ export const useInputState = (
     resetError();
   }, [resetValue, resetError]);
 
+  const validate = useCallback(
+    (value: string) => {
+      if (validateOption) {
+        const validationError = validateOption(value);
+        setError(validationError);
+      }
+    },
+    [validateOption],
+  );
+
   return {
     value,
     error,
@@ -70,5 +81,6 @@ export const useInputState = (
     resetError,
     resetValue,
     reset,
+    validate, // validate 함수 반환
   };
 };
