@@ -9,7 +9,7 @@ interface UseInputStateReturn {
   value: string;
   error: string | null;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  setValue: (value: string) => void;
+  onDirectChange: (value: string) => void;
   resetError: () => void;
   resetValue: () => void;
   reset: () => void;
@@ -24,20 +24,7 @@ export const useInputState = (
   const [value, setValue] = useState<string>(initialValue);
   const [error, setError] = useState<string | null>(null);
 
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value;
-      setValue(newValue);
-
-      if (validate) {
-        const validationError = validate(newValue);
-        setError(validationError ?? null);
-      }
-    },
-    [validate],
-  );
-
-  const setDirectValue = useCallback(
+  const onDirectChange = useCallback(
     (newValue: string) => {
       setValue(newValue);
       if (validate) {
@@ -46,6 +33,13 @@ export const useInputState = (
       }
     },
     [validate],
+  );
+
+  const onChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      onDirectChange(e.target.value);
+    },
+    [onDirectChange],
   );
 
   const resetError = useCallback(() => {
@@ -65,7 +59,7 @@ export const useInputState = (
     value,
     error,
     onChange,
-    setValue: setDirectValue,
+    onDirectChange,
     resetError,
     resetValue,
     reset,
