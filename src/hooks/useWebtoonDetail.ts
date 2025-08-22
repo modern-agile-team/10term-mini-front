@@ -79,6 +79,11 @@ export const useWebtoonDetail = (webtoonId: number) => {
     }
   };
 
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert('URL이 복사되었습니다.');
+  };
+
   return {
     webtoonDetail,
     error,
@@ -87,5 +92,6 @@ export const useWebtoonDetail = (webtoonId: number) => {
     randomAdvertisementLarge,
     randomAdvertisementSmall,
     handleFavorite,
+    handleShare,
   };
 };
