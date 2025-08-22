@@ -41,7 +41,7 @@ export const useWebtoonDetail = (webtoonId: number) => {
         setRandomAdvertisementSmall(smallAdvertisementImages[smallIndex]);
 
         if (!clickedDay && webtoonResponse.weekdays[0]) {
-          setSearchParams({ day: webtoonResponse.weekdays[0] });
+          setSearchParams({ day: webtoonResponse.weekdays[0] }, { replace: true });
         }
       } catch (err) {
         console.error(err);
