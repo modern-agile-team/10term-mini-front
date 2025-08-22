@@ -32,7 +32,7 @@ export default function WebtoonDetail() {
           onFavoriteClick={handleFavorite}
           onShareClick={handleShare}
         />
-        <EpisodeList episodes={episodes} />
+        <EpisodeList episodes={episodes} webtoonId={webtoonId} />
       </div>
       <Advertisement largeAdSrc={randomAdvertisementLarge} smallAdSrc={randomAdvertisementSmall} />
     </div>
