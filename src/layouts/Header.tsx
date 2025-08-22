@@ -128,7 +128,13 @@ function Header({ user }: HeaderProps) {
           </ul>
         </nav>
         <div>
-          <button className="flex items-center font-inter bg-site-red text-white text-sm px-10 h-10 rounded">
+          <button
+            onClick={() => {
+              const randomId = Math.floor(Math.random() * 32) + 1;
+              navigate(`/webtoon/${randomId}`);
+            }}
+            className="flex items-center font-inter bg-site-red text-white text-sm px-10 h-10 rounded"
+          >
             RANDOM
             <img src={n} className="absolute ml-[80px] mb-[15px]" />
           </button>
