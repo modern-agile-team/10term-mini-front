@@ -8,10 +8,11 @@ function WebtoonCard({
   thumbnailUrl,
   averageRating,
   withBorder = false,
-}: Omit<Webtoon, 'weekdays'> & { withBorder?: boolean }) {
+  clickedDay,
+}: Omit<Webtoon, 'weekdays'> & { withBorder?: boolean; clickedDay?: string }) {
   return (
     <div>
-      <Link to={`/webtoon/${id}`} className="block">
+      <Link to={`/webtoon/${id}?day=${clickedDay}`} className="block">
         <div className={`${withBorder ? 'border-2' : ''} overflow-hidden`}>
           <img
             src={thumbnailUrl}

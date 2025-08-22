@@ -32,7 +32,12 @@ function DaySectionList({ day, webtoons }: { day: DayOfWeek; webtoons: Webtoon[]
           key={webtoon.id}
           className={`flex flex-col items-center py-[10px] ${isActive ? 'bg-red-200' : ''}`}
         >
-          <WebtoonCard id={webtoon.id} title={webtoon.title} thumbnailUrl={webtoon.thumbnailUrl} />
+          <WebtoonCard
+            id={webtoon.id}
+            title={webtoon.title}
+            thumbnailUrl={webtoon.thumbnailUrl}
+            clickedDay={day}
+          />
         </li>
       ))}
     </ul>

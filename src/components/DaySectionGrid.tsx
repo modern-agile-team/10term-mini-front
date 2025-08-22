@@ -1,7 +1,7 @@
 import type { Webtoon } from '../types/webtoon.ts';
 import WebtoonCard from './WebtoonCard.tsx';
 
-function DaySectionGrid({ webtoons }: { webtoons: Webtoon[] }) {
+function DaySectionGrid({ webtoons, clickedDay }: { webtoons: Webtoon[]; clickedDay?: string }) {
   return (
     <ul
       className={` 
@@ -17,6 +17,7 @@ function DaySectionGrid({ webtoons }: { webtoons: Webtoon[] }) {
             thumbnailUrl={webtoon.thumbnailUrl}
             averageRating={webtoon.averageRating}
             withBorder
+            clickedDay={clickedDay}
           />
         </li>
       ))}

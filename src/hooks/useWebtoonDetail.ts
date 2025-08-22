@@ -11,9 +11,11 @@ import {
   requestWebtoonDetail,
   requestWebtoonEpisodes,
 } from '@/apis/webtoonDetail';
+import type { DayOfWeek } from '@/constants/date.constants';
 
 export const useWebtoonDetail = (webtoonId: number) => {
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const clickedDay = searchParams.get('day') as DayOfWeek | null;
   const [webtoonDetail, setWebtoonDetail] = useState<WebtoonDetailInfo | null>(null);
   const [error, setError] = useState<string>('');
   const [isFavorite, setIsFavorite] = useState(false);
@@ -33,7 +35,7 @@ export const useWebtoonDetail = (webtoonId: number) => {
         setIsFavorite(webtoonResponse.isFavorite);
         setEpisodes(episodesResponse);
 
-        if (webtoonResponse.weekdays[0]) {
+        if (!clickedDay && webtoonResponse.weekdays[0]) {
           setSearchParams({ day: webtoonResponse.weekdays[0] });
         }
       } catch (err) {
@@ -43,7 +45,7 @@ export const useWebtoonDetail = (webtoonId: number) => {
     };
 
     getWebtoonDetail();
-  }, [webtoonId]);
+  }, [webtoonId, searchParams, setSearchParams]);
 
   useEffect(() => {
     const getRandomAdvertisementImage = (images: readonly string[]): string => {
