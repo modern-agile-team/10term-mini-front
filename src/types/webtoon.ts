@@ -16,4 +16,15 @@ interface FavoriteWebtoon {
   updatedAt: string;
 }
 
-export type { Webtoon, FavoriteWebtoon };
+interface SearchedWebtoon {
+  id: number;
+  title: string;
+  writer: string;
+  illustrator: string;
+  weekdays: string[];
+  description: string;
+  thumbnailUrl: string;
+  updatedAt: string;
+}
+
+export type { Webtoon, FavoriteWebtoon, SearchedWebtoon };
