@@ -1,45 +1,16 @@
 import { Link, useSearchParams } from 'react-router';
 import { Advertisement } from '@/components/Advertisement';
 import { useAdvertisement } from '@/hooks/useAdvertisement';
-import { useEffect, useState } from 'react';
-import { instance } from '@/apis/axios';
-import { DAY_MAPPING } from '@/constants/date.constants';
+import { useWebtoonSearch } from '@/hooks/useWebtoonSearch';
+import { useWeekdayLabel } from '@/hooks/useWeekdayLabel';
 import { formatDateShort } from '@/utils/date';
 
 export default function WebtoonSearch() {
   const [searchParams] = useSearchParams();
-  const keyword = searchParams.get('keyword');
+  const keyword = searchParams.get('keyword') as string;
   const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement(null, keyword);
-
-  const [searchedWebtoons, setSearchedWebtoons] = useState([]);
-
-  useEffect(() => {
-    const fetchWebtoons = async () => {
-      try {
-        const response = await instance.get(`search/webtoons`, {
-          params: { keyword },
-        });
-        console.log(response.data.data.content);
-        setSearchedWebtoons(response.data.data.content);
-      } catch (error) {
-        console.error('Error fetching webtoons:', error);
-      }
-    };
-
-    if (keyword) {
-      fetchWebtoons();
-    }
-  }, [keyword]);
-
-  function getWeekdayLabel(weekday: string[]) {
-    if (weekday.length === 1) {
-      const key = weekday[0] as keyof typeof DAY_MAPPING;
-      return DAY_MAPPING[key];
-    } else {
-      const weekKorean = weekday.map((day) => DAY_MAPPING[day as keyof typeof DAY_MAPPING][0]);
-      return `${weekKorean.join(', ')} 연재`;
-    }
-  }
+  const { searchedWebtoons } = useWebtoonSearch(keyword);
+  const { getWeekdayLabel } = useWeekdayLabel();
 
   return (
     <div className="flex justify-between mt-[30px]">
