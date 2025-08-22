@@ -24,6 +24,7 @@ function App() {
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/webtoon/:id" element={<WebtoonDetail />} />
+          <Route path="/search" element={<WebtoonSearch />} />
         </Route>
       </Routes>
     </BrowserRouter>
