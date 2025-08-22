@@ -1,9 +1,10 @@
-import { Link, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import { Advertisement } from '@/components/Advertisement';
 import { useAdvertisement } from '@/hooks/useAdvertisement';
 import { useWebtoonSearch } from '@/hooks/useWebtoonSearch';
 import { useWeekdayLabel } from '@/hooks/useWeekdayLabel';
-import { formatDateShort } from '@/utils/date';
+import { SearchHeader } from '@/components/SearchHeader';
+import { SearchedWebtoonItem } from '@/components/SearchedWebtoonItem';
 
 export default function WebtoonSearch() {
   const [searchParams] = useSearchParams();
@@ -15,47 +16,14 @@ export default function WebtoonSearch() {
   return (
     <div className="flex justify-between mt-[30px]">
       <div className="w-2/3">
-        <div className="">
-          <span className="mr-1 text-xl text-site-red font-semibold">'{keyword}'</span>
-          <span className="text-xl font-semibold">에 대한 검색결과 입니다.</span>
-        </div>
-        <div className="pt-4 pb-5 border-b">
-          <span className="mr-1 text-xl font-semibold">웹툰</span>
-          <span>총 {searchedWebtoons.length}</span>
-        </div>
+        <SearchHeader keyword={keyword} totalCount={searchedWebtoons.length} />
         <div className="mt-[20px]">
           {searchedWebtoons.map((webtoon) => (
-            <div key={webtoon.id} className="flex mb-4">
-              <Link to={`/webtoon/${webtoon.id}`}>
-                <div className="overflow-hidden">
-                  <img
-                    src={webtoon.thumbnailUrl}
-                    alt={webtoon.title}
-                    className="w-[120px] h-[156px] object-cover rounded border transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-              </Link>
-
-              <div className="ml-4">
-                <Link to={`/webtoon/${webtoon.id}`}>
-                  <h1 className="text-lg font-semibold hover:underline">{webtoon.title}</h1>
-                </Link>
-
-                <div className="text-sm font-semibold">
-                  {webtoon.writer}
-                  <span className="font-light"> · 글 / </span>
-                  {webtoon.illustrator}
-                  <span className="font-light"> · 그림 | </span>
-                  <span className="font-light">{getWeekdayLabel(webtoon.weekdays)} | </span>
-                  <span className="font-light">
-                    최종 업데이트 {formatDateShort(webtoon.updatedAt)}
-                  </span>
-                </div>
-                <span className="block mt-1 max-w-[630px] truncate text-sm">
-                  {webtoon.description}
-                </span>
-              </div>
-            </div>
+            <SearchedWebtoonItem
+              key={webtoon.id}
+              webtoon={webtoon}
+              getWeekdayLabel={getWeekdayLabel}
+            />
           ))}
         </div>
       </div>
