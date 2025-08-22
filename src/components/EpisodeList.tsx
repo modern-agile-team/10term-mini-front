@@ -1,6 +1,6 @@
 import type { WebtoonEpisode } from '@/types/webtoonDetail';
 import { formatDateShort } from '@/utils/date';
-import { StarIcon } from '@heroicons/react/24/outline';
+import { StarIcon } from '@heroicons/react/24/solid';
 
 interface EpisodeListProps {
   episodes: WebtoonEpisode[];
