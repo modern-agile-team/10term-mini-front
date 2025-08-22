@@ -28,11 +28,19 @@ function Header({ user }: HeaderProps) {
   };
 
   const handleSearch = () => {
-    if (!inputValue.trim()) {
+    const trimmed = inputValue.trim();
+
+    if (!trimmed) {
       alert('검색어를 입력해주세요.');
       return;
     }
-    navigate(`/search?keyword=${encodeURIComponent(inputValue)}`);
+
+    if (trimmed.length < 2) {
+      alert('2자 이상 입력해주세요.');
+      return;
+    }
+
+    navigate(`/search?keyword=${encodeURIComponent(trimmed)}`);
   };
 
   const [searchParams, setSearchParams] = useSearchParams();
