@@ -35,8 +35,13 @@ export const useWebtoonDetail = (webtoonId: number) => {
         setIsFavorite(webtoonResponse.isFavorite);
         setEpisodes(episodesResponse);
 
+        const largeIndex = Math.floor(Math.random() * largeAdvertisementImages.length);
+        const smallIndex = Math.floor(Math.random() * smallAdvertisementImages.length);
+        setRandomAdvertisementLarge(largeAdvertisementImages[largeIndex]);
+        setRandomAdvertisementSmall(smallAdvertisementImages[smallIndex]);
+
         if (!clickedDay && webtoonResponse.weekdays[0]) {
-          setSearchParams({ day: webtoonResponse.weekdays[0] }, { replace: true });
+          setSearchParams({ day: webtoonResponse.weekdays[0] });
         }
       } catch (err) {
         console.error(err);
@@ -45,16 +50,6 @@ export const useWebtoonDetail = (webtoonId: number) => {
     };
 
     getWebtoonDetail();
-  }, [webtoonId, searchParams]);
-
-  useEffect(() => {
-    const getRandomAdvertisementImage = (images: readonly string[]): string => {
-      const index = Math.floor(Math.random() * images.length);
-      return images[index];
-    };
-
-    setRandomAdvertisementLarge(getRandomAdvertisementImage(largeAdvertisementImages));
-    setRandomAdvertisementSmall(getRandomAdvertisementImage(smallAdvertisementImages));
   }, [webtoonId]);
 
   const handleFavorite = async () => {
