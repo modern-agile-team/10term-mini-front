@@ -18,13 +18,17 @@ export default function WebtoonSearch() {
       <div className="w-2/3">
         <SearchHeader keyword={keyword} totalCount={searchedWebtoons.length} />
         <div className="mt-[20px]">
-          {searchedWebtoons.map((webtoon) => (
-            <SearchedWebtoonItem
-              key={webtoon.id}
-              webtoon={webtoon}
-              getWeekdayLabel={getWeekdayLabel}
-            />
-          ))}
+          {searchedWebtoons.length === 0 ? (
+            <div className="text-center text-gray-500 py-10">검색 결과가 없습니다...</div>
+          ) : (
+            searchedWebtoons.map((webtoon) => (
+              <SearchedWebtoonItem
+                key={webtoon.id}
+                webtoon={webtoon}
+                getWeekdayLabel={getWeekdayLabel}
+              />
+            ))
+          )}
         </div>
       </div>
       <Advertisement largeAdSrc={randomAdvertisementLarge} smallAdSrc={randomAdvertisementSmall} />
