@@ -36,7 +36,7 @@ export const useWebtoonDetail = (webtoonId: number) => {
         setEpisodes(episodesResponse);
 
         if (!clickedDay && webtoonResponse.weekdays[0]) {
-          setSearchParams({ day: webtoonResponse.weekdays[0] });
+          setSearchParams({ day: webtoonResponse.weekdays[0] }, { replace: true });
         }
       } catch (err) {
         console.error(err);
@@ -45,7 +45,7 @@ export const useWebtoonDetail = (webtoonId: number) => {
     };
 
     getWebtoonDetail();
-  }, [webtoonId, searchParams, setSearchParams]);
+  }, [webtoonId, searchParams]);
 
   useEffect(() => {
     const getRandomAdvertisementImage = (images: readonly string[]): string => {
