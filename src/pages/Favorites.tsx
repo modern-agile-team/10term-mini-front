@@ -2,6 +2,7 @@ import { formatDateShort } from '@/utils/date';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import DeleteFavoriteModal from '@/components/DeleteFavoriteModal';
 import useFavorites from '@/hooks/useFavorites';
+import { Link } from 'react-router';
 
 function Favorites() {
   const {
@@ -45,15 +46,20 @@ function Favorites() {
       {favorites.map((webtoon) => (
         <div key={webtoon.webtoonId} className="flex items-center border-b py-4">
           <div className="w-1/3 flex ml-[80px]">
-            <img
-              src={webtoon.thumbnailUrl}
-              alt={webtoon.title}
-              className="w-20 h-28 object-cover rounded"
-            />
+            <Link to={`/webtoon/${webtoon.webtoonId}`}>
+              <img
+                src={webtoon.thumbnailUrl}
+                alt={webtoon.title}
+                className="w-20 h-28 object-cover rounded"
+              />
+            </Link>
           </div>
+
           <div className="w-1/3 text-left ml-[22px]">
-            <p className="text-lg font-semibold">{webtoon.title}</p>
-            <p className="text-sm text-gray-500">{webtoon.writer}</p>
+            <Link to={`/webtoon/${webtoon.webtoonId}`}>
+              <p className="text-lg font-semibold">{webtoon.title}</p>
+              <p className="text-sm text-gray-500">{webtoon.writer}</p>
+            </Link>
           </div>
           <div className="w-1/3 ml-[10px] text-left">
             <p className="text-md text-gray-400">
