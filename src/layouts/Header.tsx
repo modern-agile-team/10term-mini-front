@@ -38,7 +38,7 @@ function Header({ user }: HeaderProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedDay = searchParams.get('day');
 
-  const EXCLUDED_PATHS = ['/favorites', '/mypage'];
+  const EXCLUDED_PATHS = ['/favorites', '/mypage', '/search'];
   const location = useLocation();
 
   return (
