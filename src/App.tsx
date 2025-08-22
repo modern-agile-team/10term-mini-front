@@ -8,6 +8,7 @@ import WebtoonMain from '@/pages/WebtoonMain';
 import Favorites from '@/pages/Favorites';
 import MyPage from '@/pages/MyPage';
 import WebtoonDetail from '@/pages/WebtoonDetail';
+import WebtoonSearch from '@/pages/WebtoonSearch';
 
 function App() {
   useTokenRefresher();

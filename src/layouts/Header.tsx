@@ -27,6 +27,14 @@ function Header({ user }: HeaderProps) {
     setInputValue(event.target.value);
   };
 
+  const handleSearch = () => {
+    if (!inputValue.trim()) {
+      alert('검색어를 입력해주세요.');
+      return;
+    }
+    navigate(`/search?keyword=${encodeURIComponent(inputValue)}`);
+  };
+
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedDay = searchParams.get('day');
 
@@ -54,6 +62,9 @@ function Header({ user }: HeaderProps) {
               type="text"
               value={inputValue}
               onChange={handleInputValue}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSearch();
+              }}
               placeholder="제목/작가로 검색할 수 있습니다."
               maxLength={18}
               className="w-60 pl-3 h-9 text-base
@@ -65,7 +76,9 @@ function Header({ user }: HeaderProps) {
             >
               <XCircleIcon className="w-5 h-5 text-gray-500 cursor-pointer" />
             </button>
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
+            <button onClick={handleSearch}>
+              <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
+            </button>
             &nbsp;&nbsp;
           </div>
           {user ? (
