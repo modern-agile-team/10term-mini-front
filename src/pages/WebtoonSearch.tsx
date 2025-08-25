@@ -10,7 +10,7 @@ import Spinner from '@/assets/spinner.svg';
 
 export default function WebtoonSearch() {
   const [searchParams] = useSearchParams();
-  const keyword = searchParams.get('keyword') as string;
+  const keyword = searchParams.get('keyword') ?? '';
   const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement({
     day: null,
     keyword,
