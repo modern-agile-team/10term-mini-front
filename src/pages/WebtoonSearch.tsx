@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router';
 import { Advertisement } from '@/components/Advertisement';
 import { useAdvertisement } from '@/hooks/useAdvertisement';
 import { useWebtoonSearch } from '@/hooks/useWebtoonSearch';
-import { useWeekdayLabel } from '@/hooks/useWeekdayLabel';
+import { getWeekdayLabel } from '@/utils/weekday';
 import { SearchHeader } from '@/components/SearchHeader';
 import { SearchedWebtoonItem } from '@/components/SearchedWebtoonItem';
 
@@ -14,7 +14,6 @@ export default function WebtoonSearch() {
     keyword,
   });
   const { searchedWebtoons } = useWebtoonSearch(keyword);
-  const { getWeekdayLabel } = useWeekdayLabel();
 
   return (
     <div className="flex justify-between mt-[30px]">

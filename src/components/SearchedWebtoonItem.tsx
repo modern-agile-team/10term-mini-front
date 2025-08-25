@@ -1,10 +1,11 @@
 import { Link } from 'react-router';
 import { formatDateShort } from '@/utils/date';
 import type { SearchedWebtoon } from '@/types/webtoon';
+import type { DayOfWeek } from '@/constants/date.constants';
 
 interface SearchedWebtoonItemProps {
   webtoon: SearchedWebtoon;
-  getWeekdayLabel: (weekdays: string[]) => string;
+  getWeekdayLabel: (weekdays: DayOfWeek[]) => string;
 }
 
 export const SearchedWebtoonItem = ({ webtoon, getWeekdayLabel }: SearchedWebtoonItemProps) => {

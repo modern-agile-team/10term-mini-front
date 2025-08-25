@@ -21,7 +21,7 @@ interface SearchedWebtoon {
   title: string;
   writer: string;
   illustrator: string;
-  weekdays: string[];
+  weekdays: DayOfWeek[];
   description: string;
   thumbnailUrl: string;
   updatedAt: string;
