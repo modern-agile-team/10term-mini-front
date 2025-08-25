@@ -1,5 +1,5 @@
-import naver from '/naver.svg';
-import n from '/n.svg';
+import naver from '@/assets/naver.svg';
+import n from '@/assets/n.svg';
 import { XCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { requestLogout } from '@/apis/auth';
 import { useState } from 'react';

@@ -1,5 +1,5 @@
-import naver from '/naver.svg';
-import logo from '/logo.svg';
+import naver from '@/assets/naver.svg';
+import logo from '@/assets/logo.svg';
 import { Link, useNavigate } from 'react-router';
 
 function Welcome() {

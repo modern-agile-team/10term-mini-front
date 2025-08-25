@@ -1,5 +1,5 @@
 import { XCircleIcon, CheckCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import naver from '/naver.svg';
+import naver from '@/assets/naver.svg';
 import { Link } from 'react-router';
 import useSignup from '../hooks/useSignup';
 
