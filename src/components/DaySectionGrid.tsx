@@ -1,7 +1,12 @@
 import type { Webtoon } from '../types/webtoon.ts';
 import WebtoonCard from './WebtoonCard.tsx';
 
-function DaySectionGrid({ webtoons }: { webtoons: Webtoon[] }) {
+interface DaySectionGridProps {
+  webtoons: Webtoon[];
+  clickedDay?: string;
+}
+
+function DaySectionGrid({ webtoons, clickedDay }: DaySectionGridProps) {
   return (
     <ul
       className={` 
@@ -17,6 +22,7 @@ function DaySectionGrid({ webtoons }: { webtoons: Webtoon[] }) {
             thumbnailUrl={webtoon.thumbnailUrl}
             averageRating={webtoon.averageRating}
             withBorder
+            clickedDay={clickedDay}
           />
         </li>
       ))}

@@ -48,14 +48,15 @@ function WebtoonMain() {
         {selectedDay ? (
           <DaySectionGrid
             key={selectedDay}
-            webtoons={webtoons.filter((w) => w.weekdays.includes(selectedDay as DayOfWeek))}
+            webtoons={webtoons.filter((w) => w.weekday.includes(selectedDay as DayOfWeek))}
+            clickedDay={selectedDay}
           />
         ) : (
           days.map((day) => (
             <DaySectionList
               key={day}
               day={day}
-              webtoons={webtoons.filter((w) => w.weekdays.includes(day))}
+              webtoons={webtoons.filter((w) => w.weekday.includes(day))}
             />
           ))
         )}
