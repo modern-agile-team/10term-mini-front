@@ -2,8 +2,8 @@ import type { WebtoonDetailInfo, WebtoonEpisode } from '@/types/webtoonDetail';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 import {
-  largeAdvertisementImages,
-  smallAdvertisementImages,
+  LARGE_ADVERTISEMENT_IMAGES,
+  SMALL_ADVERTISEMENT_IMAGES,
 } from '@/constants/advertisement.constants';
 import {
   requestAddFavorite,
@@ -35,10 +35,10 @@ export const useWebtoonDetail = (webtoonId: number) => {
         setIsFavorite(webtoonResponse.isFavorite);
         setEpisodes(episodesResponse);
 
-        const largeIndex = Math.floor(Math.random() * largeAdvertisementImages.length);
-        const smallIndex = Math.floor(Math.random() * smallAdvertisementImages.length);
-        setRandomAdvertisementLarge(largeAdvertisementImages[largeIndex]);
-        setRandomAdvertisementSmall(smallAdvertisementImages[smallIndex]);
+        const largeIndex = Math.floor(Math.random() * LARGE_ADVERTISEMENT_IMAGES.length);
+        const smallIndex = Math.floor(Math.random() * SMALL_ADVERTISEMENT_IMAGES.length);
+        setRandomAdvertisementLarge(LARGE_ADVERTISEMENT_IMAGES[largeIndex]);
+        setRandomAdvertisementSmall(SMALL_ADVERTISEMENT_IMAGES[smallIndex]);
 
         if (!clickedDay && webtoonResponse.weekdays[0]) {
           setSearchParams({ day: webtoonResponse.weekdays[0] }, { replace: true });
