@@ -9,7 +9,7 @@ function WebtoonCard({
   averageRating,
   withBorder = false,
   clickedDay,
-}: Omit<Webtoon, 'weekdays'> & { withBorder?: boolean; clickedDay?: string }) {
+}: Omit<Webtoon, 'weekday'> & { withBorder?: boolean; clickedDay?: string }) {
   return (
     <div>
       <Link to={`/webtoon/${id}?day=${clickedDay}`} className="block">
