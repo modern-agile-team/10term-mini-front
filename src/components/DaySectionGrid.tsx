@@ -1,7 +1,12 @@
 import type { Webtoon } from '../types/webtoon.ts';
 import WebtoonCard from './WebtoonCard.tsx';
 
-function DaySectionGrid({ webtoons, clickedDay }: { webtoons: Webtoon[]; clickedDay?: string }) {
+interface DaySectionGridProps {
+  webtoons: Webtoon[];
+  clickedDay?: string;
+}
+
+function DaySectionGrid({ webtoons, clickedDay }: DaySectionGridProps) {
   return (
     <ul
       className={` 

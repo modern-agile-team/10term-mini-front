@@ -3,7 +3,12 @@ import WebtoonCard from './WebtoonCard.tsx';
 import { DAY_MAPPING, DAYS } from '@/constants/date.constants.ts';
 import type { DayOfWeek } from '@/constants/date.constants.ts';
 
-function DaySectionList({ day, webtoons }: { day: DayOfWeek; webtoons: Webtoon[] }) {
+interface DaySectionListProps {
+  day: DayOfWeek;
+  webtoons: Webtoon[];
+}
+
+function DaySectionList({ day, webtoons }: DaySectionListProps) {
   const todayKey: DayOfWeek = DAYS[new Date().getDay()];
   const isActive = day === todayKey;
 

@@ -2,6 +2,11 @@ import { Link } from 'react-router';
 import type { Webtoon } from '../types/webtoon';
 import { StarIcon } from '@heroicons/react/24/solid';
 
+type WebtoonCardProps = Omit<Webtoon, 'weekday'> & {
+  withBorder?: boolean;
+  clickedDay?: string;
+};
+
 function WebtoonCard({
   id,
   title,
@@ -9,7 +14,7 @@ function WebtoonCard({
   averageRating,
   withBorder = false,
   clickedDay,
-}: Omit<Webtoon, 'weekday'> & { withBorder?: boolean; clickedDay?: string }) {
+}: WebtoonCardProps) {
   return (
     <div>
       <Link to={`/webtoon/${id}?day=${clickedDay}`} className="block">
