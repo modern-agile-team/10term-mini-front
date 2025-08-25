@@ -13,7 +13,10 @@ export const useWebtoonDetail = (webtoonId: number) => {
   const [error, setError] = useState<string>('');
   const [isFavorite, setIsFavorite] = useState(false);
   const [episodes, setEpisodes] = useState<WebtoonEpisode[]>([]);
-  const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement(clickedDay, null);
+  const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement({
+    day: clickedDay,
+    keyword: null,
+  });
 
   const { toggleFavorite: handleFavorite, shareWebtoon: handleShare } = useWebtoonActions({
     webtoonId,

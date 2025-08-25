@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import type { DayOfWeek } from '@/constants/date.constants';
 import { getRandomAdImages } from '@/utils/advertisement';
 
-export const useAdvertisement = (day: DayOfWeek | null, keyword?: string | null) => {
+interface AdvertisementProps {
+  day: DayOfWeek | null;
+  keyword: string | null;
+}
+
+export const useAdvertisement = ({ day, keyword }: AdvertisementProps) => {
   const [randomAdvertisementLarge, setRandomAdvertisementLarge] = useState<string>('');
   const [randomAdvertisementSmall, setRandomAdvertisementSmall] = useState<string>('');
 
