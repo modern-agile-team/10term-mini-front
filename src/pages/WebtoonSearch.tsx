@@ -6,6 +6,8 @@ import { getWeekdayLabel } from '@/utils/weekday';
 import { SearchHeader } from '@/components/SearchHeader';
 import { SearchedWebtoonItem } from '@/components/SearchedWebtoonItem';
 
+import Spinner from '@/assets/spinner.svg';
+
 export default function WebtoonSearch() {
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get('keyword') as string;
@@ -13,23 +15,38 @@ export default function WebtoonSearch() {
     day: null,
     keyword,
   });
-  const { searchedWebtoons } = useWebtoonSearch(keyword);
+
+  const { searchedWebtoons, isLoading, error } = useWebtoonSearch(keyword);
 
   return (
     <div className="flex justify-between mt-[30px]">
       <div className="w-2/3">
         <SearchHeader keyword={keyword} totalCount={searchedWebtoons.length} />
         <div className="mt-[20px]">
-          {searchedWebtoons.length === 0 ? (
-            <div className="text-center text-gray-500 py-10">검색 결과가 없습니다...</div>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-10">
+              <img src={Spinner} alt="로딩 중" className="animate-spin h-8 w-8" />
+            </div>
           ) : (
-            searchedWebtoons.map((webtoon) => (
-              <SearchedWebtoonItem
-                key={webtoon.id}
-                webtoon={webtoon}
-                getWeekdayLabel={getWeekdayLabel}
-              />
-            ))
+            <>
+              {error ? (
+                <div className="text-center text-red-500 py-10">{error}</div>
+              ) : (
+                <>
+                  {searchedWebtoons.length === 0 ? (
+                    <div className="text-center text-gray-500 py-10">검색 결과가 없습니다...</div>
+                  ) : (
+                    searchedWebtoons.map((webtoon) => (
+                      <SearchedWebtoonItem
+                        key={webtoon.id}
+                        webtoon={webtoon}
+                        getWeekdayLabel={getWeekdayLabel}
+                      />
+                    ))
+                  )}
+                </>
+              )}
+            </>
           )}
         </div>
       </div>
