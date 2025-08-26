@@ -7,9 +7,15 @@ interface WebtoonFeedbackProps {
   hasRated: boolean | null;
   myRating: number | null;
   episodeId: number;
+  isLoggedIn: boolean;
 }
 
-export default function WebtoonFeedback({ hasRated, myRating, episodeId }: WebtoonFeedbackProps) {
+export default function WebtoonFeedback({
+  hasRated,
+  myRating,
+  episodeId,
+  isLoggedIn,
+}: WebtoonFeedbackProps) {
   const [selectedRating, setSelectedRating] = useState(0);
   const [myScore, setMyScore] = useState(myRating);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +23,11 @@ export default function WebtoonFeedback({ hasRated, myRating, episodeId }: Webto
   const [localRated, setLocalRated] = useState(false);
 
   const handleRate = async (score: number) => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
     try {
       await submitRating(episodeId, score);
       setMyScore(score);
@@ -35,7 +46,13 @@ export default function WebtoonFeedback({ hasRated, myRating, episodeId }: Webto
       <RatingStatus
         isRated={hasRated || localRated}
         myScore={myScore}
-        onRateClick={() => setIsModalOpen(true)}
+        onRateClick={() => {
+          if (!isLoggedIn) {
+            alert('로그인이 필요합니다.');
+            return;
+          }
+          setIsModalOpen(true);
+        }}
       />
 
       <RatingModal

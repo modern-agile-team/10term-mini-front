@@ -10,6 +10,7 @@ export default function WebtoonViewer() {
   const { episodeid } = useParams();
   const feedbackRef = useRef<HTMLDivElement | null>(null);
   const { isLoading, isImageLoading, episode, handleImageLoad } = useWebtoonViewer(episodeid);
+  const isLoggedIn = Boolean(localStorage.getItem('user'));
 
   if (isLoading) {
     return (
@@ -48,6 +49,7 @@ export default function WebtoonViewer() {
             hasRated={episode.hasRated}
             myRating={episode.myRating}
             episodeId={episode.episodeNo}
+            isLoggedIn={isLoggedIn}
           />
         </div>
       </div>
