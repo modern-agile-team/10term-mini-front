@@ -31,7 +31,7 @@ function MyPage() {
   } = useMyPage();
 
   return (
-    <div className="m-20">
+    <div className="w-[1190px] mx-auto m-20">
       <div>
         <p className="mr-4 py-1 text-3xl font-semibold">프로필 수정</p>
         <p className="mr-4 py-1 text-gray-400">네이버 별명과 비밀번호를 수정하실 수 있습니다.</p>

@@ -23,7 +23,7 @@ export default function WebtoonDetail() {
   if (!webtoonDetail) return <div>Loading...</div>;
 
   return (
-    <div className="flex justify-between">
+    <div className="flex w-[1190px] mx-auto justify-between">
       <div className="w-2/3">
         <WebtoonInfo {...webtoonDetail} />
         <WebtoonActionButtons
