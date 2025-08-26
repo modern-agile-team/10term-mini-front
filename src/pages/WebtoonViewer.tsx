@@ -48,7 +48,7 @@ export default function WebtoonViewer() {
           <WebtoonFeedback
             hasRated={episode.hasRated}
             myRating={episode.myRating}
-            episodeId={episode.episodeNo}
+            episodeId={episode.id}
             isLoggedIn={isLoggedIn}
           />
         </div>
