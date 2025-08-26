@@ -8,7 +8,7 @@ export function useWebtoonViewer(episodeId: string | undefined) {
   const [episode, setEpisode] = useState<WebtoonViewerEpisode | null>(null);
 
   useEffect(() => {
-    const fetchEpisode = async () => {
+    const getEpisode = async () => {
       if (!episodeId) return;
       setIsLoading(true);
       try {
@@ -22,7 +22,7 @@ export function useWebtoonViewer(episodeId: string | undefined) {
       }
     };
 
-    fetchEpisode();
+    getEpisode();
   }, [episodeId]);
 
   const handleImageLoad = () => {
