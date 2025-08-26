@@ -12,13 +12,11 @@ export const useAdvertisement = ({ day, keyword }: AdvertisementProps) => {
   const [randomAdvertisementSmall, setRandomAdvertisementSmall] = useState<string>('');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    if (day || keyword) {
       const { large, small } = getRandomAdImages();
       setRandomAdvertisementLarge(large);
       setRandomAdvertisementSmall(small);
-    }, 100);
-
-    return () => clearTimeout(timer);
+    }
   }, [day, keyword]);
 
   return {
