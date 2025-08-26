@@ -5,12 +5,19 @@ import WebtoonViewerHeader from '@/components/WebtoonViewerHeader';
 import ScrollController from '@/components/ScrollController';
 import Spinner from '@/assets/spinner.svg';
 import { useWebtoonViewer } from '@/hooks/useWebtoonViewer';
+import { useAdvertisement } from '@/hooks/useAdvertisement';
+import { Advertisement } from '@/components/Advertisement';
 
 export default function WebtoonViewer() {
   const { episodeid } = useParams();
   const feedbackRef = useRef<HTMLDivElement | null>(null);
   const { isLoading, isImageLoading, episode, handleImageLoad } = useWebtoonViewer(episodeid);
   const isLoggedIn = Boolean(localStorage.getItem('user'));
+  const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement({
+    day: null,
+    keyword: null,
+    isViewer: true,
+  });
 
   if (isLoading) {
     return (
@@ -54,7 +61,13 @@ export default function WebtoonViewer() {
         </div>
       </div>
 
-      <div>{/* 댓글창, 광고창 */}</div>
+      <div className="flex justify-between w-[1190px] mx-auto">
+        <div className="w-2/3">댓글창</div>
+        <Advertisement
+          largeAdSrc={randomAdvertisementLarge}
+          smallAdSrc={randomAdvertisementSmall}
+        />
+      </div>
     </>
   );
 }

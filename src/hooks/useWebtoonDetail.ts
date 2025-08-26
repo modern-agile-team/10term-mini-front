@@ -16,6 +16,7 @@ export const useWebtoonDetail = (webtoonId: number) => {
   const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement({
     day: clickedDay,
     keyword: null,
+    isViewer: false,
   });
 
   const { toggleFavorite: handleFavorite, shareWebtoon: handleShare } = useWebtoonActions({

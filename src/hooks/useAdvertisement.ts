@@ -5,14 +5,15 @@ import { getRandomAdImages } from '@/utils/advertisement';
 interface AdvertisementProps {
   day: DayOfWeek | null;
   keyword: string | null;
+  isViewer: boolean | null;
 }
 
-export const useAdvertisement = ({ day, keyword }: AdvertisementProps) => {
+export const useAdvertisement = ({ day, keyword, isViewer }: AdvertisementProps) => {
   const [randomAdvertisementLarge, setRandomAdvertisementLarge] = useState<string>('');
   const [randomAdvertisementSmall, setRandomAdvertisementSmall] = useState<string>('');
 
   useEffect(() => {
-    if (day || keyword) {
+    if (day || keyword || isViewer) {
       const { large, small } = getRandomAdImages();
       setRandomAdvertisementLarge(large);
       setRandomAdvertisementSmall(small);

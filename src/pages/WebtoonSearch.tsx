@@ -14,6 +14,7 @@ export default function WebtoonSearch() {
   const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement({
     day: null,
     keyword,
+    isViewer: false,
   });
 
   const { searchedWebtoons, isLoading, error } = useWebtoonSearch(keyword);
