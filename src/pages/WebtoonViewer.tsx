@@ -11,17 +11,21 @@ export default function WebtoonViewer() {
   const { episodeid } = useParams();
   const feedbackRef = useRef<HTMLDivElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const [episode, setEpisode] = useState<WebtoonViewerEpisode | null>(null);
 
   useEffect(() => {
     const fetchEpisode = async () => {
       if (!episodeid) return;
+      setIsLoading(true);
       try {
         const data = await requestWebtoonEpisode(Number(episodeid));
         await increaseViewCount(Number(episodeid));
         setEpisode(data);
       } catch (error) {
         console.error('에피소드 로딩 실패:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -29,10 +33,18 @@ export default function WebtoonViewer() {
   }, [episodeid]);
 
   const handleLoad = () => {
-    setIsLoading(false);
+    setIsImageLoading(false);
   };
 
-  if (!episode) return <div>로딩 중...</div>;
+  if (isLoading) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <img src={Spinner} alt="로딩 중" className="animate-spin h-8 w-8" />
+      </div>
+    );
+  }
+
+  if (!episode) return <div>에피소드를 찾을 수 없습니다...</div>;
 
   return (
     <>
@@ -44,16 +56,16 @@ export default function WebtoonViewer() {
           episodeTitle={episode.episodeTitle}
         />
         <div className="w-[1190px] mx-auto mt-10 mb-20 justify-center items-center flex">
-          {isLoading && (
+          {isImageLoading && (
             <div className="flex justify-center items-center py-10">
-              <img src={Spinner} alt="로딩 중" className="animate-spin h-8 w-8" />
+              <img src={Spinner} alt="이미지 로딩 중" className="animate-spin h-8 w-8" />
             </div>
           )}
           <img
             src={episode.fullImgUrl}
             alt="웹툰 이미지"
             onLoad={handleLoad}
-            className={isLoading ? 'hidden' : 'block'}
+            className={isImageLoading ? 'hidden' : 'block'}
           />
         </div>
         <div ref={feedbackRef}>
