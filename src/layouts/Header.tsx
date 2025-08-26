@@ -52,7 +52,7 @@ function Header({ user }: HeaderProps) {
 
   return (
     <header className="">
-      <div className="h-15 flex items-center justify-between">
+      <div className="w-[1190px] mx-auto h-15 flex items-center justify-between">
         {/* HeaderTop */}
         <h1 className="flex">
           <Link to="/" className="font-interblack text-lg">
@@ -109,7 +109,7 @@ function Header({ user }: HeaderProps) {
         </div>
       </div>
       <hr />
-      <div className="h-15 flex items-center justify-between">
+      <div className="w-[1190px] mx-auto h-15 flex items-center justify-between">
         {/* HeaderNav */}
         <nav>
           <ul className="flex text-[17px] font-pretendard font-normal">
@@ -166,7 +166,7 @@ function Header({ user }: HeaderProps) {
       <hr />
       {!EXCLUDED_PATHS.includes(location.pathname) && (
         <>
-          <div className="h-12 flex items-center justify-between">
+          <div className="w-[1190px] mx-auto h-12 flex items-center justify-between">
             {/* HeaderDay */}
             <nav>
               <ul className="flex gap-6 text-[15px] font-pretendard font-semibold">
