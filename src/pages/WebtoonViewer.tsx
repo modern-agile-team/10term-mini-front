@@ -1,10 +1,17 @@
+import { useRef, useState } from 'react';
 import WebtoonFeedback from '@/components/WebtoonFeedback';
 import WebtoonViewerHeader from '@/components/WebtoonViewerHeader';
 import ScrollController from '@/components/ScrollController';
-import { useRef } from 'react';
+import Spinner from '@/assets/spinner.svg';
+import episode from '@/assets/epsiode.webp';
 
 export default function WebtoonViewer() {
   const feedbackRef = useRef<HTMLDivElement | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleLoad = () => {
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -16,7 +23,17 @@ export default function WebtoonViewer() {
           episodeTitle="테스트 에피소드 제목"
         />
         <div className="w-[1190px] mx-auto mt-10 justify-center items-center flex">
-          <img src="https://i.ibb.co/Kzb11gWP/1-1.webp" />
+          {isLoading && (
+            <div className="flex justify-center items-center py-10">
+              <img src={Spinner} alt="로딩 중" className="animate-spin h-8 w-8" />
+            </div>
+          )}
+          <img
+            src={episode}
+            alt="웹툰 이미지"
+            onLoad={handleLoad}
+            className={isLoading ? 'hidden' : 'block'}
+          />
         </div>
         <div ref={feedbackRef}>
           <WebtoonFeedback likeCount={9727} ratingAvg={9.94} ratingCount={9751} />
