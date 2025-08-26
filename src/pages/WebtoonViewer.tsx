@@ -1,40 +1,15 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { useParams } from 'react-router';
 import WebtoonFeedback from '@/components/WebtoonFeedback';
 import WebtoonViewerHeader from '@/components/WebtoonViewerHeader';
 import ScrollController from '@/components/ScrollController';
 import Spinner from '@/assets/spinner.svg';
-import { increaseViewCount, requestWebtoonEpisode } from '@/apis/webtoonViewer';
-import type { WebtoonViewerEpisode } from '@/types/webtoonViewer';
+import { useWebtoonViewer } from '@/hooks/useWebtoonViewer';
 
 export default function WebtoonViewer() {
   const { episodeid } = useParams();
   const feedbackRef = useRef<HTMLDivElement | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isImageLoading, setIsImageLoading] = useState(true);
-  const [episode, setEpisode] = useState<WebtoonViewerEpisode | null>(null);
-
-  useEffect(() => {
-    const fetchEpisode = async () => {
-      if (!episodeid) return;
-      setIsLoading(true);
-      try {
-        const data = await requestWebtoonEpisode(Number(episodeid));
-        await increaseViewCount(Number(episodeid));
-        setEpisode(data);
-      } catch (error) {
-        console.error('에피소드 로딩 실패:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchEpisode();
-  }, [episodeid]);
-
-  const handleLoad = () => {
-    setIsImageLoading(false);
-  };
+  const { isLoading, isImageLoading, episode, handleImageLoad } = useWebtoonViewer(episodeid);
 
   if (isLoading) {
     return (
@@ -64,7 +39,7 @@ export default function WebtoonViewer() {
           <img
             src={episode.fullImgUrl}
             alt="웹툰 이미지"
-            onLoad={handleLoad}
+            onLoad={handleImageLoad}
             className={isImageLoading ? 'hidden' : 'block'}
           />
         </div>
