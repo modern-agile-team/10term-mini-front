@@ -15,7 +15,7 @@ export default function WebtoonViewerHeader({
   const navigate = useNavigate();
 
   return (
-    <div className="h-16 bg-gray-200 text-black flex items-center">
+    <div className="w-full h-16 bg-gray-200 text-black flex items-center">
       <div className="flex w-[1190px] mx-auto items-center">
         <button onClick={() => navigate(-1)}>
           <ChevronLeftIcon className="w-5 h-5" />
