@@ -3,16 +3,15 @@ function Footer() {
     <>
       <footer className="">
         <div className="h-15 mt-[30px] pb-[10px] border-b flex items-center justify-between text-[17px] font-pretendard font-semibold">
-          {/* footerLink */}
           <a href="/">웹툰</a>
-          <a href="/customer">웹툰 고객센터</a>
+          <a href="#">웹툰 고객센터</a>
         </div>
         <div className="flex font-pretendard text-[12px]/6 text-gray-700 mt-[30px]">
           <div className="border-r w-[616px]">
             <ul className="list-none flex flex-wrap">
               <li>
                 <a className="border-r pr-2" href="#">
-                  네이버웹툰 이용약관
+                  인덕툰 이용약관
                 </a>
               </li>
               <li>
@@ -51,7 +50,7 @@ function Footer() {
                 </a>
               </li>
               <li className="w-full font-inter">
-                <p>&copy; NAVER WEBTOON Limited.</p>
+                <p>&copy; Modern Agile 10term.</p>
               </li>
             </ul>
           </div>
@@ -74,26 +73,24 @@ function Footer() {
             <a className="pr-2" href="#">
               저작권침해신고
             </a>
-            <p className="w-full">&copy; NAVER CORP.</p>
+            <p className="w-full">&copy; Modern Agile 10term.</p>
           </div>
         </div>
-        {/* 회사 정보 */}
         <div className="text-gray-700 text-[12px]/6 mt-[30px] leading-relaxed">
           <p>
-            네이버웹툰(유) 대표이사 김준구 | 사업자등록번호 669-86-01888 | 통신판매업 신고번호
-            2020-성남분당B-0719 (사업자정보확인)
+            인덕툰 대표이사 박인덕 | 사업자등록번호 000-00-00000 | 통신판매업 신고번호
+            0000-서울노원0-0000 (뻥이에용)
           </p>
           <p>
-            주소 경기도 성남시 분당구 불정로 6 그린팩토리, 6-10층 | 고객센터 1588-3820 | 이메일
-            ccnaver@naver.com | 호스팅 서비스 제공 NAVER Cloud
+            주소 서울특별시 노원구 초안산로 12 | 고객센터 02-950-7000 | 이메일 induktoon@example.com
           </p>
         </div>
 
-        {/* 저작권 안내 */}
         <div className="text-gray-700 text-[12px]/6 mt-[30px]">
           <p>
-            모든 콘텐츠의 저작권은 저작권자 또는 제공자에 있으며, 이를 무단으로 이용하는 경우 관련
-            법령에 따라 법적 책임을 질 수 있습니다.
+            이 사이트는 인덕대학교 소프트웨어 개발 동아리 모던 애자일 10기의 미니 프로젝트로 제작된
+            가상의 서비스입니다. 실제 기업 또는 서비스와 무관하며 절대 불법을 조장하지 않습니다.
+            진짜로요
           </p>
         </div>
       </footer>

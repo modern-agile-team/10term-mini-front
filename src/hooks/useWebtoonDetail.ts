@@ -1,9 +1,9 @@
 import type { WebtoonDetailInfo, WebtoonEpisode } from '@/types/webtoonDetail';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
+import { useAdvertisement } from '@/hooks/useAdvertisement';
 import { requestWebtoonDetail, requestWebtoonEpisodes } from '@/apis/webtoonDetail';
 import type { DayOfWeek } from '@/constants/date.constants';
-import { getRandomAdImages } from '@/utils/advertisement';
 import { useWebtoonActions } from '@/hooks/useWebtoonActions';
 
 export const useWebtoonDetail = (webtoonId: number) => {
@@ -13,8 +13,10 @@ export const useWebtoonDetail = (webtoonId: number) => {
   const [error, setError] = useState<string>('');
   const [isFavorite, setIsFavorite] = useState(false);
   const [episodes, setEpisodes] = useState<WebtoonEpisode[]>([]);
-
-  const { large: randomAdvertisementLarge, small: randomAdvertisementSmall } = getRandomAdImages();
+  const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement({
+    day: clickedDay,
+    keyword: null,
+  });
 
   const { toggleFavorite: handleFavorite, shareWebtoon: handleShare } = useWebtoonActions({
     webtoonId,

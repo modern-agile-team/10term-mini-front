@@ -12,6 +12,8 @@ interface HeaderProps {
   } | null;
 }
 
+const EXCLUDED_PATHS = ['/favorites', '/mypage', '/search'] as const;
+
 function Header({ user }: HeaderProps) {
   const navigate = useNavigate();
 
@@ -27,10 +29,25 @@ function Header({ user }: HeaderProps) {
     setInputValue(event.target.value);
   };
 
+  const handleSearch = () => {
+    const trimmed = inputValue.trim();
+
+    if (!trimmed) {
+      alert('검색어를 입력해주세요.');
+      return;
+    }
+
+    if (trimmed.length < 2) {
+      alert('2자 이상 입력해주세요.');
+      return;
+    }
+
+    navigate(`/search?keyword=${encodeURIComponent(trimmed)}`);
+  };
+
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedDay = searchParams.get('day');
 
-  const EXCLUDED_PATHS = ['/favorites', '/mypage'];
   const location = useLocation();
 
   return (
@@ -46,9 +63,14 @@ function Header({ user }: HeaderProps) {
           </Link>
         </h1>
         <div className="flex items-center justify-between">
-          <div
+          <form
+            role="search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSearch();
+            }}
             className="flex items-center border my-[14px] mr-[18px] gap-x-2
-          group focus-within:outline focus-within:outline-2 focus-within:outline-blue-500 rounded-sm"
+    group focus-within:outline focus-within:outline-2 focus-within:outline-blue-500 rounded-sm"
           >
             <input
               type="text"
@@ -56,18 +78,19 @@ function Header({ user }: HeaderProps) {
               onChange={handleInputValue}
               placeholder="제목/작가로 검색할 수 있습니다."
               maxLength={18}
-              className="w-60 pl-3 h-9 text-base
-            focus:outline-none"
+              className="w-60 pl-3 h-9 text-base focus:outline-none"
             />
             <button
+              type="button"
               onClick={() => setInputValue('')}
               className={inputValue ? '' : 'opacity-0 pointer-events-none'}
             >
               <XCircleIcon className="w-5 h-5 text-gray-500 cursor-pointer" />
             </button>
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
-            &nbsp;&nbsp;
-          </div>
+            <button type="submit">
+              <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
+            </button>
+          </form>
           {user ? (
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-600">{user.nickname}님</span>
