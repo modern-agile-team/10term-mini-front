@@ -1,32 +1,52 @@
-import { HeartIcon, StarIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+import { submitRating } from '@/apis/webtoonViewer';
+import RatingModal from './RatingModal';
+import RatingStatus from './RatingStatus';
 
 interface WebtoonFeedbackProps {
-  likeCount: number;
-  ratingAvg: number;
-  ratingCount: number;
+  hasRated: boolean | null;
+  myRating: number | null;
+  episodeId: number;
 }
 
-export default function WebtoonFeedback({
-  likeCount,
-  ratingAvg,
-  ratingCount,
-}: WebtoonFeedbackProps) {
+export default function WebtoonFeedback({ hasRated, myRating, episodeId }: WebtoonFeedbackProps) {
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [myScore, setMyScore] = useState(myRating);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [localRated, setLocalRated] = useState(false);
+
+  const handleRate = async (score: number) => {
+    try {
+      await submitRating(episodeId, score);
+      setMyScore(score);
+      setSelectedRating(0);
+      setIsModalOpen(false);
+      setLocalRated(true);
+      alert(`${score}점이 등록되었습니다.`);
+    } catch (e) {
+      console.error('별점 등록 실패', e);
+      alert('별점 등록에 실패했습니다.');
+    }
+  };
+
   return (
     <div className="mb-28 flex border divide-x">
-      <div className="w-[300px] h-[120px] flex flex-col items-center justify-center text-center">
-        <HeartIcon className="w-6 h-6 mb-1 text-black" />
-        <p className="text-sm font-medium">좋아요</p>
-        <p className="text-sm text-gray-400">{likeCount.toLocaleString()}</p>
-      </div>
+      <RatingStatus
+        isRated={hasRated || localRated}
+        myScore={myScore}
+        onRateClick={() => setIsModalOpen(true)}
+      />
 
-      <div className="w-[300px] h-[120px] flex flex-col items-center justify-center text-center">
-        <div className="flex items-center gap-1 mb-1">
-          <StarIcon className="w-5 h-5 text-red-500" />
-          <span className="text-red-500 font-semibold">{ratingAvg.toFixed(2)}</span>
-        </div>
-        <p className="text-sm font-medium">별점주기</p>
-        <p className="text-sm text-gray-400">{ratingCount.toLocaleString()} 참여</p>
-      </div>
+      <RatingModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleRate}
+        selectedRating={selectedRating}
+        setSelectedRating={setSelectedRating}
+        hoverRating={hoverRating}
+        setHoverRating={setHoverRating}
+      />
     </div>
   );
 }
