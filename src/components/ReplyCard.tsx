@@ -1,5 +1,6 @@
 import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/react/24/solid';
 import type { Comment } from '@/types/comment';
+import { formatDateFull } from '@/utils/date';
 
 interface ReplyCardProps {
   childComment: Comment;
@@ -16,9 +17,7 @@ const ReplyCard = ({ childComment, maskUsername }: ReplyCardProps) => {
             <span>{childComment.user.nickname}</span>
             <span>({maskUsername(childComment.user.username)})</span>
           </div>
-          <span className="text-gray-500 text-sm">
-            {new Date(childComment.createdAt).toLocaleString()}
-          </span>
+          <span className="text-gray-500 text-sm">{formatDateFull(childComment.createdAt)}</span>
         </div>
         <div className="my-3">
           <p className="whitespace-pre-wrap">{childComment.content}</p>

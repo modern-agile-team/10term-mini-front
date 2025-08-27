@@ -4,6 +4,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import ReplyCard from './ReplyCard';
 import ReplyInput from './ReplyInput';
+import { formatDateFull } from '@/utils/date';
 
 interface CommentCardProps {
   comment: Comment;
@@ -44,9 +45,7 @@ const CommentCard = ({ comment }: CommentCardProps) => {
             <span>{comment.user.nickname}</span>
             <span>({maskUsername(comment.user.username)})</span>
           </div>
-          <span className="text-gray-500 text-sm">
-            {new Date(comment.createdAt).toLocaleString()}
-          </span>
+          <span className="text-gray-500 text-sm">{formatDateFull(comment.createdAt)}</span>
         </div>
 
         {/* 오른쪽: 점 세 개 버튼과 드롭다운 메뉴 */}
