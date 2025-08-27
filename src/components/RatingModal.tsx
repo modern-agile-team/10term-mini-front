@@ -11,7 +11,7 @@ interface RatingModalProps {
   setHoverRating: (rating: number) => void;
 }
 
-export default function RatingModal({
+const RatingModal = ({
   isOpen,
   onClose,
   onConfirm,
@@ -19,7 +19,7 @@ export default function RatingModal({
   setSelectedRating,
   hoverRating,
   setHoverRating,
-}: RatingModalProps) {
+}: RatingModalProps) => {
   const handleStarHover = (starIndex: number, position: number) => {
     const rating = starIndex * 2 + (position < 0.5 ? 1 : 2);
     setHoverRating(rating);
@@ -89,4 +89,6 @@ export default function RatingModal({
       </div>
     </div>
   );
-}
+};
+
+export default RatingModal;
