@@ -5,7 +5,11 @@ interface ScrollControllerProps {
 }
 
 export default function ScrollController({ targetRef }: ScrollControllerProps) {
-  const scrollToBottom = () => {
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleScrollToBottom = () => {
     if (targetRef?.current) {
       targetRef.current.scrollIntoView({ behavior: 'smooth' });
     } else {
@@ -17,7 +21,7 @@ export default function ScrollController({ targetRef }: ScrollControllerProps) {
     <div className="flex flex-col items-center space-y-4 fixed right-8 bottom-12 z-50">
       <button
         aria-label="Scroll to top"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onClick={handleScrollToTop}
         className="w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow"
       >
         <ChevronUpIcon className="w-6 h-6 text-black" />
@@ -25,7 +29,7 @@ export default function ScrollController({ targetRef }: ScrollControllerProps) {
 
       <button
         aria-label="Scroll to bottom"
-        onClick={scrollToBottom}
+        onClick={handleScrollToBottom}
         className="w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow"
       >
         <ChevronDownIcon className="w-6 h-6 text-black" />
