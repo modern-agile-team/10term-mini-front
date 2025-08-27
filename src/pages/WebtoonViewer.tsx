@@ -7,6 +7,7 @@ import Spinner from '@/assets/spinner.svg';
 import { useWebtoonViewer } from '@/hooks/useWebtoonViewer';
 import { useAdvertisement } from '@/hooks/useAdvertisement';
 import { Advertisement } from '@/components/Advertisement';
+import CommentSection from '@/components/CommentSection';
 
 export default function WebtoonViewer() {
   const { episodeid } = useParams();
@@ -55,14 +56,14 @@ export default function WebtoonViewer() {
           <WebtoonFeedback
             hasRated={episode.hasRated}
             myRating={episode.myRating}
-            episodeId={episode.episodeNo}
+            episodeId={episode.id}
             isLoggedIn={isLoggedIn}
           />
         </div>
       </div>
 
       <div className="flex justify-between w-[1190px] mx-auto">
-        <div className="w-2/3">댓글창</div>
+        <CommentSection episodeId={episode.id} />
         <Advertisement
           largeAdSrc={randomAdvertisementLarge}
           smallAdSrc={randomAdvertisementSmall}
