@@ -29,7 +29,7 @@ function WebtoonMain() {
   const webtoons = useWebtoons(sort, selectedDay);
 
   return (
-    <div className="mt-[25px]">
+    <div className="w-[1190px] mx-auto mt-[25px]">
       <div className={`mb-2 text-sm flex items-center ${selectedDay ? 'justify-between' : ''}`}>
         <SectionTitle day={selectedDay}></SectionTitle>
         <div className="flex items-center">

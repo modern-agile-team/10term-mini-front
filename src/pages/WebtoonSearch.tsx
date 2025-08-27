@@ -19,7 +19,7 @@ export default function WebtoonSearch() {
   const { searchedWebtoons, isLoading, error } = useWebtoonSearch(keyword);
 
   return (
-    <div className="flex justify-between mt-[30px]">
+    <div className="w-[1190px] mx-auto flex justify-between mt-[30px]">
       <div className="w-2/3">
         <SearchHeader keyword={keyword} totalCount={searchedWebtoons.length} />
         <div className="mt-[20px]">

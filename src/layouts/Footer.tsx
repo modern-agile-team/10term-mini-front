@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <>
-      <footer className="">
+      <footer className="w-[1190px] mx-auto">
         <div className="h-15 mt-[30px] pb-[10px] border-b flex items-center justify-between text-[17px] font-pretendard font-semibold">
           <a href="/">웹툰</a>
           <a href="#">웹툰 고객센터</a>

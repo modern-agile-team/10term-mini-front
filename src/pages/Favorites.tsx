@@ -17,7 +17,7 @@ function Favorites() {
   } = useFavorites();
 
   return (
-    <>
+    <div className="w-[1190px] mx-auto">
       {isModalOpen && (
         <DeleteFavoriteModal
           onConfirm={handleConfirmDelete}
@@ -78,7 +78,7 @@ function Favorites() {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

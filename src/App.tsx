@@ -9,6 +9,7 @@ import Favorites from '@/pages/Favorites';
 import MyPage from '@/pages/MyPage';
 import WebtoonDetail from '@/pages/WebtoonDetail';
 import WebtoonSearch from '@/pages/WebtoonSearch';
+import WebtoonViewer from '@/pages/WebtoonViewer';
 
 function App() {
   useTokenRefresher();
@@ -26,6 +27,7 @@ function App() {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/webtoon/:id" element={<WebtoonDetail />} />
           <Route path="/search" element={<WebtoonSearch />} />
+          <Route path="/webtoon/:id/episode/:episodeid" element={<WebtoonViewer />} />
         </Route>
       </Routes>
     </BrowserRouter>
