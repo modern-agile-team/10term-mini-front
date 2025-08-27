@@ -39,7 +39,7 @@ export default function WebtoonViewer() {
           episodeNo={episode.episodeNo}
           episodeTitle={episode.episodeTitle}
         />
-        <div className="w-[1190px] mx-auto mt-10 mb-20 justify-center items-center flex">
+        <div className="w-[600px] mx-auto mt-10 mb-20 justify-center items-center flex">
           {isImageLoading && (
             <div className="flex justify-center items-center py-10">
               <img src={Spinner} alt="이미지 로딩 중" className="animate-spin h-8 w-8" />
