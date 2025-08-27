@@ -1,7 +1,7 @@
 import type { WebtoonEpisode } from '@/types/webtoonDetail';
 import { formatDateShort } from '@/utils/date';
 import { StarIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 interface EpisodeListProps {
   episodes: WebtoonEpisode[];
@@ -9,16 +9,14 @@ interface EpisodeListProps {
 }
 
 export const EpisodeList = ({ episodes, webtoonId }: EpisodeListProps) => {
-  const navigate = useNavigate();
-
   return (
     <>
       <p className="py-2 border-t border-b">총 {episodes.length}화</p>
       {episodes.map((episode) => (
-        <div
+        <Link
           key={episode.id}
-          className="py-2 border-b flex items-center space-x-4 cursor-pointer hover:bg-gray-50"
-          onClick={() => navigate(`/webtoon/${webtoonId}/episode/${episode.id}`)}
+          to={`/webtoon/${webtoonId}/episode/${episode.id}`}
+          className="py-2 border-b flex items-center space-x-4 hover:bg-gray-50"
         >
           <img
             src={episode.thumbnailUrl}
@@ -36,7 +34,7 @@ export const EpisodeList = ({ episodes, webtoonId }: EpisodeListProps) => {
               <span className="text-sm text-gray-500">{formatDateShort(episode.postedTime)}</span>
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </>
   );
