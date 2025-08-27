@@ -1,7 +1,14 @@
 import { useMyPage } from '@/hooks/useMyPage';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { Navigate } from 'react-router';
 
 function MyPage() {
+  const isLoggedIn = Boolean(localStorage.getItem('user'));
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
+  }
+
   const {
     nickname,
     nicknameError,
