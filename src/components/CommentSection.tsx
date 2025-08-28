@@ -7,6 +7,7 @@ import type { CommentContent, NewCommentRequest } from '@/types/comment';
 import CommentCard from './CommentCard';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import type { User } from '@/types/auth';
+import useCommentInput from '@/hooks/useCommentInput';
 
 const CommentSection = ({ episodeId }: { episodeId: number }) => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const CommentSection = ({ episodeId }: { episodeId: number }) => {
     username: '',
   });
 
-  const [commentInput, setCommentInput] = useState('');
+  const { commentInput, handleChange, resetInput } = useCommentInput('');
   const [commentData, setCommentData] = useState<CommentContent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,15 +69,6 @@ const CommentSection = ({ episodeId }: { episodeId: number }) => {
     fetchComments();
   }, [fetchComments, currentUser]);
 
-  const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    if (value.length > 500) {
-      alert('댓글은 500자까지 작성할 수 있습니다.');
-      return;
-    }
-    setCommentInput(value);
-  };
-
   const handleTextareaClick = () => {
     if (!currentUser.username) {
       alert('로그인을 하신 후 이용해 주시길 바랍니다');
@@ -97,7 +89,7 @@ const CommentSection = ({ episodeId }: { episodeId: number }) => {
       await requestCreateComment(episodeId, newCommentData);
 
       alert('댓글이 성공적으로 등록되었습니다.');
-      setCommentInput('');
+      resetInput();
 
       fetchComments();
     } catch (error) {
@@ -113,8 +105,6 @@ const CommentSection = ({ episodeId }: { episodeId: number }) => {
   if (error) {
     return <div className="w-2-3 text-red-500">{error}</div>;
   }
-
-  console.log('commentData:', commentData);
 
   return (
     <div className="w-2/3">
@@ -144,7 +134,7 @@ const CommentSection = ({ episodeId }: { episodeId: number }) => {
                 : '로그인 한 사용자만 댓글을 작성할 수 있습니다'
             }
             value={commentInput}
-            onChange={handleChangeComment}
+            onChange={handleChange}
             onClick={handleTextareaClick}
           />
         </div>

@@ -5,7 +5,9 @@ import { useState, useEffect } from 'react';
 import ReplyCard from './ReplyCard';
 import ReplyInput from './ReplyInput';
 import { formatDateFull } from '@/utils/date';
-import useComments from '@/hooks/useComments';
+import useCommentDelete from '@/hooks/useCommentDelete';
+import useCommentEdit from '@/hooks/useCommentEdit';
+import useCommentReaction from '@/hooks/useCommentReaction';
 
 interface CommentCardProps {
   comment: Comment;
@@ -23,13 +25,18 @@ const CommentCard = ({
   onToggleReply,
 }: CommentCardProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [replyComment, setReplyComment] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
-  const [editContent, setEditContent] = useState(comment.content);
-  const [optimisticComment, setOptimisticComment] = useState(comment);
   const [currentUsername, setCurrentUsername] = useState<string | null>(null);
 
-  const { updateComment, deleteComment, toggleReaction } = useComments(episodeId);
+  const { handleDelete } = useCommentDelete();
+  const {
+    editContent,
+    isEditing,
+    setIsEditing,
+    handleEditContent,
+    handleCancelEdit,
+    handleSubmitEdit,
+  } = useCommentEdit(comment.content);
+  const { optimisticComment, handleReaction } = useCommentReaction(comment);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -41,102 +48,9 @@ const CommentCard = ({
     return username.slice(0, 4) + '****';
   };
 
-  const handleChangeReply = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    if (value.length > 500) return;
-    setReplyComment(value);
-  };
-
-  const handleSubmitReply = () => {
-    const trimmed = replyComment.trim();
-    if (!trimmed) return;
-    console.log('대댓글 전송됨:', trimmed);
-    // TODO: 여기에 대댓글 작성 API 호출 로직 추가
-    setReplyComment('');
-  };
-
-  const handleReaction = async (type: 'like' | 'dislike') => {
-    try {
-      if (!localStorage.getItem('user')) {
-        alert('로그인이 필요합니다.');
-        return;
-      }
-
-      const currentReaction = optimisticComment.reaction.userReaction;
-
-      // 낙관적 업데이트를 위한 상태 업데이트 함수
-      const updateLocalReaction = (newReaction: 'like' | 'dislike' | null) => {
-        setOptimisticComment((prev) => ({
-          ...prev,
-          reaction: {
-            ...prev.reaction,
-            userReaction: newReaction,
-            likeCount:
-              prev.reaction.likeCount +
-              (newReaction === 'like' ? 1 : currentReaction === 'like' ? -1 : 0),
-            dislikeCount:
-              prev.reaction.dislikeCount +
-              (newReaction === 'dislike' ? 1 : currentReaction === 'dislike' ? -1 : 0),
-          },
-        }));
-      };
-
-      // 서버 요청
-      await toggleReaction(comment.id, currentReaction, type, updateLocalReaction);
-    } catch (error) {
-      console.error('댓글 반응 업데이트 실패:', error);
-      alert('댓글 반응 업데이트에 실패했습니다.');
-    }
-  };
-
   const handleEdit = () => {
     setIsEditing(true);
-    setEditContent(comment.content);
     setIsMenuOpen(false);
-  };
-
-  const handleEditContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    if (value.length > 500) {
-      alert('댓글은 500자까지 작성할 수 있습니다.');
-      return;
-    }
-    setEditContent(value);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-    setEditContent(comment.content);
-  };
-
-  const handleSubmitEdit = async () => {
-    try {
-      if (!editContent.trim()) {
-        alert('내용을 입력해주세요.');
-        return;
-      }
-
-      await updateComment(comment.id, editContent);
-      setIsEditing(false);
-      onRefresh?.();
-    } catch (error) {
-      console.error('댓글 수정 실패:', error);
-      alert('댓글 수정에 실패했습니다.');
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      const confirmDelete = window.confirm('정말로 이 댓글을 삭제하시겠습니까?');
-      if (!confirmDelete) return;
-
-      await deleteComment(comment.id);
-      setIsMenuOpen(false);
-      onRefresh?.();
-    } catch (error) {
-      console.error('댓글 삭제 실패:', error);
-      alert('댓글 삭제에 실패했습니다.');
-    }
   };
 
   return (
@@ -156,7 +70,7 @@ const CommentCard = ({
           </span>
         </div>
 
-        {/* 점 세 개 버튼 + 수정 or 삭제 */}
+        {/* 오른쪽: 점 세 개 버튼 + 수정 or 삭제 */}
         <div className="relative">
           {currentUsername === optimisticComment.user.username && (
             <>
@@ -172,7 +86,7 @@ const CommentCard = ({
                     수정
                   </button>
                   <button
-                    onClick={handleDelete}
+                    onClick={() => handleDelete(comment.id, onRefresh)}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     삭제
@@ -206,7 +120,7 @@ const CommentCard = ({
                 취소
               </button>
               <button
-                onClick={handleSubmitEdit}
+                onClick={() => handleSubmitEdit(comment.id, onRefresh || (() => {}))}
                 className="flex justify-center items-center h-8 w-8 text-sm rounded-full text-white bg-site-red hover:bg-red-700"
               >
                 <PaperAirplaneIcon className="h-5 w-5 text-white" />
@@ -266,14 +180,7 @@ const CommentCard = ({
 
       {/* 대댓글 작성 폼 */}
       {isReplyOpen && (
-        <ReplyInput
-          replyComment={replyComment}
-          handleChangeReply={handleChangeReply}
-          handleSubmitReply={handleSubmitReply}
-          episodeId={episodeId}
-          parentId={comment.id}
-          onReplySuccess={onRefresh}
-        />
+        <ReplyInput episodeId={episodeId} parentId={comment.id} onReplySuccess={onRefresh} />
       )}
     </div>
   );

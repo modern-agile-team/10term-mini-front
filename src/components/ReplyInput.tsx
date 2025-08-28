@@ -1,88 +1,33 @@
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
-import { requestCreateComment } from '@/apis/comment';
-import type { Comment, NewCommentRequest } from '@/types/comment';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import useReplyInput from '@/hooks/useReplyInput';
 import type { User } from '@/types/auth';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 interface ReplyInputProps {
-  replyComment: string;
-  handleChangeReply: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  handleSubmitReply: () => void;
   episodeId: number;
   parentId: number;
   onReplySuccess?: () => void;
-  onOptimisticUpdate?: (tempComment: Comment) => void;
 }
 
-const ReplyInput = ({
-  replyComment,
-  handleChangeReply,
-  handleSubmitReply,
-  episodeId,
-  parentId,
-  onReplySuccess,
-  onOptimisticUpdate,
-}: ReplyInputProps) => {
+const ReplyInput = ({ episodeId, parentId, onReplySuccess }: ReplyInputProps) => {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentUser] = useLocalStorage<User>('user', {
     nickname: '',
     username: '',
   });
 
-  const createTempComment = (content: string): Comment => ({
-    id: Date.now(),
-    content,
+  const { replyComment, handleChangeReply, handleSubmitReply, isSubmitting } = useReplyInput(
     parentId,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    user: {
-      userId: -1,
-      username: currentUser.username,
-      nickname: currentUser.nickname,
-    },
-    reaction: {
-      likeCount: 0,
-      dislikeCount: 0,
-      userReaction: null,
-    },
-    children: [],
-  });
+    episodeId,
+    currentUser,
+    onReplySuccess,
+  );
 
   const handleTextareaClick = () => {
     if (!currentUser.username) {
       alert('로그인을 하신 후 이용해 주시길 바랍니다');
       navigate('/login');
-    }
-  };
-
-  const handleSubmit = async () => {
-    const trimmed = replyComment.trim();
-    if (!trimmed || isSubmitting) return;
-
-    const tempComment = createTempComment(trimmed);
-
-    try {
-      setIsSubmitting(true);
-      onOptimisticUpdate?.(tempComment);
-
-      const newReplyData: NewCommentRequest = {
-        content: trimmed,
-        parentId,
-      };
-
-      await requestCreateComment(episodeId, newReplyData);
-      handleSubmitReply(); // 입력값 초기화
-
-      onReplySuccess?.();
-    } catch (error) {
-      console.error('답글 작성 실패:', error);
-      alert('답글 작성에 실패했습니다. 다시 시도해주세요.');
-      onReplySuccess?.();
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -119,7 +64,7 @@ const ReplyInput = ({
             className={`h-8 w-8 ml-3 rounded-full flex items-center justify-center ${
               replyComment && !isSubmitting ? 'bg-site-red' : 'bg-gray-300'
             }`}
-            onClick={handleSubmit}
+            onClick={() => handleSubmitReply()}
             disabled={isSubmitting || !replyComment.trim()}
           >
             <PaperAirplaneIcon className="h-5 w-5 text-white" />
