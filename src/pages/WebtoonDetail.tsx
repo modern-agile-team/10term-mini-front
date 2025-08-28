@@ -4,7 +4,7 @@ import { WebtoonActionButtons } from '@/components/WebtoonActionButtons';
 import { WebtoonInfo } from '@/components/WebtoonInfo';
 import { useWebtoonDetail } from '@/hooks/useWebtoonDetail';
 import { useParams } from 'react-router';
-import Spinner from '@/assets/spinner.svg';
+import Spinner from '@/components/Spinner';
 
 export default function WebtoonDetail() {
   const { id } = useParams();
@@ -25,7 +25,7 @@ export default function WebtoonDetail() {
   if (isLoading) {
     return (
       <div className="h-screen flex justify-center items-center">
-        <img src={Spinner} alt="로딩 중" className="animate-spin h-8 w-8" />
+        <Spinner message="로딩 중..." />
       </div>
     );
   }
