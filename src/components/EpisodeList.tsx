@@ -10,7 +10,6 @@ interface EpisodeListProps {
 
 export const EpisodeList = ({ episodes, webtoonId }: EpisodeListProps) => {
   const navigate = useNavigate();
-  console.log(episodes);
 
   return (
     <>
