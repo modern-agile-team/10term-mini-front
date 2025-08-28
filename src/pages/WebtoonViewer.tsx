@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import WebtoonFeedback from '@/components/WebtoonFeedback';
 import WebtoonViewerHeader from '@/components/WebtoonViewerHeader';
 import ScrollController from '@/components/ScrollController';
-import Spinner from '@/assets/spinner.svg';
+import Spinner from '@/components/Spinner';
 import { useWebtoonViewer } from '@/hooks/useWebtoonViewer';
 import { useAdvertisement } from '@/hooks/useAdvertisement';
 import { Advertisement } from '@/components/Advertisement';
@@ -21,11 +21,7 @@ export default function WebtoonViewer() {
   });
 
   if (isLoading) {
-    return (
-      <div className="h-screen flex justify-center items-center">
-        <img src={Spinner} alt="로딩 중" className="animate-spin h-8 w-8" />
-      </div>
-    );
+    return <Spinner message="웹툰 정보를 불러오는 중입니다..." />;
   }
 
   if (!episode) return <div>에피소드를 찾을 수 없습니다...</div>;
@@ -40,11 +36,7 @@ export default function WebtoonViewer() {
           episodeTitle={episode.episodeTitle}
         />
         <div className="w-[600px] mx-auto mt-10 mb-20 justify-center items-center flex">
-          {isImageLoading && (
-            <div className="flex justify-center items-center py-10">
-              <img src={Spinner} alt="이미지 로딩 중" className="animate-spin h-8 w-8" />
-            </div>
-          )}
+          {isImageLoading && <Spinner message="이미지를 불러오는 중입니다..." />}
           <img
             src={episode.fullImgUrl}
             alt="웹툰 이미지"
