@@ -79,22 +79,34 @@ export const useComments = (episodeId: number) => {
   );
 
   const toggleReaction = useCallback(
-    async (commentId: number, currentReaction: string | null, type: 'like' | 'dislike') => {
+    async (
+      commentId: number,
+      currentReaction: 'like' | 'dislike' | null,
+      type: 'like' | 'dislike',
+      updateLocalReaction: (newReaction: 'like' | 'dislike' | null) => void,
+    ) => {
       try {
         if (!localStorage.getItem('user')) {
           throw new Error('로그인이 필요합니다.');
         }
 
-        const newType = currentReaction === type ? null : type;
+        // 서버로는 항상 'like' 또는 'dislike'만 전송
+        const newType = type;
+
+        // 낙관적 업데이트: UI에서 선택 취소 처리
+        const optimisticReaction = currentReaction === type ? null : type;
+        updateLocalReaction(optimisticReaction);
+
+        // 서버에 요청 전송
         await requestToggleCommentReaction(commentId, newType);
-        await fetchComments();
-        return true;
       } catch (error) {
         console.error('댓글 반응 업데이트 실패:', error);
+        // 실패 시 UI를 원래 상태로 복구
+        updateLocalReaction(currentReaction);
         throw error;
       }
     },
-    [fetchComments],
+    [],
   );
 
   return {

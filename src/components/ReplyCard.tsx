@@ -75,43 +75,30 @@ const ReplyCard = ({ childComment, maskUsername, onRefresh, episodeId }: ReplyCa
         return;
       }
 
-      const newType = optimisticComment.reaction.userReaction === type ? null : type;
-      const newReaction = {
-        ...optimisticComment.reaction,
-        userReaction: newType,
-        likeCount:
-          optimisticComment.reaction.likeCount +
-          (type === 'like'
-            ? newType === null
-              ? -1
-              : 1
-            : optimisticComment.reaction.userReaction === 'like'
-              ? -1
-              : 0),
-        dislikeCount:
-          optimisticComment.reaction.dislikeCount +
-          (type === 'dislike'
-            ? newType === null
-              ? -1
-              : 1
-            : optimisticComment.reaction.userReaction === 'dislike'
-              ? -1
-              : 0),
+      const currentReaction = optimisticComment.reaction.userReaction;
+
+      // 낙관적 업데이트를 위한 상태 업데이트 함수
+      const updateLocalReaction = (newReaction: 'like' | 'dislike' | null) => {
+        setOptimisticComment((prev) => ({
+          ...prev,
+          reaction: {
+            ...prev.reaction,
+            userReaction: newReaction,
+            likeCount:
+              prev.reaction.likeCount +
+              (newReaction === 'like' ? 1 : currentReaction === 'like' ? -1 : 0),
+            dislikeCount:
+              prev.reaction.dislikeCount +
+              (newReaction === 'dislike' ? 1 : currentReaction === 'dislike' ? -1 : 0),
+          },
+        }));
       };
 
-      setOptimisticComment((prev) => ({
-        ...prev,
-        reaction: newReaction,
-      }));
-
-      await toggleReaction(childComment.id, optimisticComment.reaction.userReaction, type);
+      // 서버 요청
+      await toggleReaction(childComment.id, currentReaction, type, updateLocalReaction);
     } catch (error) {
-      setOptimisticComment(childComment);
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert('댓글 반응 업데이트에 실패했습니다.');
-      }
+      console.error('댓글 반응 업데이트 실패:', error);
+      alert('댓글 반응 업데이트에 실패했습니다.');
     }
   };
 
@@ -200,7 +187,7 @@ const ReplyCard = ({ childComment, maskUsername, onRefresh, episodeId }: ReplyCa
               <HandThumbUpIcon
                 className={`w-4 h-4 ${
                   optimisticComment.reaction.userReaction === 'like'
-                    ? 'text-blue-500'
+                    ? 'text-site-green'
                     : 'text-gray-300'
                 }`}
               />

@@ -5,11 +5,7 @@ import { useState } from 'react';
 import ReplyCard from './ReplyCard';
 import ReplyInput from './ReplyInput';
 import { formatDateFull } from '@/utils/date';
-import {
-  requestToggleCommentReaction,
-  requestUpdateComment,
-  requestDeleteComment,
-} from '@/apis/comment';
+import useComments from '@/hooks/useComments';
 
 interface CommentCardProps {
   comment: Comment;
@@ -31,6 +27,8 @@ const CommentCard = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
   const [optimisticComment, setOptimisticComment] = useState(comment);
+
+  const { updateComment, deleteComment, toggleReaction } = useComments(episodeId);
 
   const maskUsername = (username: string) => {
     if (!username) return '***';
@@ -58,40 +56,28 @@ const CommentCard = ({
         return;
       }
 
-      // 낙관적 업데이트를 위한 새로운 상태 계산
-      const newType = optimisticComment.reaction.userReaction === type ? null : type;
-      const newReaction = {
-        ...optimisticComment.reaction,
-        userReaction: newType,
-        likeCount:
-          optimisticComment.reaction.likeCount +
-          (type === 'like'
-            ? newType === null
-              ? -1
-              : 1
-            : optimisticComment.reaction.userReaction === 'like'
-              ? -1
-              : 0),
-        dislikeCount:
-          optimisticComment.reaction.dislikeCount +
-          (type === 'dislike'
-            ? newType === null
-              ? -1
-              : 1
-            : optimisticComment.reaction.userReaction === 'dislike'
-              ? -1
-              : 0),
+      const currentReaction = optimisticComment.reaction.userReaction;
+
+      // 낙관적 업데이트를 위한 상태 업데이트 함수
+      const updateLocalReaction = (newReaction: 'like' | 'dislike' | null) => {
+        setOptimisticComment((prev) => ({
+          ...prev,
+          reaction: {
+            ...prev.reaction,
+            userReaction: newReaction,
+            likeCount:
+              prev.reaction.likeCount +
+              (newReaction === 'like' ? 1 : currentReaction === 'like' ? -1 : 0),
+            dislikeCount:
+              prev.reaction.dislikeCount +
+              (newReaction === 'dislike' ? 1 : currentReaction === 'dislike' ? -1 : 0),
+          },
+        }));
       };
 
-      // 낙관적 업데이트 적용
-      setOptimisticComment((prev) => ({
-        ...prev,
-        reaction: newReaction,
-      }));
-
-      await requestToggleCommentReaction(comment.id, newType);
+      // 서버 요청
+      await toggleReaction(comment.id, currentReaction, type, updateLocalReaction);
     } catch (error) {
-      setOptimisticComment(comment);
       console.error('댓글 반응 업데이트 실패:', error);
       alert('댓글 반응 업데이트에 실패했습니다.');
     }
@@ -124,7 +110,7 @@ const CommentCard = ({
         return;
       }
 
-      await requestUpdateComment(comment.id, editContent);
+      await updateComment(comment.id, editContent);
       setIsEditing(false);
       onRefresh?.();
     } catch (error) {
@@ -138,7 +124,7 @@ const CommentCard = ({
       const confirmDelete = window.confirm('정말로 이 댓글을 삭제하시겠습니까?');
       if (!confirmDelete) return;
 
-      await requestDeleteComment(comment.id);
+      await deleteComment(comment.id);
       setIsMenuOpen(false);
       onRefresh?.();
     } catch (error) {
