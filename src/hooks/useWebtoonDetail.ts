@@ -1,5 +1,5 @@
 import type { WebtoonDetailInfo, WebtoonEpisode } from '@/types/webtoonDetail';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import { useAdvertisement } from '@/hooks/useAdvertisement';
 import { requestWebtoonDetail, requestWebtoonEpisodes } from '@/apis/webtoonDetail';
@@ -13,11 +13,13 @@ export const useWebtoonDetail = (webtoonId: number) => {
   const [error, setError] = useState<string>('');
   const [isFavorite, setIsFavorite] = useState(false);
   const [episodes, setEpisodes] = useState<WebtoonEpisode[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement({
     day: clickedDay,
     keyword: null,
     isViewer: false,
   });
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const { toggleFavorite: handleFavorite, shareWebtoon: handleShare } = useWebtoonActions({
     webtoonId,
@@ -33,6 +35,13 @@ export const useWebtoonDetail = (webtoonId: number) => {
 
   useEffect(() => {
     const getWebtoonDetail = async () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      setIsLoading(true);
       try {
         const [webtoonResponse, episodesResponse] = await Promise.all([
           requestWebtoonDetail(webtoonId),
@@ -47,12 +56,24 @@ export const useWebtoonDetail = (webtoonId: number) => {
           setSearchParams({ day: webtoonResponse.weekdays[0] }, { replace: true });
         }
       } catch (err) {
-        console.error(err);
-        setError('웹툰 정보를 불러오지 못했습니다.');
+        if ((err as Error).name === 'AbortError') {
+          console.log('Request aborted');
+        } else {
+          console.error('Error fetching webtoon details:', err);
+          setError('웹툰 정보를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.');
+        }
+      } finally {
+        setIsLoading(false);
       }
     };
 
     getWebtoonDetail();
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, [webtoonId]);
 
   return {
@@ -64,5 +85,6 @@ export const useWebtoonDetail = (webtoonId: number) => {
     randomAdvertisementSmall,
     handleFavorite,
     handleShare,
+    isLoading,
   };
 };
