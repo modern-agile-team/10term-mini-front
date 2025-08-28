@@ -6,7 +6,7 @@ import type { ChangeEvent } from 'react';
 
 interface UseNicknameReturn {
   nickname: string;
-  nicknameError: string | null;
+  nicknameError: string | undefined | null;
   onNicknameChange: (e: ChangeEvent<HTMLInputElement>) => void;
   serverNicknameError: string | null;
   isNicknameValid: boolean;
@@ -19,12 +19,12 @@ export function useNickname(initialNickname: string): UseNicknameReturn {
     error: nicknameError,
     onChange: onNicknameChange,
   } = useInputState(initialNickname, {
-    validate: (value: string): string | null => {
+    validate: (value: string): string | undefined => {
       if (!value.trim()) return '닉네임을 입력해주세요';
       if (!nicknameRegex.test(value)) {
         return '닉네임은 한글 10자, 영문/숫자 30자 이내로 구성되어야 합니다';
       }
-      return null;
+      return undefined;
     },
   });
 

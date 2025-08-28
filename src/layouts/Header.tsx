@@ -12,7 +12,7 @@ interface HeaderProps {
   } | null;
 }
 
-const EXCLUDED_PATHS = ['/favorites', '/mypage', '/search'] as const;
+const EXCLUDED_PATHS = ['/favorites', '/mypage', '/search'] as ReadonlyArray<string>;
 
 function Header({ user }: HeaderProps) {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ function Header({ user }: HeaderProps) {
     navigate(`/search?keyword=${encodeURIComponent(trimmed)}`);
   };
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const selectedDay = searchParams.get('day');
 
   const location = useLocation();

@@ -33,7 +33,6 @@ export function useMyPage() {
     newPasswordError,
     serverNewPasswordError,
     onNewPasswordChange,
-    setServerNewPasswordError,
 
     confirmPassword,
     confirmPasswordError,
