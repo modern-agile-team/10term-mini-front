@@ -1,7 +1,7 @@
 import { HandThumbDownIcon, HandThumbUpIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import type { Comment } from '@/types/comment';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ReplyCard from './ReplyCard';
 import ReplyInput from './ReplyInput';
 import { formatDateFull } from '@/utils/date';
@@ -27,8 +27,14 @@ const CommentCard = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
   const [optimisticComment, setOptimisticComment] = useState(comment);
+  const [currentUsername, setCurrentUsername] = useState<string | null>(null);
 
   const { updateComment, deleteComment, toggleReaction } = useComments(episodeId);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    setCurrentUsername(user?.username || null);
+  }, []);
 
   const maskUsername = (username: string) => {
     if (!username) return '***';
@@ -152,24 +158,28 @@ const CommentCard = ({
 
         {/* 점 세 개 버튼 + 수정 or 삭제 */}
         <div className="relative">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            <EllipsisVerticalIcon className="w-6 h-6 text-gray-500" />
-          </button>
-          {isMenuOpen && (
-            <div className="absolute left-7 top-2 w-28 bg-white rounded-md shadow-lg z-10 border">
-              <button
-                onClick={handleEdit}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                수정
+          {currentUsername === optimisticComment.user.username && (
+            <>
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                <EllipsisVerticalIcon className="w-6 h-6 text-gray-500" />
               </button>
-              <button
-                onClick={handleDelete}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                삭제
-              </button>
-            </div>
+              {isMenuOpen && (
+                <div className="absolute left-7 top-2 w-28 bg-white rounded-md shadow-lg z-10 border">
+                  <button
+                    onClick={handleEdit}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    수정
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    삭제
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
