@@ -90,7 +90,7 @@ const ReplyCard = ({ childComment, maskUsername, onRefresh }: ReplyCardProps) =>
               <textarea
                 value={editContent}
                 onChange={handleEditContent}
-                className="w-full p-2 rounded resize-none bg-white focus:outline-none"
+                className="w-full p-2 rounded resize-none bg-gray-200 focus:outline-none"
                 rows={3}
               />
               <div className="p-4 flex justify-end items-center space-x-2">

@@ -69,7 +69,7 @@ function Header({ user }: HeaderProps) {
               e.preventDefault();
               handleSearch();
             }}
-            className="flex items-center border my-[14px] mr-[18px] gap-x-2
+            className="flex items-center border my-[14px] mr-[18px] pr-3 gap-x-2
     group focus-within:outline focus-within:outline-2 focus-within:outline-blue-500 rounded-sm"
           >
             <input
