@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router';
 import type { Webtoon } from '../types/webtoon.ts';
 import WebtoonCard from './WebtoonCard.tsx';
 
@@ -7,10 +8,21 @@ interface DaySectionGridProps {
 }
 
 function DaySectionGrid({ webtoons, clickedDay }: DaySectionGridProps) {
+  const navigate = useNavigate();
+
+  const handleRandomClick = () => {
+    const random = webtoons[Math.floor(Math.random() * webtoons.length)];
+    if (random) {
+      navigate(`/webtoon/${random.id}`);
+    } else {
+      alert('랜덤으로 선택할 웹툰이 없어요!');
+    }
+  };
+
   return (
     <ul
       className={` 
-      flex flex-wrap gap-2  
+      flex flex-wrap gap-2
       pb-[20px]
       `}
     >
@@ -26,6 +38,16 @@ function DaySectionGrid({ webtoons, clickedDay }: DaySectionGridProps) {
           />
         </li>
       ))}
+
+      <li className="items-center ml-[140px] py-[10px] h-[279px]">
+        <button
+          onClick={handleRandomClick}
+          className="w-[168px] h-full flex flex-col justify-center items-center border-2 border-site-red rounded-md bg-white hover:bg-gray-100 transition"
+        >
+          <span className="font-bold text-site-red text-lg">RANDOM</span>
+          <span className="text-lg text-site-red border-b-2 border-site-red">바로가기</span>
+        </button>
+      </li>
     </ul>
   );
 }
