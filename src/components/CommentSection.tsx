@@ -8,6 +8,7 @@ import CommentCard from './CommentCard';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import type { User } from '@/types/auth';
 import useCommentInput from '@/hooks/useCommentInput';
+import Spinner from './Spinner';
 
 const CommentSection = ({ episodeId }: { episodeId: number }) => {
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ const CommentSection = ({ episodeId }: { episodeId: number }) => {
   };
 
   if (isLoading) {
-    return <div className="w-2-3">댓글을 불러오는 중입니다...</div>;
+    return <Spinner message="댓글을 불러오는 중입니다..." />;
   }
 
   if (error) {
