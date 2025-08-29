@@ -57,7 +57,6 @@ export const useWebtoonDetail = (webtoonId: number) => {
         }
       } catch (err) {
         if ((err as Error).name === 'AbortError') {
-          console.log('Request aborted');
         } else {
           console.error('Error fetching webtoon details:', err);
           setError('웹툰 정보를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.');

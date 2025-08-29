@@ -25,9 +25,7 @@ const useCommentEdit = (initialContent: string) => {
         alert('내용을 입력해주세요.');
         return;
       }
-      console.log('Submitting edit for commentId:', commentId, 'with content:', editContent);
-      const updatedContent = await requestUpdateComment(commentId, editContent);
-      console.log('Updated content:', updatedContent);
+      await requestUpdateComment(commentId, editContent);
       setIsEditing(false);
       onSuccess();
     } catch (error) {
