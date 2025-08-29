@@ -42,7 +42,7 @@ function DaySectionGrid({ webtoons, clickedDay }: DaySectionGridProps) {
       <li className="items-center ml-[140px] py-[10px] h-[279px]">
         <button
           onClick={handleRandomClick}
-          className="w-[168px] h-full flex flex-col justify-center items-center border-2 border-site-red rounded-md bg-white hover:bg-gray-100 transition"
+          className="w-[168px] h-full flex flex-col justify-center items-center border-2 border-site-red rounded-md bg-white transition-transform duration-300 hover:scale-105"
         >
           <span className="font-bold text-site-red text-lg">RANDOM</span>
           <span className="text-lg text-site-red border-b-2 border-site-red">바로가기</span>
