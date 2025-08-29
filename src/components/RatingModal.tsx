@@ -11,7 +11,7 @@ interface RatingModalProps {
   setHoverRating: (rating: number) => void;
 }
 
-export default function RatingModal({
+const RatingModal = ({
   isOpen,
   onClose,
   onConfirm,
@@ -19,19 +19,26 @@ export default function RatingModal({
   setSelectedRating,
   hoverRating,
   setHoverRating,
-}: RatingModalProps) {
+}: RatingModalProps) => {
   const handleStarHover = (starIndex: number, position: number) => {
     const rating = starIndex * 2 + (position < 0.5 ? 1 : 2);
     setHoverRating(rating);
   };
 
   const renderStars = () => {
-    const stars = [];
     const rating = hoverRating || selectedRating;
 
-    for (let i = 0; i < 5; i++) {
+    const getStarFillPercent = (starValue: number): number => {
+      if (rating >= starValue) return 100;
+      if (rating >= starValue - 1) return rating % 2 === 1 ? 50 : 100;
+      return 0;
+    };
+
+    return Array.from({ length: 5 }).map((_, i) => {
       const starValue = (i + 1) * 2;
-      stars.push(
+      const fillPercent = getStarFillPercent(starValue);
+
+      return (
         <div
           key={i}
           className="relative w-12 h-12 cursor-pointer"
@@ -44,18 +51,12 @@ export default function RatingModal({
           onClick={() => setSelectedRating(hoverRating)}
         >
           <StarIcon className="w-full h-full absolute text-gray-300" />
-          <div
-            className="absolute overflow-hidden"
-            style={{
-              width: `${rating > starValue ? 100 : rating > starValue - 2 ? (rating % 2 === 1 ? 50 : 100) : 0}%`,
-            }}
-          >
+          <div className="absolute overflow-hidden" style={{ width: `${fillPercent}%` }}>
             <StarIconSolid className="w-12 h-12 text-site-red" />
           </div>
-        </div>,
+        </div>
       );
-    }
-    return stars;
+    });
   };
 
   if (!isOpen) return null;
@@ -88,4 +89,6 @@ export default function RatingModal({
       </div>
     </div>
   );
-}
+};
+
+export default RatingModal;
