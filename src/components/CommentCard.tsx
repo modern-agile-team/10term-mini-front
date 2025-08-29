@@ -34,7 +34,7 @@ const CommentCard = ({
     setIsEditing,
     handleEditContent,
     handleCancelEdit,
-    handleSubmitEdit,
+    handleSubmitEdit: submitEdit,
   } = useCommentEdit(comment.content);
   const { optimisticComment, handleReaction } = useCommentReaction(comment);
 
@@ -51,6 +51,10 @@ const CommentCard = ({
   const handleEdit = () => {
     setIsEditing(true);
     setIsMenuOpen(false);
+  };
+
+  const onEditSubmit = () => {
+    submitEdit(comment.id, onRefresh || (() => {}));
   };
 
   return (
@@ -120,7 +124,7 @@ const CommentCard = ({
                 취소
               </button>
               <button
-                onClick={() => handleSubmitEdit(comment.id, onRefresh || (() => {}))}
+                onClick={onEditSubmit}
                 className="flex justify-center items-center h-8 w-8 text-sm rounded-full text-white bg-site-red hover:bg-red-700"
               >
                 <PaperAirplaneIcon className="h-5 w-5 text-white" />
