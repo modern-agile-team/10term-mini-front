@@ -1,14 +1,15 @@
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { requestCreateComment, requestGetComments } from '@/apis/comment';
-import type { CommentContent, NewCommentRequest } from '@/types/comment';
+import { requestCreateComment } from '@/apis/comment';
+import type { NewCommentRequest } from '@/types/comment';
 import CommentCard from './CommentCard';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import type { User } from '@/types/auth';
 import useCommentInput from '@/hooks/useCommentInput';
 import Spinner from './Spinner';
+import useCommentSection from '@/hooks/useCommentSection';
 
 const CommentSection = ({ episodeId }: { episodeId: number }) => {
   const navigate = useNavigate();
@@ -18,9 +19,7 @@ const CommentSection = ({ episodeId }: { episodeId: number }) => {
   });
 
   const { commentInput, handleChange, resetInput } = useCommentInput('');
-  const [commentData, setCommentData] = useState<CommentContent | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { commentData, isLoading, error, fetchComments } = useCommentSection(episodeId);
 
   const [openReplyIds, setOpenReplyIds] = useState<Set<number>>(new Set());
 
@@ -35,40 +34,6 @@ const CommentSection = ({ episodeId }: { episodeId: number }) => {
       return newSet;
     });
   };
-
-  const fetchComments = useCallback(async () => {
-    if (!episodeId) {
-      setIsLoading(false);
-      return;
-    }
-    try {
-      setIsLoading(true);
-      setError(null);
-      const data = await requestGetComments(episodeId);
-
-      // 로그인 상태 확인 후 reaction.userReaction 초기화
-      const user = JSON.parse(localStorage.getItem('user') || 'null');
-      if (user) {
-        data.comments.forEach((comment) => {
-          comment.reaction.userReaction = comment.reaction.userReaction || null;
-          comment.children.forEach((child) => {
-            child.reaction.userReaction = child.reaction.userReaction || null;
-          });
-        });
-      }
-
-      setCommentData(data);
-    } catch (err) {
-      console.error('댓글 데이터를 불러오는 중 오류 발생:', err);
-      setError('댓글을 불러오는 데 실패했습니다.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [episodeId]);
-
-  useEffect(() => {
-    fetchComments();
-  }, [fetchComments, currentUser]);
 
   const handleTextareaClick = () => {
     if (!currentUser.username) {
