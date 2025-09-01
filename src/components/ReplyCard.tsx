@@ -1,11 +1,13 @@
 import { HandThumbDownIcon, HandThumbUpIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import type { Comment } from '@/types/comment';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { formatDateFull } from '@/utils/date';
 import useCommentDelete from '@/hooks/useCommentDelete';
 import useCommentEdit from '@/hooks/useCommentEdit';
 import useCommentReaction from '@/hooks/useCommentReaction';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import type { User } from '@/types/auth';
 
 interface ReplyCardProps {
   childComment: Comment;
@@ -15,8 +17,9 @@ interface ReplyCardProps {
 }
 
 const ReplyCard = ({ childComment, maskUsername, onRefresh }: ReplyCardProps) => {
+  const [user] = useLocalStorage<User | null>('user', null);
+  const currentUsername = user?.username ?? null;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentUsername, setCurrentUsername] = useState<string | null>(null);
 
   const { handleDelete } = useCommentDelete();
   const {
@@ -28,12 +31,6 @@ const ReplyCard = ({ childComment, maskUsername, onRefresh }: ReplyCardProps) =>
     handleSubmitEdit,
   } = useCommentEdit(childComment.content);
   const { optimisticComment, handleReaction } = useCommentReaction(childComment);
-
-  useEffect(() => {
-    // 현재 로그인한 사용자 username 가져오기
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    setCurrentUsername(user?.username || null);
-  }, []);
 
   const handleEdit = () => {
     setIsEditing(true);

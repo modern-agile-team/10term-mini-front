@@ -1,13 +1,15 @@
 import { HandThumbDownIcon, HandThumbUpIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import type { Comment } from '@/types/comment';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ReplyCard from './ReplyCard';
 import ReplyInput from './ReplyInput';
 import { formatDateFull } from '@/utils/date';
 import useCommentDelete from '@/hooks/useCommentDelete';
 import useCommentEdit from '@/hooks/useCommentEdit';
 import useCommentReaction from '@/hooks/useCommentReaction';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import type { User } from '@/types/auth';
 
 interface CommentCardProps {
   comment: Comment;
@@ -24,8 +26,9 @@ const CommentCard = ({
   isReplyOpen = false,
   onToggleReply,
 }: CommentCardProps) => {
+  const [user] = useLocalStorage<User | null>('user', null);
+  const currentUsername = user?.username ?? null;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentUsername, setCurrentUsername] = useState<string | null>(null);
 
   const { handleDelete } = useCommentDelete();
   const {
@@ -37,11 +40,6 @@ const CommentCard = ({
     handleSubmitEdit: submitEdit,
   } = useCommentEdit(comment.content);
   const { optimisticComment, handleReaction } = useCommentReaction(comment);
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    setCurrentUsername(user?.username || null);
-  }, []);
 
   const maskUsername = (username: string) => {
     if (!username) return '***';
