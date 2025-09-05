@@ -110,3 +110,5 @@ export function useMyPage() {
     handleBack,
   };
 }
+
+export default useMyPage;

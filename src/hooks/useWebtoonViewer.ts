@@ -36,3 +36,5 @@ export function useWebtoonViewer(episodeId: string | undefined) {
     handleImageLoad,
   };
 }
+
+export default useWebtoonViewer;

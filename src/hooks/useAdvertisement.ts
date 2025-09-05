@@ -25,3 +25,5 @@ export const useAdvertisement = ({ day, keyword, isViewer }: AdvertisementProps)
     randomAdvertisementSmall,
   };
 };
+
+export default useAdvertisement;

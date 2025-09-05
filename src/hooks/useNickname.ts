@@ -64,3 +64,5 @@ export function useNickname(initialNickname: string): UseNicknameReturn {
     handleCheckNickname,
   };
 }
+
+export default useNickname;

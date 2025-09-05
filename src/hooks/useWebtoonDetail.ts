@@ -6,7 +6,7 @@ import { requestWebtoonDetail, requestWebtoonEpisodes } from '@/apis/webtoonDeta
 import type { DayOfWeek } from '@/constants/date.constants';
 import { useWebtoonActions } from '@/hooks/useWebtoonActions';
 
-export const useWebtoonDetail = (webtoonId: number) => {
+const useWebtoonDetail = (webtoonId: number) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const clickedDay = searchParams.get('day') as DayOfWeek | null;
   const [webtoonDetail, setWebtoonDetail] = useState<WebtoonDetailInfo | null>(null);
@@ -87,3 +87,5 @@ export const useWebtoonDetail = (webtoonId: number) => {
     isLoading,
   };
 };
+
+export default useWebtoonDetail;

@@ -99,3 +99,5 @@ export function usePassword(): UsePasswordReturn {
     isPasswordValid,
   };
 }
+
+export default usePassword;

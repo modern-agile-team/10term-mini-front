@@ -35,3 +35,5 @@ export function useWebtoonSearch(keyword: string) {
 
   return { searchedWebtoons, isLoading, error };
 }
+
+export default useWebtoonSearch;
