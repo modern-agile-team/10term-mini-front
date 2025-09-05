@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
-import type { User, SignupRequest, SignupResponse } from '@/types/auth';
+import type { User, SignupRequest, SignupResponse } from '@/types';
 import { requestSignup } from '@/apis/auth';
 import { useLocalStorage } from '@/hooks';
-import { nicknameRegex, passwordRegex, usernameRegex } from '@/constants/regex.constants';
+import { nicknameRegex, passwordRegex, usernameRegex } from '@/constants';
 
 function useSignup() {
   const navigate = useNavigate();

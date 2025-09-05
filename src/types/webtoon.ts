@@ -1,4 +1,4 @@
-import type { DayOfWeek } from '@/constants/date.constants';
+import type { DayOfWeek } from '@/constants';
 
 interface Webtoon {
   id: number;

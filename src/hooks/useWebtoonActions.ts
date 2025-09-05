@@ -1,4 +1,4 @@
-import type { WebtoonDetailInfo } from '@/types/webtoonDetail';
+import type { WebtoonDetailInfo } from '@/types';
 import { requestAddFavorite, requestRemoveFavorite } from '@/apis/webtoonDetail';
 
 interface UseWebtoonActionsProps {

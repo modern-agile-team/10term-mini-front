@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { requestLogin } from '../apis/auth';
-import type { User, LoginRequest } from '../types/auth';
+import type { User, LoginRequest } from '@/types';
 import useLocalStorage from './useLocalStorage';
 
 function useLogin() {

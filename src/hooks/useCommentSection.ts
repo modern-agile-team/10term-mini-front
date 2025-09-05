@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { requestGetComments } from '@/apis/comment';
-import type { CommentContent } from '@/types/comment';
+import type { CommentContent } from '@/types';
 
 const useCommentSection = (episodeId: number) => {
   const [commentData, setCommentData] = useState<CommentContent | null>(null);

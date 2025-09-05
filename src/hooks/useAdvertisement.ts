@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import type { DayOfWeek } from '@/constants/date.constants';
-import { getRandomAdImages } from '@/utils/advertisement';
+import type { DayOfWeek } from '@/constants';
+import { getRandomAdImages } from '@/utils';
 
 interface AdvertisementProps {
   day: DayOfWeek | null;

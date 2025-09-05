@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { requestSearchWebtoons } from '@/apis/webtoonSearch';
-import type { SearchedWebtoon } from '@/types/webtoon';
+import type { SearchedWebtoon } from '@/types';
 
 export function useWebtoonSearch(keyword: string) {
   const [searchedWebtoons, setSearchedWebtoons] = useState<SearchedWebtoon[]>([]);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { requestDeleteFavorites, requestFavorites } from '@/apis/favorites';
-import type { FavoriteWebtoon } from '@/types/webtoon';
+import type { FavoriteWebtoon } from '@/types';
 
 export default function useFavoritesData() {
   const [favorites, setFavorites] = useState<FavoriteWebtoon[]>([]);

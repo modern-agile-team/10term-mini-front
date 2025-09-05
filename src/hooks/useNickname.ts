@@ -1,5 +1,5 @@
 import { requestNicknameCheck } from '@/apis/myPage';
-import { nicknameRegex } from '@/constants/regex.constants';
+import { nicknameRegex } from '@/constants';
 import { useInputState } from '@/hooks';
 import { useEffect, useState } from 'react';
 import type { ChangeEvent } from 'react';
