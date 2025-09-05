@@ -3,10 +3,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import type { Comment } from '@/types/comment';
 import { useState } from 'react';
 import { formatDateFull } from '@/utils/date';
-import useCommentDelete from '@/hooks/useCommentDelete';
-import useCommentEdit from '@/hooks/useCommentEdit';
-import useCommentReaction from '@/hooks/useCommentReaction';
-import useLocalStorage from '@/hooks/useLocalStorage';
+import { useCommentDelete, useCommentEdit, useCommentReaction, useLocalStorage } from '@/hooks';
 import type { User } from '@/types/auth';
 
 interface ReplyCardProps {

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 import BaseLayout from '@/layouts/BaseLayout';
-import useTokenRefresher from '@/hooks/useTokenRefresher';
+import { useTokenRefresher } from '@/hooks';
 import { Suspense } from 'react';
 import React from 'react';
 import Spinner from '@/components/Spinner';

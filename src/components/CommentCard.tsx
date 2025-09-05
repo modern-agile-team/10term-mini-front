@@ -5,10 +5,7 @@ import { useState } from 'react';
 import ReplyCard from './ReplyCard';
 import ReplyInput from './ReplyInput';
 import { formatDateFull } from '@/utils/date';
-import useCommentDelete from '@/hooks/useCommentDelete';
-import useCommentEdit from '@/hooks/useCommentEdit';
-import useCommentReaction from '@/hooks/useCommentReaction';
-import useLocalStorage from '@/hooks/useLocalStorage';
+import { useCommentDelete, useCommentEdit, useCommentReaction, useLocalStorage } from '@/hooks';
 import type { User } from '@/types/auth';
 
 interface CommentCardProps {

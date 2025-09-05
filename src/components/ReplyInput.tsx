@@ -1,6 +1,5 @@
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
-import useLocalStorage from '@/hooks/useLocalStorage';
-import useReplyInput from '@/hooks/useReplyInput';
+import { useLocalStorage, useReplyInput } from '@/hooks';
 import type { User } from '@/types/auth';
 import { useNavigate } from 'react-router';
 

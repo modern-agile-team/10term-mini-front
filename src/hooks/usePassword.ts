@@ -1,4 +1,4 @@
-import { useInputState } from '@/hooks/useInputState';
+import { useInputState } from '@/hooks';
 import { passwordRegex } from '@/constants/regex.constants';
 import { useEffect } from 'react';
 

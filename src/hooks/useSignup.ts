@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import type { User, SignupRequest, SignupResponse } from '@/types/auth';
 import { requestSignup } from '@/apis/auth';
-import useLocalStorage from '@/hooks/useLocalStorage';
+import { useLocalStorage } from '@/hooks';
 import { nicknameRegex, passwordRegex, usernameRegex } from '@/constants/regex.constants';
 
 function useSignup() {

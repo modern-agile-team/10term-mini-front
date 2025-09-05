@@ -1,10 +1,9 @@
 import type { WebtoonDetailInfo, WebtoonEpisode } from '@/types/webtoonDetail';
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
-import { useAdvertisement } from '@/hooks/useAdvertisement';
+import { useAdvertisement, useWebtoonActions } from '@/hooks';
 import { requestWebtoonDetail, requestWebtoonEpisodes } from '@/apis/webtoonDetail';
 import type { DayOfWeek } from '@/constants/date.constants';
-import { useWebtoonActions } from '@/hooks/useWebtoonActions';
 
 const useWebtoonDetail = (webtoonId: number) => {
   const [searchParams, setSearchParams] = useSearchParams();

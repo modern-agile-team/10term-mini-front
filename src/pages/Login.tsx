@@ -1,5 +1,5 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import useLogin from '@/hooks/useLogin';
+import { useLogin } from '@/hooks';
 import { Link } from 'react-router';
 import naver from '@/assets/naver.svg';
 

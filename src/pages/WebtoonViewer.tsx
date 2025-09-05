@@ -4,8 +4,7 @@ import WebtoonFeedback from '@/components/WebtoonFeedback';
 import WebtoonViewerHeader from '@/components/WebtoonViewerHeader';
 import ScrollController from '@/components/ScrollController';
 import Spinner from '@/components/Spinner';
-import { useWebtoonViewer } from '@/hooks/useWebtoonViewer';
-import { useAdvertisement } from '@/hooks/useAdvertisement';
+import { useWebtoonViewer, useAdvertisement } from '@/hooks';
 import { Advertisement } from '@/components/Advertisement';
 import CommentSection from '@/components/CommentSection';
 

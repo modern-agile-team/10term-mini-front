@@ -1,4 +1,4 @@
-import { useMyPage } from '@/hooks/useMyPage';
+import { useMyPage } from '@/hooks';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { Navigate } from 'react-router';
 

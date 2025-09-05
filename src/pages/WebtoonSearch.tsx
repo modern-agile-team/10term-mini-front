@@ -1,7 +1,6 @@
 import { useSearchParams } from 'react-router';
 import { Advertisement } from '@/components/Advertisement';
-import { useAdvertisement } from '@/hooks/useAdvertisement';
-import { useWebtoonSearch } from '@/hooks/useWebtoonSearch';
+import { useAdvertisement, useWebtoonSearch } from '@/hooks';
 import { getWeekdayLabel } from '@/utils/weekday';
 import { SearchHeader } from '@/components/SearchHeader';
 import { SearchedWebtoonItem } from '@/components/SearchedWebtoonItem';

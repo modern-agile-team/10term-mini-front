@@ -5,11 +5,9 @@ import { useNavigate } from 'react-router';
 import { requestCreateComment } from '@/apis/comment';
 import type { NewCommentRequest } from '@/types/comment';
 import CommentCard from './CommentCard';
-import useLocalStorage from '@/hooks/useLocalStorage';
+import { useLocalStorage, useCommentInput, useCommentSection } from '@/hooks';
 import type { User } from '@/types/auth';
-import useCommentInput from '@/hooks/useCommentInput';
 import Spinner from './Spinner';
-import useCommentSection from '@/hooks/useCommentSection';
 
 const CommentSection = ({ episodeId }: { episodeId: number }) => {
   const navigate = useNavigate();

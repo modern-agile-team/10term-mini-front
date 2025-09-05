@@ -1,7 +1,7 @@
 import { formatDateShort } from '@/utils/date';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import DeleteFavoriteModal from '@/components/DeleteFavoriteModal';
-import useFavorites from '@/hooks/useFavorites';
+import { useFavorites } from '@/hooks';
 import { Link } from 'react-router';
 
 function Favorites() {

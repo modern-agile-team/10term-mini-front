@@ -1,5 +1,4 @@
-import useFavoritesData from '@/hooks/useFavoritesData';
-import useFavoritesUI from '@/hooks/useFavoritesUI';
+import { useFavoritesData, useFavoritesUI } from '@/hooks';
 
 export default function useFavorites() {
   const data = useFavoritesData();

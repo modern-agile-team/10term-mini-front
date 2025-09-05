@@ -2,7 +2,7 @@ import { Advertisement } from '@/components/Advertisement';
 import { EpisodeList } from '@/components/EpisodeList';
 import { WebtoonActionButtons } from '@/components/WebtoonActionButtons';
 import { WebtoonInfo } from '@/components/WebtoonInfo';
-import { useWebtoonDetail } from '@/hooks/useWebtoonDetail';
+import { useWebtoonDetail } from '@/hooks';
 import { useParams } from 'react-router';
 import Spinner from '@/components/Spinner';
 
