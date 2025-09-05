@@ -1,10 +1,12 @@
-import { Advertisement } from '@/components/Advertisement';
-import { EpisodeList } from '@/components/EpisodeList';
-import { WebtoonActionButtons } from '@/components/WebtoonActionButtons';
-import { WebtoonInfo } from '@/components/WebtoonInfo';
+import {
+  Advertisement,
+  EpisodeList,
+  WebtoonActionButtons,
+  WebtoonInfo,
+  Spinner,
+} from '@/components';
 import { useWebtoonDetail } from '@/hooks';
 import { useParams } from 'react-router';
-import Spinner from '@/components/Spinner';
 
 export default function WebtoonDetail() {
   const { id } = useParams();

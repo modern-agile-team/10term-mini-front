@@ -17,3 +17,5 @@ export const SearchHeader = ({ keyword, totalCount }: SearchHeaderProps) => {
     </>
   );
 };
+
+export default SearchHeader;

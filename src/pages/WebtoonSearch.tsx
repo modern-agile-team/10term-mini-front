@@ -1,11 +1,7 @@
 import { useSearchParams } from 'react-router';
-import { Advertisement } from '@/components/Advertisement';
+import { Advertisement, SearchHeader, SearchedWebtoonItem, Spinner } from '@/components';
 import { useAdvertisement, useWebtoonSearch } from '@/hooks';
 import { getWeekdayLabel } from '@/utils/weekday';
-import { SearchHeader } from '@/components/SearchHeader';
-import { SearchedWebtoonItem } from '@/components/SearchedWebtoonItem';
-
-import Spinner from '@/components/Spinner';
 
 export default function WebtoonSearch() {
   const [searchParams] = useSearchParams();

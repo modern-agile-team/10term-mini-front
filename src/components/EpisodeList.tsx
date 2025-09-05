@@ -8,7 +8,7 @@ interface EpisodeListProps {
   webtoonId: number;
 }
 
-export const EpisodeList = ({ episodes, webtoonId }: EpisodeListProps) => {
+const EpisodeList = ({ episodes, webtoonId }: EpisodeListProps) => {
   return (
     <>
       <p className="py-2 border-t border-b">총 {episodes.length}화</p>
@@ -39,3 +39,5 @@ export const EpisodeList = ({ episodes, webtoonId }: EpisodeListProps) => {
     </>
   );
 };
+
+export default EpisodeList;
