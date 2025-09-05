@@ -5,6 +5,7 @@ import { requestLogout } from '@/apis/auth';
 import { useState } from 'react';
 import { Link, NavLink, useSearchParams, useLocation, useNavigate } from 'react-router';
 import { DAY_MAPPING, UI_DAYS } from '@/constants/date.constants';
+import { VALID_WEBTOON_IDS } from '@/constants/webtoon.constants';
 interface HeaderProps {
   user: {
     username: string;
@@ -16,6 +17,17 @@ const EXCLUDED_PATHS = ['/favorites', '/mypage', '/search'] as ReadonlyArray<str
 
 function Header({ user }: HeaderProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [inputValue, setInputValue] = useState('');
+  const [searchParams] = useSearchParams();
+  const selectedDay = searchParams.get('day');
+
+  const handleRandomClick = () => {
+    const randomIndex = Math.floor(Math.random() * VALID_WEBTOON_IDS.length);
+    const randomId = VALID_WEBTOON_IDS[randomIndex];
+    navigate(`/webtoon/${randomId}`);
+  };
 
   const handleLogout = async () => {
     await requestLogout();
@@ -24,7 +36,6 @@ function Header({ user }: HeaderProps) {
     window.location.reload();
   };
 
-  const [inputValue, setInputValue] = useState('');
   const handleInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
@@ -44,11 +55,6 @@ function Header({ user }: HeaderProps) {
 
     navigate(`/search?keyword=${encodeURIComponent(trimmed)}`);
   };
-
-  const [searchParams] = useSearchParams();
-  const selectedDay = searchParams.get('day');
-
-  const location = useLocation();
 
   return (
     <header className="">
@@ -152,11 +158,8 @@ function Header({ user }: HeaderProps) {
         </nav>
         <div>
           <button
-            onClick={() => {
-              const randomId = Math.floor(Math.random() * 32) + 1;
-              navigate(`/webtoon/${randomId}`);
-            }}
-            className="flex items-center font-inter bg-site-red text-white text-sm px-10 h-10 rounded"
+            onClick={handleRandomClick}
+            className="flex items-center font-inter bg-site-red text-white text-sm px-10 h-10 rounded disabled:opacity-50"
           >
             RANDOM
             <img src={n} className="absolute ml-[80px] mb-[15px]" />
