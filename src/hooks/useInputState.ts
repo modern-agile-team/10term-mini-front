@@ -84,3 +84,5 @@ export const useInputState = (
     validate, // validate 함수 반환
   };
 };
+
+export default useInputState;

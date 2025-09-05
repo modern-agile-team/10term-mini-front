@@ -1,12 +1,11 @@
 import { useSearchParams } from 'react-router';
 import { Advertisement } from '@/components/Advertisement';
-import { useAdvertisement } from '@/hooks/useAdvertisement';
-import { useWebtoonSearch } from '@/hooks/useWebtoonSearch';
+import { useAdvertisement, useWebtoonSearch } from '@/hooks';
 import { getWeekdayLabel } from '@/utils/weekday';
 import { SearchHeader } from '@/components/SearchHeader';
 import { SearchedWebtoonItem } from '@/components/SearchedWebtoonItem';
 
-import Spinner from '@/assets/spinner.svg';
+import Spinner from '@/components/Spinner';
 
 export default function WebtoonSearch() {
   const [searchParams] = useSearchParams();
@@ -14,6 +13,7 @@ export default function WebtoonSearch() {
   const { randomAdvertisementLarge, randomAdvertisementSmall } = useAdvertisement({
     day: null,
     keyword,
+    isViewer: false,
   });
 
   const { searchedWebtoons, isLoading, error } = useWebtoonSearch(keyword);
@@ -24,9 +24,7 @@ export default function WebtoonSearch() {
         <SearchHeader keyword={keyword} totalCount={searchedWebtoons.length} />
         <div className="mt-[20px]">
           {isLoading ? (
-            <div className="flex justify-center items-center py-10">
-              <img src={Spinner} alt="로딩 중" className="animate-spin h-8 w-8" />
-            </div>
+            <Spinner message="검색 결과를 불러오는 중입니다..." />
           ) : (
             <>
               {error ? (

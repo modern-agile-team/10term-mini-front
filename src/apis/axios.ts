@@ -32,7 +32,9 @@ instance.interceptors.request.use((config) => {
 
   const isAuthPath = config.url?.includes('auth/login') || config.url?.includes('auth/signup');
 
-  if (token && !isAuthPath) config.headers.Authorization = `Bearer ${token}`;
+  const cleanToken = token ? token.replace(/"/g, '') : null;
+
+  if (cleanToken && !isAuthPath) config.headers.Authorization = `Bearer ${cleanToken}`;
 
   return config;
 });
@@ -60,7 +62,8 @@ instance.interceptors.response.use(
         localStorage.setItem('accessToken', newAccessToken);
 
         if (!originalRequest.headers) originalRequest.headers = {};
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        const cleanNewToken = newAccessToken.replace(/"/g, '');
+        originalRequest.headers.Authorization = `Bearer ${cleanNewToken}`;
 
         return instance(originalRequest);
       } catch (err) {

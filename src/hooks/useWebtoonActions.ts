@@ -43,3 +43,5 @@ export const useWebtoonActions = ({
     shareWebtoon,
   };
 };
+
+export default useWebtoonActions;

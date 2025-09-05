@@ -1,7 +1,7 @@
 import DaySectionList from '@/components/DaySectionList';
 import DaySectionGrid from '@/components/DaySectionGrid';
 import { DAY_MAPPING, type DayOfWeek } from '@/constants/date.constants';
-import useWebtoons from '@/hooks/useWebtoons';
+import { useWebtoons } from '@/hooks';
 import { contains, objectKeys } from '@modern-kit/utils';
 import {
   BUTTON_INFOS,

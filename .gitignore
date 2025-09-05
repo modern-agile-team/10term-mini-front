@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 
 public/mockServiceWorker.js
-src/assets/
 .env*
