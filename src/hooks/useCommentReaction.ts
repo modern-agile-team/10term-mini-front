@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { requestToggleCommentReaction } from '@/apis/comment';
-import type { Comment } from '@/types/comment';
+import type { Comment } from '@/types';
 
 const useCommentReaction = (initialComment: Comment) => {
   const [optimisticComment, setOptimisticComment] = useState(initialComment);

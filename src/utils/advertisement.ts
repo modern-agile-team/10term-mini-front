@@ -1,7 +1,4 @@
-import {
-  LARGE_ADVERTISEMENT_IMAGES,
-  SMALL_ADVERTISEMENT_IMAGES,
-} from '@/constants/advertisement.constants';
+import { LARGE_ADVERTISEMENT_IMAGES, SMALL_ADVERTISEMENT_IMAGES } from '@/constants';
 
 export function pickRandom<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];

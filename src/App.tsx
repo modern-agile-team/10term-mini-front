@@ -3,7 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout';
 import { useTokenRefresher } from '@/hooks';
 import { Suspense } from 'react';
 import React from 'react';
-import Spinner from '@/components/Spinner';
+import { Spinner } from '@/components';
 
 const Login = React.lazy(() => import('@/pages/Login'));
 const Signup = React.lazy(() => import('@/pages/Signup'));

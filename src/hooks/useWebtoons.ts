@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { Webtoon } from '@/types/webtoon';
-import type { WebtoonSortOption } from '@/constants/webtoon.constants';
+import type { Webtoon } from '@/types';
+import type { WebtoonSortOption, DayOfWeek } from '@/constants';
 import { requestAllWebtoons, requestWebtoonsByDay } from '@/apis/webtoons';
-import type { DayOfWeek } from '@/constants/date.constants';
 
 function useWebtoons(sort: WebtoonSortOption, day?: DayOfWeek) {
   const [webtoons, setWebtoons] = useState<Webtoon[]>([]);

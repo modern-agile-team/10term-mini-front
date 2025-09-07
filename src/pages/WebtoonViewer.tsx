@@ -1,12 +1,14 @@
 import { useRef } from 'react';
 import { useParams } from 'react-router';
-import WebtoonFeedback from '@/components/WebtoonFeedback';
-import WebtoonViewerHeader from '@/components/WebtoonViewerHeader';
-import ScrollController from '@/components/ScrollController';
-import Spinner from '@/components/Spinner';
+import {
+  Advertisement,
+  CommentSection,
+  ScrollController,
+  Spinner,
+  WebtoonFeedback,
+  WebtoonViewerHeader,
+} from '@/components';
 import { useWebtoonViewer, useAdvertisement } from '@/hooks';
-import { Advertisement } from '@/components/Advertisement';
-import CommentSection from '@/components/CommentSection';
 
 export default function WebtoonViewer() {
   const { episodeid } = useParams();

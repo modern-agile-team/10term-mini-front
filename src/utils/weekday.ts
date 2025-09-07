@@ -1,5 +1,5 @@
-import { DAY_MAPPING } from '@/constants/date.constants';
-import type { DayOfWeek } from '@/constants/date.constants';
+import { DAY_MAPPING } from '@/constants';
+import type { DayOfWeek } from '@/constants';
 
 export function getWeekdayLabel(weekday: DayOfWeek[]) {
   // 요일이 하나인 경우 '월요웹툰' 표시합니다.

@@ -20,3 +20,5 @@ export const WebtoonInfo = ({ title, writer, description, thumbnailUrl }: Webtoo
     </div>
   );
 };
+
+export default WebtoonInfo;

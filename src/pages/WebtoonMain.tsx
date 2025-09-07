@@ -1,5 +1,4 @@
-import DaySectionList from '@/components/DaySectionList';
-import DaySectionGrid from '@/components/DaySectionGrid';
+import { DaySectionGrid, DaySectionList, SectionTitle } from '@/components';
 import { DAY_MAPPING, type DayOfWeek } from '@/constants/date.constants';
 import { useWebtoons } from '@/hooks';
 import { contains, objectKeys } from '@modern-kit/utils';
@@ -9,7 +8,6 @@ import {
   type WebtoonSortOption,
 } from '@/constants/webtoon.constants';
 import { useSearchParams } from 'react-router';
-import SectionTitle from '@/components/SectionTitle';
 
 function WebtoonMain() {
   const days = objectKeys(DAY_MAPPING);

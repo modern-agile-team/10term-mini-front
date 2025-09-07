@@ -7,7 +7,7 @@ interface WebtoonActionButtonsProps {
   onShareClick: () => void;
 }
 
-export const WebtoonActionButtons = ({
+const WebtoonActionButtons = ({
   isFavorite,
   favoriteCount,
   onFavoriteClick,
@@ -45,3 +45,5 @@ export const WebtoonActionButtons = ({
     </div>
   );
 };
+
+export default WebtoonActionButtons;

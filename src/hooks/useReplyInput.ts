@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { requestCreateComment } from '@/apis/comment';
-import type { Comment, NewCommentRequest } from '@/types/comment';
+import type { Comment, NewCommentRequest } from '@/types';
 
 const useReplyInput = (
   parentId: number,

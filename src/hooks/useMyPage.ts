@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import type { User } from '@/types/auth';
+import type { User } from '@/types';
 import { useLocalStorage, usePassword, useNickname } from '@/hooks';
 import { requestNicknameUpdate, requestPasswordUpdate, requestUserInfo } from '@/apis/myPage';
 import { requestLogout } from '@/apis/auth';

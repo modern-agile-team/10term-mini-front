@@ -8,7 +8,7 @@ interface SearchedWebtoonItemProps {
   getWeekdayLabel: (weekdays: DayOfWeek[]) => string;
 }
 
-export const SearchedWebtoonItem = ({ webtoon, getWeekdayLabel }: SearchedWebtoonItemProps) => {
+const SearchedWebtoonItem = ({ webtoon, getWeekdayLabel }: SearchedWebtoonItemProps) => {
   return (
     <div className="flex mb-4">
       <Link to={`/webtoon/${webtoon.id}`}>
@@ -39,3 +39,5 @@ export const SearchedWebtoonItem = ({ webtoon, getWeekdayLabel }: SearchedWebtoo
     </div>
   );
 };
+
+export default SearchedWebtoonItem;

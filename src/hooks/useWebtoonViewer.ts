@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { increaseViewCount, requestWebtoonEpisode } from '@/apis/webtoonViewer';
-import type { WebtoonViewerEpisode } from '@/types/webtoonViewer';
+import type { WebtoonViewerEpisode } from '@/types';
 
 export function useWebtoonViewer(episodeId: string | undefined) {
   const [isLoading, setIsLoading] = useState(true);
